@@ -2124,12 +2124,12 @@ const BEERS = [
  note:"Toit (Bangalore, Mumbai) is the benchmark for Indian brewpubs. Worth a trip. The Weiss IPA is a house special — only exists on tap."},
 
 /* ── CRAFT BEERS ── */
-{name:"Basmati Blonde",brand:"Independence Brewing Co.",cat:"craft",abv:5.0,abvPct:40,
+{name:"Basmati Blonde",brand:"Drifters Brewing Co.",cat:"craft",abv:5.0,abvPct:40,
  tags:["craft","ale"],avail:"select",emoji:"⭐",craft:true,
- profile:"Golden ale brewed with Basmati rice — the rice lends a delicate, clean, slightly aromatic profile. Light body, soft malt, mild floral quality. One of the most distinctly Indian craft beers.",
- serve:"In a proper pint glass. Let it sit 30 seconds in the glass to open up the rice note.",
- pair:["Biryani","Light curries","Paneer","Fresh fruit"],
- note:"Independence Brewing Co. (Pune) — your home brewery. Basmati Blonde is their signature and for good reason. The rice-to-beer translation is subtle but genuinely different. Very proud to have this on the list."},
+ profile:"Golden ale brewed with Basmati rice — the rice lends a delicate, clean, slightly aromatic character. Light body, soft malt, a faint floral quality that's unmistakably Indian. One of the most distinctly Indian craft beers ever made.",
+ serve:"In a proper pint glass. Let it breathe 30 seconds to open up the rice note. Slightly less cold than a lager — 8°C is the sweet spot.",
+ pair:["Biryani","Light curries","Paneer tikka","Fresh fruit"],
+ note:"Drifters Brewing Co. — the Basmati Blonde is their signature and a genuine point of Indian craft beer pride. The Basmati rice isn't a gimmick: it creates a clean, slightly aromatic body you won't find in any European style. Referenced throughout this book's cocktail recipes for good reason."},
 
 {name:"Gateway Mumbaiya Lager",brand:"Gateway Brewing",cat:"craft",abv:4.5,abvPct:36,
  tags:["craft","lager"],avail:"select",emoji:"🔬",craft:true,
@@ -2274,6 +2274,214 @@ const BEERS = [
  serve:"Cold, in a glass. An experience more than a drink.",
  pair:["Seafood","Sour food","Cheese"],
  note:"A style that only serious craft beer drinkers seek out. If you've made it this far down the list, you're ready for it."},
+
+/* ── DRIFTERS BREWING CO. ── */
+{name:"Drifters Mexican Crisp",brand:"Drifters Brewing Co.",cat:"lager",abv:4.5,abvPct:36,
+ tags:["lager","craft","mild"],avail:"select",emoji:"🌮",craft:true,
+ profile:"Mexican-style adjunct lager — very light body, clean and crisp with a faint corn sweetness, almost no bitterness. Modelled on the Corona / Modelo school of lager. Made to be served ice-cold with a lime.",
+ serve:"Ice cold. Stuff a lime wedge into the bottle and squeeze it in before drinking — that's the whole ritual. Or pour into a cold glass with a lime squeeze.",
+ pair:["Tacos","Seafood","Guacamole","Chakna","Light snacks"],
+ note:"Drifters nails the Mexican crisp style — light, fun, totally sessionable. Pairs beautifully with the Basmati Blonde at a table: one for contemplation, one for refreshment."},
+
+/* ── SUSEGADO BREWING CO. ── */
+{name:"Susegado Kolsch",brand:"Susegado Brewing Co.",cat:"craft",abv:4.8,abvPct:38,
+ tags:["craft","lager"],avail:"select",emoji:"🔬",craft:true,
+ profile:"German Kölsch style — bright golden, clean soft malt with a delicate noble hop character and a slight fruity ester from the Kölsch yeast. Crisper than a lager, lighter than an ale. One of the most refined styles in brewing.",
+ serve:"In a Kölsch stange (tall cylindrical glass) at 5-7°C. Not ice cold — warmth reveals the ester. Drink fresh.",
+ pair:["Light cheese","Grilled veg","Sushi","Mild salads","Fish"],
+ note:"Susegado means 'relaxed contentment' in Goan Portuguese — and this Kölsch delivers exactly that. A style almost nobody brews in India. The restraint required to make a proper Kölsch is a mark of brewing seriousness."},
+
+{name:"Susegado Wheat",brand:"Susegado Brewing Co.",cat:"wheat",abv:5.0,abvPct:40,
+ tags:["craft","wheat"],avail:"select",emoji:"🌾",craft:true,
+ profile:"Unfiltered wheat beer with a soft hazy body and mild banana and clove ester from wheat yeast. Refreshing, easy, distinctly different from lagers.",
+ serve:"In a wide-mouth glass. Less cold than a lager — 7°C. Pour most, then swirl the bottle to rouse the yeast sediment and pour in the cloudy last bit.",
+ pair:["Seafood","Light salads","Goan food","Fruit"],
+ note:"Susegado brings a Goan sensibility to German brewing tradition. The wheat is clean and well-made — easy to drink a lot of, which is both a compliment and a warning."},
+
+/* ── OI BREWHOUSE ── */
+{name:"Oi Pale Ale",brand:"Oi Brewhouse",cat:"ale",abv:5.2,abvPct:42,
+ tags:["craft","ale"],avail:"select",emoji:"🦉",craft:true,
+ profile:"American Pale Ale — medium body, balanced malt sweetness, citrus and floral hop character. Approachable, well-structured. A solid entry into craft ales.",
+ serve:"At 8-10°C in a pint glass. The hop aroma opens as it warms slightly.",
+ pair:["Burgers","Grilled chicken","Mild wings","Cheese"],
+ note:"Oi Brewhouse is doing serious craft work. The Pale Ale is their most accessible offering — a gateway beer for people curious about hopped ales without wanting full IPA intensity."},
+
+{name:"Oi Hefeweizen",brand:"Oi Brewhouse",cat:"wheat",abv:5.0,abvPct:40,
+ tags:["craft","wheat"],avail:"select",emoji:"🌾",craft:true,
+ profile:"German Hefeweizen — cloudy golden, banana and clove esters from Bavarian yeast, soft wheat body with a creamy mouthfeel. Classic style done faithfully.",
+ serve:"In a tall weizen glass. Roll the last inch in the bottle to rouse the yeast before pouring. Serve at 8°C.",
+ pair:["Pretzels","Light food","Fruit","Mild cheese"],
+ note:"A proper Hefeweizen made in India — the banana-clove balance is where you judge a brewery's wheat beer. Oi gets it right."},
+
+{name:"Oi Stout",brand:"Oi Brewhouse",cat:"dark",abv:6.0,abvPct:48,
+ tags:["stout","dark","craft"],avail:"select",emoji:"🖤",craft:true,
+ profile:"Dry Stout — roasted barley dominates, notes of espresso and dark chocolate, dry bitter finish, medium body. A faithful take on the Irish dry stout tradition.",
+ serve:"At 10°C — warmer than you think. Too cold kills the roast character. In a pint glass.",
+ pair:["Oysters","Chocolate","Strong cheese","Slow-cooked meat"],
+ note:"Dark beer in India is still a niche choice, which makes Oi's commitment to a proper stout worth acknowledging. The roast is honest and the finish is dry, as it should be."},
+
+/* ── IGLOO BREWING ── */
+{name:"Igloo Blonde Ale",brand:"Igloo Brewing",cat:"ale",abv:4.8,abvPct:38,
+ tags:["craft","ale","mild"],avail:"select",emoji:"🧊",craft:true,
+ profile:"Light blonde ale — clean malt, very mild hops, soft and approachable. A craft beer built for easy drinking, not challenging the palate.",
+ serve:"Chilled, in a glass. The lightness is the point — this is a session craft beer.",
+ pair:["Snacks","Pizza","Light food","Anything"],
+ note:"Igloo positions itself as the accessible end of craft — a bridge beer for people moving from commercial lagers. Honest and well-made for what it is."},
+
+{name:"Igloo Wheat Ale",brand:"Igloo Brewing",cat:"wheat",abv:4.5,abvPct:36,
+ tags:["craft","wheat","mild"],avail:"select",emoji:"🌾",craft:true,
+ profile:"Light wheat ale — hazy, gentle, with a mild citrus character and a very easy body. Less yeast-forward than a Hefeweizen, more accessible.",
+ serve:"Cold, in a wide glass. Summer beer.",
+ pair:["Light salads","Fruit","Mild snacks","Seafood"],
+ note:"Light and refreshing — designed for the Indian summer. Igloo knows their audience and brews accordingly."},
+
+/* ── EFFINGUT BREWERKZ (additional) ── */
+{name:"Effingut Belgian Wit",brand:"Effingut Brewerkz",cat:"wheat",abv:4.8,abvPct:38,
+ tags:["craft","wheat"],avail:"rare",emoji:"🌾",craft:true,
+ profile:"Belgian Witbier — hazy pale, coriander and orange peel spicing, soft wheat body, mild tartness. Classic wit character made in Pune.",
+ serve:"At 6-8°C in a wide glass. Orange slice on the side if you like.",
+ pair:["Seafood","Light cheese","Mild Indian food","Fruit"],
+ note:"Effingut's Wit is proper Belgian-style — the coriander and orange peel spicing is balanced, not overdone. A Pune brewery doing a European classic well. Tap-only at the brewpub."},
+
+{name:"Effingut IPA",brand:"Effingut Brewerkz",cat:"ipa",abv:6.5,abvPct:52,
+ tags:["ipa","craft"],avail:"rare",emoji:"🌿",craft:true,
+ profile:"West Coast IPA — assertive citrus and pine hop aroma, firm bitterness, clean malt backbone to balance. More aggressive than a Pale Ale but less extreme than a DIPA.",
+ serve:"At 8°C in a pint glass. Let the aroma hit before the first sip.",
+ pair:["Spicy food","Burgers","Aged cheese","Fried food"],
+ note:"Effingut's IPA is well-calibrated — the bitterness has purpose and the hops are expressive. Tap-only, Pune brewpub. Worth the visit."},
+
+{name:"Effingut Porter",brand:"Effingut Brewerkz",cat:"dark",abv:5.5,abvPct:44,
+ tags:["dark","craft"],avail:"rare",emoji:"🖤",craft:true,
+ profile:"English Porter — roasted malt, notes of coffee and dark caramel, medium body, milder than a stout. Smooth and warming without the intensity of an imperial.",
+ serve:"At 12°C — the warmest you'd serve a dark beer. The caramel note emerges properly at this temperature.",
+ pair:["Chocolate desserts","Grilled meat","Aged cheese","Rich food"],
+ note:"Porter sits between a brown ale and a stout — more complexity than the former, less intensity than the latter. Effingut's is a considered, well-made dark beer. Seasonal taproom offering."},
+
+/* ── YAVASURA BREWING ── */
+{name:"Yavasura Harvest Lager",brand:"Yavasura Brewing",cat:"craft",abv:4.5,abvPct:36,
+ tags:["craft","lager","mild"],avail:"select",emoji:"🌾",craft:true,
+ profile:"Craft lager focused on local barley and malt — clean, crisp, with slightly more character than a commercial lager. The craft intention is evident in the malt quality.",
+ serve:"Cold, in a glass. A craft lager that rewards attention.",
+ pair:["Light food","Salads","Mild snacks","Chakna"],
+ note:"Yavasura (Sanskrit for 'barley god') takes grain sourcing seriously. A craft lager made with intent — tastes like a lager but with a visible philosophy behind it."},
+
+{name:"Yavasura Wit",brand:"Yavasura Brewing",cat:"wheat",abv:4.8,abvPct:38,
+ tags:["craft","wheat"],avail:"select",emoji:"🌾",craft:true,
+ profile:"Witbier with Indian botanicals — traditional Belgian wit base with local spicing additions. Refreshing, slightly complex, distinctly Indian in character.",
+ serve:"In a wide glass at 7°C. The botanical note opens as it warms.",
+ pair:["Seafood","Light Indian food","Salads","Fresh fruit"],
+ note:"Yavasura uses Indian botanicals in their wit — adding local character to a Belgian tradition. One of the more thoughtful things happening in Indian craft brewing."},
+
+{name:"Yavasura Red Ale",brand:"Yavasura Brewing",cat:"ale",abv:5.5,abvPct:44,
+ tags:["craft","ale"],avail:"select",emoji:"🍂",craft:true,
+ profile:"American Red Ale — caramel and toasted malt character, amber-red colour, medium body, mild hop bitterness. More malt-forward than a pale ale, less intense than an IPA.",
+ serve:"At 10°C in a pint glass. Colour and malt character are the story here.",
+ pair:["Grilled meat","BBQ","Strong cheese","Fried food"],
+ note:"Red ales are underrepresented in India — Yavasura's version is a solid entry into the style. The caramel malt is the focus and it's handled well."},
+
+/* ── GOA BREWING CO. ── */
+{name:"People's Lager",brand:"Goa Brewing Co.",cat:"lager",abv:5.0,abvPct:40,
+ tags:["craft","lager"],avail:"select",emoji:"🌊",craft:true,
+ profile:"Craft lager — clean, balanced malt with a slightly more expressive hop note than commercial lagers. Designed to be the everyday beer of Goa's craft scene. Golden, crisp, refreshing.",
+ serve:"Cold, in a glass. Doesn't need ceremony — just needs to be cold.",
+ pair:["Seafood","Fish curry","Light snacks","Goan food","Anything beachside"],
+ note:"Goa Brewing Co. makes their beers for the Goan pace of life — unfussy, consistent, genuinely good. People's Lager is their flagship and it earns the name."},
+
+{name:"People's Manipur",brand:"Goa Brewing Co.",cat:"craft",abv:5.0,abvPct:40,
+ tags:["craft","ale"],avail:"select",emoji:"🌺",craft:true,
+ profile:"Regional tribute beer brewed with ingredients or inspiration from Manipur — floral and herbal notes from northeastern botanicals over a balanced ale base. Distinctly Indian in character.",
+ serve:"In a glass at 8-10°C. Let the botanicals express themselves.",
+ pair:["Northeastern Indian food","Light curries","Herbal dishes","Fresh food"],
+ note:"The People's series celebrates regional India — each beer represents a place and its ingredients. People's Manipur is a tribute to the Northeast, with botanical character that you won't find in any European style."},
+
+{name:"People's Pune",brand:"Goa Brewing Co.",cat:"craft",abv:5.2,abvPct:42,
+ tags:["craft","ale"],avail:"select",emoji:"🏙️",craft:true,
+ profile:"Pune tribute beer — brewed to reflect the flavours and culture of Pune. Balanced, accessible ale with a local twist — local grain, spice, or seasonal ingredient depending on batch.",
+ serve:"In a pint glass at 8°C. This one is yours — Pune's beer.",
+ pair:["Pune street food","Misal pav","Vada pav","Spiced snacks"],
+ note:"A Pune beer for Pune people. Goa Brewing Co. making something specifically for this city is worth appreciating. Your city on a label."},
+
+/* ── SIX FIELDS BREWING ── */
+{name:"Six Fields Green Pilsner",brand:"Six Fields Brewing",cat:"pilsner",abv:5.0,abvPct:40,
+ tags:["craft","pilsner"],avail:"select",emoji:"🟢",craft:true,
+ profile:"Czech-style Pilsner — bright golden, firm noble hop bitterness (Saaz hops), clean malt backbone, crisp dry finish. The Green is their approachable, classic Pilsner entry.",
+ serve:"In a pilsner glass at 5°C — cold, but not so cold you lose the Saaz hop character. Pour with a finger of foam.",
+ pair:["Fried food","Light snacks","Pretzels","Grilled veg","Mild cheese"],
+ note:"Six Fields takes pilsner seriously — the Saaz hop character in the Green is authentic. In a country full of lagers calling themselves pilsners, this is the real thing. Clean, bitter, satisfying."},
+
+{name:"Six Fields Black Pilsner",brand:"Six Fields Brewing",cat:"pilsner",abv:5.5,abvPct:44,
+ tags:["craft","pilsner","dark"],avail:"select",emoji:"⬛",craft:true,
+ profile:"Black Pilsner (Schwarzbier) — dark in colour but pilsner-light in body. Notes of roasted malt and coffee without the heaviness of a stout. Crisp, dry, distinctly dark.",
+ serve:"At 7°C in a pilsner glass. The visual contrast — dark beer, pilsner crispness — is the whole experience.",
+ pair:["Grilled meat","Dark chocolate","Strong cheese","Smoked food"],
+ note:"Black Pilsner is one of beer's best kept secrets — dark colour, light body. Six Fields' version is a confident, well-made Schwarzbier. Order it when you want something dark but don't want a heavy stout."},
+
+/* ── INDEPENDENCE BREWING CO. (IBC) ── */
+{name:"IBC Bavarian Weiss",brand:"Independence Brewing Co.",cat:"wheat",abv:5.0,abvPct:40,
+ tags:["craft","wheat"],avail:"select",emoji:"🌾",craft:true,
+ profile:"Bavarian Hefeweizen — banana and clove esters from an authentic German yeast strain, hazy golden body, creamy wheat texture, low bitterness. A faithful German wheat beer brewed in Pune.",
+ serve:"In a weizen glass — rinse with cold water, pour at 45°. Roll the last bit to rouse the yeast. Serve at 8°C.",
+ pair:["Bratwurst","Pretzels","Light food","Salads","Fruit"],
+ note:"Independence Brewing Co. (Pune) — one of the city's serious craft operations. Their Bavarian Weiss takes the style properly — the banana-clove balance is where you judge a wheat beer and IBC gets it right."},
+
+{name:"IBC Belgian Tripel",brand:"Independence Brewing Co.",cat:"ale",abv:8.5,abvPct:68,
+ tags:["craft","ale","strong"],avail:"rare",emoji:"⛪",craft:true,
+ profile:"Belgian Tripel — golden, deceptively light in body for the ABV, fruity esters (pear, banana), spicy yeast character, sweet-dry finish, warming alcohol. One of the most complex ale styles in existence.",
+ serve:"In a tulip or goblet at 12-14°C — the warmest of any beer on this list. Sip. This is not a session beer.",
+ pair:["Strong cheese","Rich food","Desserts","On its own as a digestif"],
+ note:"A Tripel at 8.5% made in Pune — that's ambition. The Belgian yeast character is the star: complex, fruity, spicy, unlike anything else. Treat it like a fine wine. One is enough and one is perfect."},
+
+{name:"IBC Amber Ale",brand:"Independence Brewing Co.",cat:"ale",abv:5.5,abvPct:44,
+ tags:["craft","ale"],avail:"select",emoji:"🍂",craft:true,
+ profile:"American Amber Ale — caramel malt body, toasty character, medium hop bitterness. Amber-red colour, balanced and versatile. The craft beer equivalent of comfort food.",
+ serve:"At 10°C in a pint glass. A year-round beer.",
+ pair:["Burgers","Grilled chicken","BBQ","Rich snacks","Cheese"],
+ note:"IBC's Amber Ale is a well-calibrated everyday craft beer — more complexity than a lager, more approachable than an IPA. A solid default choice at any IBC tap."},
+
+/* ── HOEGAARDEN ROSÉE ── */
+{name:"Hoegaarden Rosée",brand:"AB InBev India",cat:"wheat",abv:3.0,abvPct:24,
+ tags:["wheat","mild"],avail:"select",emoji:"🌸",craft:false,
+ profile:"Raspberry-infused Belgian witbier — pale pink, sweet raspberry fruit over the traditional wit base of orange peel and coriander. Very low ABV, extremely easy drinking. The most approachable beer on this list.",
+ serve:"Very cold, in a wide glass or over ice. A summer afternoon beer.",
+ pair:["Fruit desserts","Light salads","Cheese","Anything on a warm afternoon"],
+ note:"If someone says they don't like beer, start here. The Rosée is barely beer in the traditional sense — it's a gateway. At 3%, it's also the most session-friendly entry on this list."},
+
+/* ── KIMAYA BREWING (additional) ── */
+{name:"Kimaya Mango Wheat",brand:"Kimaya Brewing",cat:"wheat",abv:4.5,abvPct:36,
+ tags:["craft","wheat"],avail:"rare",emoji:"🥭",craft:true,
+ profile:"Wheat beer brewed with Alphonso mango — the king of mangoes lending a rich tropical sweetness to a soft wheat base. Distinctly Indian, distinctly summer.",
+ serve:"Cold, in a wide glass. Summer only — when Alphonso season hits (March to June), seek this out.",
+ pair:["Mild cheese","Light food","Fruit","Indian desserts"],
+ note:"Alphonso mango and wheat beer is such an obvious Indian craft pairing it's a mystery it took this long. Kimaya's version is restrained — the mango enhances, it doesn't overwhelm. A seasonal treasure."},
+
+{name:"Kimaya Saison",brand:"Kimaya Brewing",cat:"ale",abv:5.5,abvPct:44,
+ tags:["craft","ale"],avail:"rare",emoji:"🌻",craft:true,
+ profile:"Belgian Saison — pale golden, dry, spicy yeast character, fruity esters, high carbonation, very refreshing for the complexity. A farmhouse ale style.",
+ serve:"At 10°C in a tulip or wide glass. The high carbonation is by design — it lifts the aromas.",
+ pair:["Goat cheese","Vegetable dishes","Spiced food","Seafood"],
+ note:"Saison is the style that brewery nerds argue is the most misunderstood. Kimaya's version is serious — dry, spicy, complex. A great choice for people who've exhausted IPAs and want something genuinely different."},
+
+/* ── HIK BREWING ── */
+{name:"Hik Lager",brand:"Hik Brewing",cat:"lager",abv:4.5,abvPct:36,
+ tags:["craft","lager","mild"],avail:"select",emoji:"🏔️",craft:true,
+ profile:"Clean craft lager — crisp, light malt body, mild hop character, very refreshing. Made with attention to ingredient quality rather than adjunct cost-cutting.",
+ serve:"Cold. A lager is a lager — the craft difference is in the ingredients and the clean fermentation.",
+ pair:["Light food","Snacks","Anything casual"],
+ note:"Hik is a newer name in India's craft scene but the Lager is well-made — honest and clean. The kind of beer that earns repeat orders without demanding attention."},
+
+{name:"Hik Pale Ale",brand:"Hik Brewing",cat:"ale",abv:5.0,abvPct:40,
+ tags:["craft","ale"],avail:"select",emoji:"🏔️",craft:true,
+ profile:"Session Pale Ale — light hop character, citrus and floral notes, clean malt base, easy body. Designed to be sessionable without sacrificing hop expression.",
+ serve:"At 8°C in a pint glass. A reliable everyday craft ale.",
+ pair:["Burgers","Pizza","Wings","Light food"],
+ note:"Hik's Pale Ale is the craft brewery equivalent of a reliable friend — not the most complex thing at the table, but exactly what you want when you want it."},
+
+{name:"Hik Wheat",brand:"Hik Brewing",cat:"wheat",abv:4.8,abvPct:38,
+ tags:["craft","wheat"],avail:"select",emoji:"🌾",craft:true,
+ profile:"American Wheat — lighter and less yeast-forward than a German Hefeweizen. Clean, slightly hazy, mild citrus note, very easy drinking.",
+ serve:"Cold in a wide glass. The American wheat style is less challenging than Hefeweizen — a good introduction to wheat beers.",
+ pair:["Light food","Salads","Fruit","Mild snacks"],
+ note:"Hik's Wheat is the accessible wheat beer option — less banana-clove intensity than a proper Hefeweizen, which makes it an easier transition for lager drinkers."},
 
 ];
 
