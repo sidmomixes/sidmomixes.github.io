@@ -356,6 +356,154 @@ body::after {
   .tab-emoji{ font-size:13px; }
   .mood-opts{ grid-template-columns:1fr; }
 }
+
+/* ─── BEER PANEL ────────────────────────────────────── */
+.beer-hero {
+  background: linear-gradient(135deg, #1a1200 0%, #251a00 50%, #1a1200 100%);
+  border: 1px solid rgba(200,152,64,.25);
+  border-radius: var(--r-xl);
+  padding: 1.5rem 1.25rem 1.25rem;
+  margin-bottom: 1.5rem;
+  position: relative; overflow: hidden;
+}
+.beer-hero::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, #c89840, #f5d070, #c89840);
+}
+.beer-hero-title {
+  font-family: var(--ff-disp); font-size: 22px; color: var(--txt-h);
+  margin-bottom: .25rem; line-height: 1.2;
+}
+.beer-hero-sub { font-size: 12px; color: var(--txt-s); line-height: 1.6; }
+.beer-hero-stats { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+.beer-hero-stat { text-align: center; }
+.beer-hero-stat-n { font-family: var(--ff-disp); font-size: 20px; color: var(--amber-l); line-height: 1; }
+.beer-hero-stat-l { font-size: 9px; color: var(--txt-s); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+/* beer filter bar */
+.beer-filter-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 1rem; }
+.beer-fbtn {
+  font-size: 11px; padding: 5px 13px; border-radius: var(--r-full);
+  border: 1px solid var(--border); background: transparent;
+  color: var(--txt-s); cursor: pointer; transition: all .18s;
+  font-family: var(--ff-body); white-space: nowrap;
+}
+.beer-fbtn:hover { background: var(--glass); color: var(--txt-p); }
+.beer-fbtn.active {
+  background: rgba(200,152,64,.15); color: var(--amber-l);
+  border-color: var(--amber);
+}
+.beer-fbtn[data-cat="lager"].active    { background:rgba(90,160,220,.14); color:#80c0ee; border-color:#5a9fd4; }
+.beer-fbtn[data-cat="wheat"].active    { background:rgba(240,200,80,.12); color:#e8c054; border-color:#c8a030; }
+.beer-fbtn[data-cat="strong"].active   { background:rgba(200,80,60,.14);  color:#e8907a; border-color:#c06050; }
+.beer-fbtn[data-cat="craft"].active    { background:rgba(80,160,100,.14); color:#70c880; border-color:#50a060; }
+.beer-fbtn[data-cat="dark"].active     { background:rgba(100,60,20,.3);   color:#c89060; border-color:#907040; }
+.beer-fbtn[data-cat="ipa"].active      { background:rgba(160,200,60,.12); color:#b0d860; border-color:#80b030; }
+.beer-fbtn[data-cat="mead"].active     { background:rgba(220,160,80,.14); color:#e8c070; border-color:#c8a040; }
+
+/* beer section headers */
+.beer-section-hdr {
+  display: flex; align-items: center; gap: 10px;
+  margin: 1.5rem 0 .75rem;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--txt-s);
+}
+.beer-section-hdr::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* beer cards grid */
+.beer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+  gap: 10px;
+}
+
+/* beer card */
+.beer-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: .85rem 1rem;
+  cursor: pointer; transition: border-color .2s, transform .2s, box-shadow .2s;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+  animation: cardIn .35s ease both;
+}
+.beer-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--bc, var(--amber)), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.beer-card:hover { border-color: rgba(255,255,255,.13); transform: translateY(-2px); box-shadow: var(--shadow), 0 0 20px rgba(200,152,64,.1); }
+.beer-card:hover::before, .beer-card.open::before { opacity: 1; }
+.beer-card.open { border-color: var(--border-hi); background: var(--bg-hover); }
+
+/* card accent colours per category */
+.beer-card[data-cat="lager"]  { --bc:#80c0ee; }
+.beer-card[data-cat="wheat"]  { --bc:#e8c054; }
+.beer-card[data-cat="strong"] { --bc:#e8907a; }
+.beer-card[data-cat="craft"]  { --bc:#70c880; }
+.beer-card[data-cat="dark"]   { --bc:#c89060; }
+.beer-card[data-cat="ipa"]    { --bc:#b0d860; }
+.beer-card[data-cat="mead"]   { --bc:#e8d880; }
+.beer-card[data-cat="pilsner"]{ --bc:#f5d070; }
+.beer-card[data-cat="ale"]    { --bc:#d4a060; }
+
+.beer-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.beer-card-left { flex: 1; min-width: 0; }
+.beer-card-emoji { font-size: 22px; margin-bottom: 3px; }
+.beer-card-name { font-family: var(--ff-disp); font-size: 14px; font-weight: 700; color: var(--txt-h); margin-bottom: 1px; line-height: 1.2; }
+.beer-card-brand { font-size: 11px; color: var(--txt-s); margin-bottom: 6px; }
+
+.beer-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; }
+.beer-tag {
+  font-size: 9px; font-weight: 500; letter-spacing: .4px;
+  padding: 2px 7px; border-radius: var(--r-full); line-height: 1.5;
+  text-transform: uppercase;
+}
+.bt-lager   { background: rgba(90,160,220,.12); color:#80c0ee; border:1px solid rgba(90,160,220,.28); }
+.bt-wheat   { background: rgba(240,200,80,.1);  color:#d8b840; border:1px solid rgba(240,200,80,.24); }
+.bt-strong  { background: rgba(200,80,60,.12);  color:#e08878; border:1px solid rgba(200,80,60,.28); }
+.bt-craft   { background: rgba(80,160,100,.12); color:#68b878; border:1px solid rgba(80,160,100,.28); }
+.bt-dark    { background: rgba(100,60,20,.28);  color:#b88050; border:1px solid rgba(100,60,20,.4); }
+.bt-ipa     { background: rgba(160,200,60,.1);  color:#a8d050; border:1px solid rgba(160,200,60,.24); }
+.bt-mead    { background: rgba(220,200,80,.1);  color:#d8c050; border:1px solid rgba(220,200,80,.24); }
+.bt-pilsner { background: rgba(240,210,60,.1);  color:#d8c040; border:1px solid rgba(240,210,60,.22); }
+.bt-ale     { background: rgba(200,150,60,.12); color:#c89840; border:1px solid rgba(200,150,60,.26); }
+.bt-stout   { background: rgba(40,30,20,.5);    color:#a07850; border:1px solid rgba(80,60,30,.5); }
+.bt-mild    { background: var(--green-dim);     color:var(--green-l); border:1px solid rgba(74,124,89,.3); }
+.bt-mid     { background: var(--amber-dim);     color:var(--amber-l); border:1px solid rgba(200,152,64,.28); }
+.bt-high    { background: rgba(200,80,60,.12);  color:#e08878; border:1px solid rgba(200,80,60,.28); }
+
+/* ABV bar */
+.beer-abv-row { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.beer-abv-label { font-size: 10px; color: var(--txt-s); width: 55px; flex-shrink: 0; }
+.beer-abv-bar-bg { flex: 1; height: 4px; background: rgba(255,255,255,.06); border-radius: 2px; }
+.beer-abv-bar-fill { height: 100%; border-radius: 2px; background: var(--bc, var(--amber)); transition: width .4s ease; }
+.beer-abv-num { font-size: 10px; color: var(--txt-p); width: 36px; text-align: right; flex-shrink: 0; }
+
+/* beer detail */
+.beer-detail { max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.4,0,.2,1), opacity .3s; opacity: 0; }
+.beer-card.open .beer-detail { max-height: 800px; opacity: 1; }
+.beer-d-inner { border-top: 1px solid var(--border); margin-top: 9px; padding-top: 9px; }
+.beer-dlabel { font-size: 9px; font-weight: 500; color: var(--amber); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; margin-top: 9px; }
+.beer-dlabel:first-child { margin-top: 0; }
+.beer-dtext { font-size: 12px; color: var(--txt-p); line-height: 1.65; }
+.beer-dnote { font-size: 11px; color: var(--txt-s); font-style: italic; margin-top: 8px; padding: 8px 10px; border-left: 2px solid rgba(200,152,64,.25); background: rgba(200,152,64,.04); border-radius: 0 var(--r-sm) var(--r-sm) 0; line-height: 1.55; }
+.beer-pair-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.beer-pair-pill { font-size: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 3px 9px; color: var(--txt-p); }
+
+/* availability badge */
+.beer-avail {
+  font-size: 9px; letter-spacing: .5px; padding: 2px 8px; border-radius: var(--r-full);
+  display: inline-block; font-weight: 500; text-transform: uppercase;
+}
+.avail-wide   { background: rgba(74,124,89,.18); color: var(--green-l); border: 1px solid rgba(74,124,89,.35); }
+.avail-select { background: rgba(200,152,64,.14); color: var(--amber-l); border: 1px solid rgba(200,152,64,.3); }
+.avail-rare   { background: rgba(176,90,106,.14); color: var(--rose-l); border: 1px solid rgba(176,90,106,.3); }
+
+.beer-count { font-size: 11px; color: var(--txt-s); margin: .5rem 0 .75rem; letter-spacing: .5px; }
+.no-beer-res { text-align: center; padding: 2.5rem 1rem; color: var(--txt-s); font-size: 13px; }
+
+@media(max-width:600px) {
+  .beer-grid { grid-template-columns: 1fr; }
+  .beer-hero-stats { gap: .75rem; }
+}
 </style>
 </head>
 <body>
@@ -383,6 +531,7 @@ body::after {
   <button class="tab" onclick="switchTab('mood',this)"><span class="tab-emoji">🎯</span>By Mood</button>
   <button class="tab" onclick="switchTab('quick',this)"><span class="tab-emoji">⚡</span>Quick Pick</button>
   <button class="tab" onclick="switchTab('bar',this)"><span class="tab-emoji">🧊</span>My Bar</button>
+  <button class="tab" onclick="switchTab('beer',this)"><span class="tab-emoji">🍺</span>Beer</button>
 </div>
 
 <!-- ═══ RECIPES PANEL ═══ -->
@@ -461,6 +610,41 @@ body::after {
   </div>
   <div class="count" id="barCountLbl" style="margin-top:1rem;font-size:13px;"></div>
   <div id="barGrid"></div>
+</div>
+
+<!-- ═══ BEER PANEL ═══ -->
+<div id="panel-beer" class="panel">
+
+  <!-- Hero -->
+  <div class="beer-hero">
+    <div class="beer-hero-title">🍺 The Beer Bible</div>
+    <div class="beer-hero-sub">Your personal guide to every beer worth drinking in India — from a cold Kingfisher on a hot day to a barrel-aged stout at midnight. Commercial, craft, strong, and specialty. Mild to nuclear.</div>
+    <div class="beer-hero-stats">
+      <div class="beer-hero-stat"><div class="beer-hero-stat-n" id="bs-total">0</div><div class="beer-hero-stat-l">Total beers</div></div>
+      <div class="beer-hero-stat"><div class="beer-hero-stat-n" id="bs-craft">0</div><div class="beer-hero-stat-l">Craft</div></div>
+      <div class="beer-hero-stat"><div class="beer-hero-stat-n" id="bs-strong">0</div><div class="beer-hero-stat-l">Strong (≥7%)</div></div>
+      <div class="beer-hero-stat"><div class="beer-hero-stat-n" id="bs-styles">0</div><div class="beer-hero-stat-l">Styles</div></div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="rlabel">🏷️ Filter by style</div>
+  <div class="beer-filter-row" id="beerFilter">
+    <button class="beer-fbtn active" data-cat="all" onclick="filterBeer('all',this)">All</button>
+    <button class="beer-fbtn" data-cat="lager" onclick="filterBeer('lager',this)">🧊 Lager</button>
+    <button class="beer-fbtn" data-cat="pilsner" onclick="filterBeer('pilsner',this)">🥂 Pilsner</button>
+    <button class="beer-fbtn" data-cat="wheat" onclick="filterBeer('wheat',this)">🌾 Wheat / Witbier</button>
+    <button class="beer-fbtn" data-cat="ale" onclick="filterBeer('ale',this)">🍂 Ale</button>
+    <button class="beer-fbtn" data-cat="ipa" onclick="filterBeer('ipa',this)">🌿 IPA</button>
+    <button class="beer-fbtn" data-cat="dark" onclick="filterBeer('dark',this)">🌑 Stout / Porter</button>
+    <button class="beer-fbtn" data-cat="strong" onclick="filterBeer('strong',this)">💪 Strong</button>
+    <button class="beer-fbtn" data-cat="craft" onclick="filterBeer('craft',this)">🔬 Craft</button>
+    <button class="beer-fbtn" data-cat="mead" onclick="filterBeer('mead',this)">🍯 Mead / Specialty</button>
+  </div>
+
+  <div class="beer-count" id="beerCount"></div>
+  <div id="beerGrid"></div>
+
 </div>
 
 </div><!-- .rb -->
@@ -1812,11 +1996,428 @@ function renderQDResults() {
 }
 
 /* ═══════════════════════════════════════════════════════
+   BEER DATA
+═══════════════════════════════════════════════════════ */
+const BEERS = [
+
+/* ── MILD LAGERS & SESSION BEERS ── */
+{name:"Kingfisher Premium",brand:"United Breweries",cat:"lager",abv:4.8,abvPct:38,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Crisp, light malt body with a touch of sweetness and a clean, mild hop bitterness. The quintessential Indian session beer.",
+ serve:"Ice-cold in a chilled glass or straight from the can on a hot day. The classic monsoon balcony beer.",
+ pair:["Chakna","Peanuts","Chicken tikka","Street chaat"],
+ note:"The beer India grew up on. No judgment — when it's 38°C and you've just stepped off a bike, nothing touches a cold Kingfisher."},
+
+{name:"Kingfisher Strong",brand:"United Breweries",cat:"strong",abv:8.0,abvPct:64,
+ tags:["strong","lager"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Maltier and heavier than Premium, with a pronounced alcohol warmth and a slightly sweet finish. The blue-collar powerhouse.",
+ serve:"Chilled. Respect the ABV — one pint hits differently than it looks.",
+ pair:["Spicy kebabs","Mutton curry","Bhujia","Oily street food"],
+ note:"The great equaliser. Four years in Pune and you'll know exactly when this beer is the right call."},
+
+{name:"Tuborg Green",brand:"Carlsberg India",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Light, slightly sweet, very easy-drinking. Mild hop character, smooth carbonation.",
+ serve:"Very cold, in the bottle or a pilsner glass. Pub staple.",
+ pair:["Nachos","Pizza","Mild wings"],
+ note:"Denmark's most iconic export. The party beer. Doesn't demand attention and that's exactly the point."},
+
+{name:"Heineken",brand:"Heineken India",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Balanced pale lager with a mild bitterness and clean, slightly floral hop note. Globally consistent.",
+ serve:"Chilled. The green bottle stays cold longer than you think.",
+ pair:["Sushi","Light snacks","Cheese","Fish"],
+ note:"More hop-forward than Kingfisher, less malty than Tuborg. Good when you want something familiar and reliable."},
+
+{name:"Corona Extra",brand:"AB InBev India",cat:"lager",abv:4.5,abvPct:36,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Extremely light, slightly citrusy, low bitterness. Designed to be served with a lime wedge.",
+ serve:"With a lime wedge stuffed into the bottle — squeeze it in, cap with thumb, flip once, drink. Non-negotiable.",
+ pair:["Seafood","Tacos","Light salads","Guacamole"],
+ note:"People either love the lime ritual or think it's performative. Either way — it works in summer."},
+
+{name:"Budweiser",brand:"AB InBev India",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Rice-adjunct lager — ultra-clean, very light body, faint malt sweetness, almost no bitterness.",
+ serve:"Ice cold. This beer rewards low temperature above anything else.",
+ pair:["Burgers","Fried snacks","BBQ","Mild food"],
+ note:"Globally the best-selling beer. In India it's a step up from the usual. Clean and unchallenging — that's the design."},
+
+{name:"Foster's",brand:"Heineken India",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Smooth and mellow Australian lager. Mild malt base, very light bitterness, clean finish.",
+ serve:"Chilled. Works well on tap where available.",
+ pair:["Pies","Grilled food","Chips","Casual food"],
+ note:"Australian by identity, Indian by brewing. A relaxed, no-drama beer for relaxed, no-drama evenings."},
+
+/* ── PILSNERS ── */
+{name:"Stella Artois",brand:"AB InBev India",cat:"pilsner",abv:5.2,abvPct:42,
+ tags:["pilsner","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Classic European pilsner — crisp, moderately bitter, slightly floral hop aroma with a clean malt backbone.",
+ serve:"In a chalice if you're doing it right. Pour at 45°, let foam settle, drink immediately.",
+ pair:["Mussels","Pasta","Light meats","Mild cheese"],
+ note:"Premium positioning in India but worth it for the consistent quality. The chalice ritual is genuinely satisfying."},
+
+{name:"Carlsberg Elephant",brand:"Carlsberg India",cat:"strong",abv:7.2,abvPct:58,
+ tags:["strong","pilsner"],avail:"wide",emoji:"🐘",craft:false,
+ profile:"Strong pilsner with a firm malt backbone, noticeable alcohol warmth, and more hop bitterness than standard lagers. Surprisingly drinkable for the ABV.",
+ serve:"Chilled — this one deserves a glass. Don't rush it.",
+ pair:["Heavy kebabs","Biryani","Spicy food","Rich curries"],
+ note:"The Elephant earns respect. At 7.2% it punches hard but doesn't taste as strong as it is — the pilsner dryness keeps it clean. A Friday night beer."},
+
+{name:"Carlsberg Smooth",brand:"Carlsberg India",cat:"pilsner",abv:5.0,abvPct:40,
+ tags:["pilsner","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Lighter and smoother than Carlsberg Classic — rounded malt, very low bitterness, easy finish.",
+ serve:"Cold. The smoothness is real, not marketing.",
+ pair:["Snacks","Mild food","Any occasion"],
+ note:"The everyday Carlsberg. Dependable and honest about what it is."},
+
+/* ── WHEAT BEERS & WITBIER ── */
+{name:"Hoegaarden",brand:"AB InBev India",cat:"wheat",abv:4.9,abvPct:39,
+ tags:["witbier","wheat"],avail:"select",emoji:"🌾",craft:false,
+ profile:"Belgian witbier — hazy pale gold, notes of orange peel and coriander, soft wheat body, mild bitterness. The defining wheat beer style.",
+ serve:"In a wide-mouth glass with an orange slice. Serve slightly less cold than a lager — 6-8°C to open up the aromas.",
+ pair:["Seafood","Light salads","Fruit","Mild cheese"],
+ note:"The gold standard of witbier. Available at premium bars and select bottle shops. When you find it, order it."},
+
+{name:"Bira 91 White",brand:"B9 Beverages",cat:"wheat",abv:4.7,abvPct:38,
+ tags:["witbier","wheat","craft"],avail:"wide",emoji:"🌾",craft:true,
+ profile:"Indian witbier — hazy, slightly tart wheat character with hints of coriander and orange. Lighter body than Hoegaarden but very refreshing.",
+ serve:"Cold. In a wide glass. Squeeze of lime if you want — not traditional but works in India.",
+ pair:["Salads","Light snacks","Hummus","Fish tacos"],
+ note:"Bira made craft beer mainstream in India. The White is still their best offering — approachable, distinctly different from lagers, and widely available."},
+
+{name:"Bira 91 Blonde",brand:"B9 Beverages",cat:"lager",abv:4.5,abvPct:36,
+ tags:["lager","mild","craft"],avail:"wide",emoji:"🍺",craft:true,
+ profile:"Light golden lager with a clean malt profile, very low bitterness, and smooth finish. Made for the Indian summer.",
+ serve:"Very cold. The lightest Bira — sessionable and undemanding.",
+ pair:["Light snacks","Salads","Anything"],
+ note:"If you want a craft-positioned beer that won't challenge anyone at the table, this is it."},
+
+/* ── IPAs ── */
+{name:"White Owl Spark (IPA)",brand:"White Owl Brewery",cat:"ipa",abv:5.5,abvPct:44,
+ tags:["ipa","craft"],avail:"select",emoji:"🌿",craft:true,
+ profile:"Session IPA — bright citrusy hop character (grapefruit, pine), moderate bitterness, clean bitter finish. Hop-forward without being aggressive.",
+ serve:"Slightly warmer than a lager — 8°C. In a glass, not from the can, to catch the hop aroma.",
+ pair:["Spicy food","Burgers","Aged cheese","Fried chicken"],
+ note:"White Owl is one of Mumbai's best craft breweries. The Spark is a great IPA entry point — assertive but not overwhelming."},
+
+{name:"Gateway Doppelganger (DIPA)",brand:"Gateway Brewing",cat:"ipa",abv:8.5,abvPct:68,
+ tags:["ipa","craft","strong"],avail:"select",emoji:"🌿",craft:true,
+ profile:"Double IPA — massive tropical hop aroma (mango, passion fruit, citrus), resinous bitterness, big malt backbone to support the ABV. Complex and intense.",
+ serve:"In a proper glass, at 10°C. Sip, don't chug.",
+ pair:["Blue cheese","Rich meat","Spicy curry","Strong flavours"],
+ note:"Gateway Brewing (Mumbai) makes some of the best IPAs in the country. The Doppelganger is for when you want the beer to be the event."},
+
+{name:"Simba Boom (Hazy IPA)",brand:"Simba Beer",cat:"ipa",abv:5.0,abvPct:40,
+ tags:["ipa","craft","wheat"],avail:"select",emoji:"🌿",craft:true,
+ profile:"New England / Hazy IPA — soft, juicy, tropical fruit notes (mango, pineapple), very low bitterness, smooth creamy body. The most approachable IPA style.",
+ serve:"Fresh and cold. Hazy IPAs don't age well — drink within the date.",
+ pair:["Light food","Tacos","Fruit","Cheese"],
+ note:"Simba is Chhattisgarh's craft darling, now widely available. The Boom is the perfect IPA for people who think they don't like IPAs — all the flavour, none of the bite."},
+
+{name:"Toit Weiss IPA",brand:"Toit Brewpub",cat:"ipa",abv:6.5,abvPct:52,
+ tags:["ipa","craft","wheat"],avail:"rare",emoji:"🌿",craft:true,
+ profile:"Wheat IPA hybrid — the soft wheat body of a witbier meets the citrus hop punch of an IPA. Unusual and excellent.",
+ serve:"At the tap at Toit. Not available in bottles — a brewpub-only experience.",
+ pair:["Cheese plates","Burgers","Pulled pork","Spiced food"],
+ note:"Toit (Bangalore, Mumbai) is the benchmark for Indian brewpubs. Worth a trip. The Weiss IPA is a house special — only exists on tap."},
+
+/* ── CRAFT BEERS ── */
+{name:"Basmati Blonde",brand:"Independence Brewing Co.",cat:"craft",abv:5.0,abvPct:40,
+ tags:["craft","ale"],avail:"select",emoji:"⭐",craft:true,
+ profile:"Golden ale brewed with Basmati rice — the rice lends a delicate, clean, slightly aromatic profile. Light body, soft malt, mild floral quality. One of the most distinctly Indian craft beers.",
+ serve:"In a proper pint glass. Let it sit 30 seconds in the glass to open up the rice note.",
+ pair:["Biryani","Light curries","Paneer","Fresh fruit"],
+ note:"Independence Brewing Co. (Pune) — your home brewery. Basmati Blonde is their signature and for good reason. The rice-to-beer translation is subtle but genuinely different. Very proud to have this on the list."},
+
+{name:"Gateway Mumbaiya Lager",brand:"Gateway Brewing",cat:"craft",abv:4.5,abvPct:36,
+ tags:["craft","lager"],avail:"select",emoji:"🔬",craft:true,
+ profile:"Craft lager made to be crushable — malty base, clean hop character, very refreshing. The antidote to mass-market lager.",
+ serve:"Cold, in a glass. Appreciate that this is a lager made with intention.",
+ pair:["Seafood","Vada pav","Street food","Light snacks"],
+ note:"Gateway Brewing Co. (Mumbai) is one of India's finest. The Mumbaiya is their approachable flagship — craft quality at session-beer drinkability."},
+
+{name:"Arbor Kolsch",brand:"Arbor Brewing Company India",cat:"craft",abv:4.8,abvPct:38,
+ tags:["craft","lager"],avail:"select",emoji:"🔬",craft:true,
+ profile:"German Kölsch style — golden, clean, soft malt with a faint hop noble character and slight fruit ester. Crisper than a lager, softer than an ale.",
+ serve:"In a Kölsch stange (tall cylinder) if possible. Cold, not ice-cold — 5-7°C.",
+ pair:["Light salads","Grilled veg","Mild cheese","Sushi"],
+ note:"Arbor (Bengaluru) does the Kölsch better than most. A style almost nobody makes in India — elegant, understated, worth seeking."},
+
+{name:"Doolally Hefeweizen",brand:"Doolally Taproom",cat:"wheat",abv:5.0,abvPct:40,
+ tags:["craft","wheat"],avail:"select",emoji:"🌾",craft:true,
+ profile:"German Hefeweizen — banana and clove esters from the Bavarian yeast, cloudy golden body, creamy wheat texture. The most flavourful wheat beer style.",
+ serve:"In a weizen vase glass — rinse with cold water, pour at 45°. Roll the last bit in the bottle to rouse the yeast, pour that in last.",
+ pair:["Bratwurst","Pretzels","Light food","Fruit"],
+ note:"Doolally (Pune and Mumbai) is a craft beer institution. The Hefeweizen is proper — the banana-clove is balanced, the wheat body is correct. A weekly standard if you can get there."},
+
+{name:"Effingut Honey Wheat",brand:"Effingut Brewerkz",cat:"wheat",abv:5.0,abvPct:40,
+ tags:["craft","wheat"],avail:"rare",emoji:"🍯",craft:true,
+ profile:"Wheat beer brewed with Indian honey — adds a delicate floral sweetness to the wheat base. Lighter than a Hefeweizen, more interesting than a standard wit.",
+ serve:"Cold, in a wide glass. Honey note is subtle — savour it.",
+ pair:["Light cheese","Fruit","Salads","Light desserts"],
+ note:"Effingut (Pune) is a home brewpub. The Honey Wheat is a tap-only seasonal. When they have it, don't think — order it."},
+
+{name:"White Rhino Pale Ale",brand:"White Rhino Brewing",cat:"ale",abv:5.2,abvPct:42,
+ tags:["craft","ale"],avail:"select",emoji:"🦏",craft:true,
+ profile:"American Pale Ale — floral and citrus hop character, medium body, balanced malt, clean finish. The classic APA style done well.",
+ serve:"In a glass, at 8°C. More expressive than a lager, less aggressive than an IPA.",
+ pair:["Burgers","Wings","Grilled meat","Snacks"],
+ note:"White Rhino (Coorg) sources ingredients locally. The Pale Ale is honest and well-made — a craft step up without the IPA intensity."},
+
+{name:"Kimaya Brewing Kokum Sour",brand:"Kimaya Brewing",cat:"craft",abv:4.5,abvPct:36,
+ tags:["craft","ale"],avail:"rare",emoji:"🍋",craft:true,
+ profile:"Fruited sour ale brewed with kokum — distinctly Indian. Tart, refreshing, slightly purple, with the characteristic kokum tang backed by wheat sourness.",
+ serve:"In a tulip glass. Room temp 10-12°C. This beer rewards attention.",
+ pair:["Seafood","Light salads","Kokum-based dishes","Cheese"],
+ note:"The most Indian craft beer you can drink. Kokum and sour ale was always going to work — this proves it. Rare but worth every effort to find."},
+
+/* ── DARK BEERS – STOUT & PORTER ── */
+{name:"Guinness Draught",brand:"Diageo India",cat:"dark",abv:4.2,abvPct:34,
+ tags:["stout","dark","mild"],avail:"select",emoji:"🖤",craft:false,
+ profile:"Irish Dry Stout — nitro-poured for a creamy, silky texture. Coffee and roasted malt aroma, dry bitter finish, very low sweetness. The defining dark beer.",
+ serve:"Nitro tap only — never from a standard gas tap. Allow the surge to settle fully before drinking (2 minutes). Never cold — 8°C maximum.",
+ pair:["Oysters","Chocolate","Irish stew","Roasted meat"],
+ note:"The cascade of bubbles settling in a pint is one of beer's great theatre moments. Available on nitro tap at select bars in Pune and Mumbai. Worth the trip just for that first sip."},
+
+{name:"Bira 91 Boom Dark",brand:"B9 Beverages",cat:"dark",abv:7.0,abvPct:56,
+ tags:["dark","strong","craft"],avail:"select",emoji:"🖤",craft:true,
+ profile:"Dark strong ale — roasted malt, notes of dark chocolate and toffee, medium-full body, warming alcohol. More sweet and rich than a stout.",
+ serve:"At 12°C — warmer than a lager. Let it breathe. Sip slowly.",
+ pair:["Chocolate desserts","Strong cheese","Grilled meat","Rich food"],
+ note:"Bira's most complex offering. At 7% it's a sipper, not a session beer. A cold weather drink — best October through February."},
+
+{name:"White Owl Ace (Imperial Stout)",brand:"White Owl Brewery",cat:"dark",abv:9.5,abvPct:76,
+ tags:["stout","dark","strong","craft"],avail:"rare",emoji:"🖤",craft:true,
+ profile:"Imperial Stout — full-bodied, deeply roasted, notes of espresso, dark chocolate, molasses, slight smokiness. Alcohol warmth present but integrated. A complex, intense experience.",
+ serve:"At room temperature — 14-16°C. In a snifter or tulip glass. One serving is enough.",
+ pair:["Chocolate cake","Blue cheese","Cigars","Slow winter evenings"],
+ note:"One of the strongest and most complex beers made in India. Not for a casual evening — for when you want the beer to be the entire conversation. Treat it like a whisky."},
+
+{name:"Simba Stout",brand:"Simba Beer",cat:"dark",abv:6.5,abvPct:52,
+ tags:["stout","dark","craft"],avail:"select",emoji:"🖤",craft:true,
+ profile:"Oatmeal Stout — smooth, creamy from the oats, notes of coffee and milk chocolate. Less bitter than a dry stout, richer than a porter.",
+ serve:"At 10°C. In a pint glass. Resist the urge to go too cold.",
+ pair:["Vanilla ice cream (float it)","Chocolate","Strong cheese","Slow food"],
+ note:"The most accessible dark beer in India's craft scene. The oatmeal softens everything — a stout for people who think stouts are too much."},
+
+/* ── ALES ── */
+{name:"Bira 91 Jungle (Belgian Strong)",brand:"B9 Beverages",cat:"ale",abv:7.0,abvPct:56,
+ tags:["ale","craft","strong"],avail:"select",emoji:"🍂",craft:true,
+ profile:"Belgian Strong Ale — fruity esters (stone fruit, banana), spicy yeast character, warming alcohol, complex malt. One of the most interesting styles in beer.",
+ serve:"At 12-14°C. In a tulip or goblet. This is a sipping beer.",
+ pair:["Rich food","Cheese","Desserts","Nothing at all"],
+ note:"Belgian ales are the most complex beers in the world. The Jungle brings that tradition to India. Niche, unusual, and excellent."},
+
+{name:"Kati Patang Aari Maar",brand:"Kati Patang Brewing",cat:"ale",abv:6.5,abvPct:52,
+ tags:["craft","ale","ipa"],avail:"rare",emoji:"🪁",craft:true,
+ profile:"West Coast IPA — firm bitterness, pine and citrus hop character, clean malt backbone. Classic American IPA structure, brewed in India.",
+ serve:"At 8°C, in a pint glass. The bitterness needs slight chill to be at its best.",
+ pair:["Burgers","Fried chicken","Strong cheese","Spicy food"],
+ note:"Kati Patang (Rajasthan) has brilliant names and serious brewing. Aari Maar means 'hammer it in' — the IPA bitterness earns that name."},
+
+/* ── STRONG BEERS ── */
+{name:"Godfather Premium Strong",brand:"Godfather Beverages",cat:"strong",abv:9.0,abvPct:72,
+ tags:["strong","lager"],avail:"wide",emoji:"💪",craft:false,
+ profile:"Strong lager — malt-forward with pronounced alcohol presence. Sweet, full-bodied, low hop bitterness. The strongest widely available commercial beer in India.",
+ serve:"Chilled. One at a time. This is the end-of-night beer, not the start-of-night beer.",
+ pair:["Heavy food","Nothing — it's 9%"],
+ note:"Not subtle. Not pretending to be. At 9% it's doing a very specific job very effectively. Know when to deploy it."},
+
+{name:"Haywards 5000",brand:"SABMiller India",cat:"strong",abv:7.0,abvPct:56,
+ tags:["strong","lager"],avail:"wide",emoji:"💪",craft:false,
+ profile:"Classic Indian strong lager — full malt body, medium sweetness, alcohol warmth, very low hop character. The original blue-collar strong beer.",
+ serve:"Chilled, from the bottle.",
+ pair:["Spicy snacks","Street food","Late evenings"],
+ note:"One of India's oldest strong beer brands. Honest and uncomplicated — does exactly what it says."},
+
+{name:"Knock Out (KO)",brand:"SABMiller India",cat:"strong",abv:8.0,abvPct:64,
+ tags:["strong","lager"],avail:"wide",emoji:"🥊",craft:false,
+ profile:"Strong lager — sweet malt, full body, alcohol forward, clean finish. The name is accurate.",
+ serve:"Cold. Carefully.",
+ pair:["Anything hearty","Spicy food"],
+ note:"The name says everything you need to know about the experience."},
+
+/* ── MEAD & SPECIALTY ── */
+{name:"Moonshine Meadery Indian Mead",brand:"Moonshine Meadery",cat:"mead",abv:12.0,abvPct:96,
+ tags:["mead","specialty"],avail:"select",emoji:"🍯",craft:true,
+ profile:"Traditional honey mead — floral honey aroma, medium-sweet, light and refreshing for the ABV, slightly herbal. India's finest commercial mead producer.",
+ serve:"In a wine glass, at 10-12°C. Sip like wine. Not for chugging.",
+ pair:["Cheese","Honey-glazed food","Desserts","Charcuterie"],
+ note:"Moonshine Meadery (Nashik) makes the best mead in India. This is ancient — mead predates beer and wine. At 12% it carries serious power in a deceptively light package."},
+
+{name:"Moonshine Meadery Kokum Mead",brand:"Moonshine Meadery",cat:"mead",abv:11.0,abvPct:88,
+ tags:["mead","specialty"],avail:"select",emoji:"🍯",craft:true,
+ profile:"Honey mead infused with kokum — the tartness of kokum cuts through the honey sweetness, creating a deeply Indian fermented drink unlike anything else.",
+ serve:"In a wine glass, chilled. The kokum tang hits last.",
+ pair:["Seafood","Light appetisers","Indian cheese","Fresh fruit"],
+ note:"Kokum mead is so Indian it feels like it was always meant to exist. Complex, unusual, and a conversation starter at any gathering."},
+
+{name:"Moonshine Meadery Ginger Mead",brand:"Moonshine Meadery",cat:"mead",abv:11.5,abvPct:92,
+ tags:["mead","specialty"],avail:"select",emoji:"🍯",craft:true,
+ profile:"Honey mead with fresh ginger — warming ginger heat layered over floral honey. Sweet up front, spicy on the finish. Uniquely Indian.",
+ serve:"Chilled or at room temperature. Works beautifully as a digestif.",
+ pair:["Spiced food","Asian cuisine","Desserts","On its own"],
+ note:"Ginger and honey are the most natural pairing in Indian home medicine — Moonshine made it into a drink. Brilliant in winter."},
+
+{name:"Kati Patang Kombucha Sour",brand:"Kati Patang Brewing",cat:"mead",abv:3.5,abvPct:28,
+ tags:["specialty","craft"],avail:"rare",emoji:"🧫",craft:true,
+ profile:"Kombucha-inspired sour beer — lacto fermentation gives sharp sourness, light carbonation, slightly funky and tangy. Very low ABV makes it a day drink.",
+ serve:"Cold, from a tulip glass. Doesn't need anything.",
+ pair:["Light food","Salads","Anything acidic","Nothing"],
+ note:"For the curious. Not a beer and not a kombucha — a liminal fermented drink that shouldn't work as well as it does."},
+
+{name:"Bira 91 Boom IPA Sour",brand:"B9 Beverages",cat:"mead",abv:5.5,abvPct:44,
+ tags:["specialty","craft","ipa"],avail:"rare",emoji:"🍋",craft:true,
+ profile:"Sour IPA — combines the citrus hop character of an IPA with lacto-fermented tartness. Tart, bitter, citrusy, unusual.",
+ serve:"Cold, in a glass. An experience more than a drink.",
+ pair:["Seafood","Sour food","Cheese"],
+ note:"A style that only serious craft beer drinkers seek out. If you've made it this far down the list, you're ready for it."},
+
+];
+
+let beerCatFilter = 'all';
+
+function filterBeer(cat, btn) {
+  beerCatFilter = cat;
+  document.querySelectorAll('.beer-fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBeerGrid();
+}
+
+function renderBeerGrid() {
+  const grid = document.getElementById('beerGrid');
+  const countEl = document.getElementById('beerCount');
+  if (!grid) return;
+
+  const filtered = beerCatFilter === 'all'
+    ? BEERS
+    : BEERS.filter(b => b.cat === beerCatFilter || b.tags.includes(beerCatFilter));
+
+  countEl.textContent = filtered.length + ' beer' + (filtered.length !== 1 ? 's' : '');
+
+  // Group into sections
+  const sectionOrder = ['mild','session','lager','pilsner','wheat','ale','ipa','craft','dark','strong','mead'];
+  const strengthLabel = {
+    mild:'🟢 Mild (under 5.5%)',
+    craft:'🔬 Craft Beers',
+    dark:'🌑 Stout & Dark Ales',
+    strong:'💪 Strong Beers (7%+)',
+    mead:'🍯 Mead & Specialty'
+  };
+
+  // Flatten into a single sorted list: mild → medium → strong → craft stouts → mead
+  function strengthOrder(b) {
+    if (b.cat === 'mead') return 50;
+    if (b.tags.includes('stout') || b.cat === 'dark') return 40;
+    if (b.abv >= 7) return 30;
+    if (b.craft && b.cat !== 'lager') return 20;
+    if (b.abv >= 5.5) return 15;
+    return 10;
+  }
+
+  const sections = [
+    { label:'🟢 Light & Session (under 5.5%)', items: filtered.filter(b => b.abv < 5.5 && b.cat !== 'mead' && !b.tags.includes('stout')) },
+    { label:'🔬 Craft Beers', items: filtered.filter(b => b.craft && b.abv < 7 && !b.tags.includes('stout') && b.abv >= 5.5 && b.cat !== 'mead') },
+    { label:'🌿 IPAs', items: filtered.filter(b => b.cat === 'ipa') },
+    { label:'💪 Strong Beers (7%+)', items: filtered.filter(b => b.abv >= 7 && !b.tags.includes('stout') && b.cat !== 'mead') },
+    { label:'🌑 Stout, Porter & Dark Ales', items: filtered.filter(b => b.tags.includes('stout') || b.cat === 'dark') },
+    { label:'🍯 Mead & Specialty', items: filtered.filter(b => b.cat === 'mead') },
+  ];
+
+  // When filtered by a specific cat, show as single grid
+  let html = '';
+  if (beerCatFilter === 'all') {
+    sections.forEach(s => {
+      if (!s.items.length) return;
+      html += `<div class="beer-section-hdr">${s.label}</div><div class="beer-grid">`;
+      s.items.forEach((b, i) => { html += buildBeerCard(b, i); });
+      html += `</div>`;
+    });
+  } else {
+    html = `<div class="beer-grid">`;
+    filtered.forEach((b, i) => { html += buildBeerCard(b, i); });
+    html += `</div>`;
+  }
+
+  if (!filtered.length) {
+    html = `<div class="no-beer-res">🍺 No beers match this filter yet. More coming soon.</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function buildBeerCard(b, i) {
+  const tagHtml = b.tags.map(t => `<span class="beer-tag bt-${t}">${tagLabel(t)}</span>`).join('');
+  const availClass = b.avail === 'wide' ? 'avail-wide' : b.avail === 'select' ? 'avail-select' : 'avail-rare';
+  const availText = b.avail === 'wide' ? '✓ Widely available' : b.avail === 'select' ? '◉ Select stores' : '◎ Rare / Taproom';
+  const pairHtml = b.pair.map(p => `<span class="beer-pair-pill">${p}</span>`).join('');
+  const id = 'bc-' + i + '-' + b.name.replace(/\s+/g,'-').toLowerCase();
+  return `
+  <div class="beer-card" data-cat="${b.cat}" id="${id}" onclick="toggleBeerCard('${id}')" style="animation-delay:${i*0.03}s">
+    <div class="beer-card-head">
+      <div class="beer-card-left">
+        <div class="beer-card-emoji">${b.emoji}</div>
+        <div class="beer-card-name">${b.name}</div>
+        <div class="beer-card-brand">${b.brand} &nbsp;·&nbsp; <span class="beer-avail ${availClass}">${availText}</span></div>
+        <div class="beer-tags">${tagHtml}</div>
+        <div class="beer-abv-row">
+          <span class="beer-abv-label">ABV ${b.abv}%</span>
+          <div class="beer-abv-bar-bg"><div class="beer-abv-bar-fill" style="width:${b.abvPct}%"></div></div>
+          <span class="beer-abv-num">${abvStrength(b.abv)}</span>
+        </div>
+      </div>
+      <span class="chevron">›</span>
+    </div>
+    <div class="beer-detail" id="bd-${id}">
+      <div class="beer-d-inner">
+        <div class="beer-dlabel">Profile</div>
+        <div class="beer-dtext">${b.profile}</div>
+        <div class="beer-dlabel">How to serve</div>
+        <div class="beer-dtext">${b.serve}</div>
+        <div class="beer-dlabel">Pair with</div>
+        <div class="beer-pair-row">${pairHtml}</div>
+        <div class="beer-dnote">${b.note}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function tagLabel(t) {
+  const map = {lager:'Lager',pilsner:'Pilsner',wheat:'Wheat',ale:'Ale',ipa:'IPA',stout:'Stout',
+    dark:'Dark',strong:'Strong',craft:'Craft',mild:'Mild',mid:'Medium',high:'High ABV',mead:'Mead',specialty:'Specialty'};
+  return map[t] || t;
+}
+function abvStrength(abv) {
+  if (abv < 5) return '🟢 Light';
+  if (abv < 7) return '🟡 Mid';
+  if (abv < 9) return '🔴 Strong';
+  return '💀 High';
+}
+
+function toggleBeerCard(id) {
+  const card = document.getElementById(id);
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.beer-card.open').forEach(c => c.classList.remove('open'));
+  if (!wasOpen) card.classList.add('open');
+}
+
+function initBeerStats() {
+  document.getElementById('bs-total').textContent = BEERS.length;
+  document.getElementById('bs-craft').textContent = BEERS.filter(b => b.craft).length;
+  document.getElementById('bs-strong').textContent = BEERS.filter(b => b.abv >= 7).length;
+  const styles = new Set(BEERS.map(b => b.cat));
+  document.getElementById('bs-styles').textContent = styles.size;
+}
+
+/* ═══════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════ */
 buildIngGrid();
 render();
 initQD();
+initBeerStats();
+renderBeerGrid();
 </script>
 </body>
 </html>
