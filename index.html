@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🍹 Home Bar Recipe Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg-deep:    #0c0b09;
+  --bg-base:    #131109;
+  --bg-card:    #1a1713;
+  --bg-hover:   #201d18;
+  --glass:      rgba(255,255,255,0.04);
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(210,165,70,0.35);
+
+  --amber:      #c89840;
+  --amber-l:    #e8b84b;
+  --amber-dim:  rgba(200,152,64,0.14);
+  --green:      #4a7c59;  --green-l:#5f9e72;  --green-dim:rgba(74,124,89,0.16);
+  --rose:       #b05a6a;  --rose-l:#d4849a;   --rose-dim:rgba(176,90,106,0.16);
+  --indigo:     #5b6eae;  --indigo-l:#8ea0d8; --indigo-dim:rgba(91,110,174,0.16);
+  --teal:       #3a8a8a;  --teal-l:#6abcbc;   --teal-dim:rgba(58,138,138,0.16);
+  --burnt:      #a0642a;  --burnt-l:#d4a06a;  --burnt-dim:rgba(160,100,42,0.16);
+  --sky:        #3a7aaa;  --sky-l:#80b8e0;    --sky-dim:rgba(58,122,170,0.16);
+
+  --txt-h:  #f5ecd7;
+  --txt-p:  #c8b99a;
+  --txt-s:  #7d6e58;
+  --txt-xs: #524438;
+
+  --ff-disp: 'Playfair Display', Georgia, serif;
+  --ff-body: 'DM Sans', system-ui, sans-serif;
+
+  --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-xl: 22px; --r-full: 999px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--txt-p);
+  font-family: var(--ff-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* grain */
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+
+/* ─── WRAPPER ───────────────────────────────────────── */
+.rb {
+  position:relative; z-index:1;
+  max-width:1120px; margin:0 auto;
+  padding: 2rem 1rem 5rem;
+}
+
+/* ─── HEADER ────────────────────────────────────────── */
+.hdr { text-align:center; margin-bottom:1.75rem; animation:slideDown .6s ease both; }
+.hdr-eye { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--amber); opacity:.7; margin-bottom:.35rem; }
+.hdr-title {
+  font-family:var(--ff-disp); font-weight:700;
+  font-size:clamp(28px,6vw,50px); line-height:1.1;
+  background:linear-gradient(135deg,#f5ecd7 20%,var(--amber-l));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:.3rem;
+}
+.hdr-sub { font-size:12px; color:var(--txt-s); }
+
+/* divider */
+.dvdr { display:flex; align-items:center; gap:10px; margin:1.25rem 0 1.75rem; opacity:.35; }
+.dvdr::before,.dvdr::after { content:''; flex:1; height:1px; background:linear-gradient(to right,transparent,var(--amber)); }
+.dvdr::after { background:linear-gradient(to left,transparent,var(--amber)); }
+
+/* ─── TABS ──────────────────────────────────────────── */
+.tabs { display:flex; gap:4px; background:var(--glass); border:1px solid var(--border); border-radius:var(--r-xl); padding:4px; margin-bottom:1.5rem; animation:slideDown .6s .05s ease both; }
+.tab {
+  flex:1; text-align:center; padding:8px 4px; border-radius:var(--r-lg);
+  font-size:12px; font-family:var(--ff-body); font-weight:500;
+  border:none; background:transparent; color:var(--txt-s); cursor:pointer;
+  transition:all .2s; white-space:nowrap;
+}
+.tab.active { background:var(--bg-hover); color:var(--txt-h); box-shadow:0 2px 8px rgba(0,0,0,.4); }
+.tab-emoji { display:block; font-size:18px; margin-bottom:2px; }
+
+/* panels */
+.panel { display:none; animation:fadeIn .25s ease; }
+.panel.active { display:block; }
+
+/* ─── STATS ─────────────────────────────────────────── */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:1.5rem; animation:slideDown .6s .1s ease both; }
+.stat { background:var(--glass); border:1px solid var(--border); border-radius:var(--r-lg); padding:.75rem .5rem; text-align:center; transition:border-color .25s,transform .25s; }
+.stat:hover { border-color:var(--border-hi); transform:translateY(-2px); }
+.stat-n { font-family:var(--ff-disp); font-size:24px; font-weight:700; color:var(--amber-l); line-height:1; }
+.stat-l { font-size:9px; color:var(--txt-s); letter-spacing:1px; text-transform:uppercase; margin-top:3px; }
+
+/* ─── SEARCH ────────────────────────────────────────── */
+.srch-wrap { position:relative; margin-bottom:1.25rem; }
+.srch-ico { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--txt-s); font-size:16px; pointer-events:none; }
+.srch {
+  width:100%; padding:11px 40px 11px 40px;
+  font-family:var(--ff-body); font-size:14px;
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r-xl);
+  color:var(--txt-h); outline:none; transition:border-color .2s,box-shadow .2s;
+}
+.srch::placeholder { color:var(--txt-s); }
+.srch:focus { border-color:var(--border-hi); box-shadow:0 0 0 3px rgba(200,152,64,.07); }
+.srch-clear { position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--txt-s); background:none; border:none; cursor:pointer; font-size:18px; padding:2px; display:none; }
+.srch-clear.show { display:block; }
+
+/* ─── FILTERS ───────────────────────────────────────── */
+.rlabel { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--txt-s); margin:1rem 0 5px; display:flex; align-items:center; gap:8px; }
+.rlabel::after { content:''; flex:1; height:1px; background:var(--border); }
+.frow { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:.15rem; }
+.fbtn {
+  font-size:11px; font-family:var(--ff-body); padding:5px 12px;
+  border-radius:var(--r-full); border:1px solid var(--border);
+  background:transparent; color:var(--txt-s); cursor:pointer; transition:all .18s;
+  white-space:nowrap; touch-action:manipulation;
+}
+.fbtn:hover { background:var(--glass); color:var(--txt-p); }
+#baseF .fbtn.active[data-val="all"],#typeF .fbtn.active,#seasonF .fbtn.active { background:var(--amber-dim); color:var(--amber-l); border-color:var(--amber); }
+#baseF .fbtn.active[data-val="gin"]    { background:var(--green-dim);  color:var(--green-l);  border-color:var(--green);  }
+#baseF .fbtn.active[data-val="vodka"]  { background:var(--indigo-dim); color:var(--indigo-l); border-color:var(--indigo); }
+#baseF .fbtn.active[data-val="whisky"] { background:var(--amber-dim);  color:var(--amber-l);  border-color:var(--amber);  }
+#baseF .fbtn.active[data-val="rum"]    { background:var(--rose-dim);   color:var(--rose-l);   border-color:var(--rose);   }
+#baseF .fbtn.active[data-val="tequila"]{ background:var(--sky-dim);    color:var(--sky-l);    border-color:var(--sky);    }
+#baseF .fbtn.active[data-val="brandy"] { background:var(--burnt-dim);  color:var(--burnt-l);  border-color:var(--burnt);  }
+#baseF .fbtn.active[data-val="wine"]   { background:var(--rose-dim);   color:#c47080;         border-color:var(--rose);   }
+#baseF .fbtn.active[data-val="beer"]   { background:var(--amber-dim);  color:var(--amber-l);  border-color:var(--amber);  }
+#baseF .fbtn.active[data-val="peach schnapps"] { background:rgba(220,140,80,.16); color:#f0a870; border-color:#d4885a; }
+#baseF .fbtn.active[data-val="virgin"] { background:var(--teal-dim);   color:var(--teal-l);   border-color:var(--teal);   }
+
+/* ─── INGREDIENT FILTER ─────────────────────────────── */
+.ing-filter-wrap { margin-top:.75rem; padding:1rem; background:var(--glass); border:1px solid var(--border); border-radius:var(--r-lg); }
+.ing-intro { font-size:12px; color:var(--txt-s); margin-bottom:.75rem; }
+.ing-grid { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:.75rem; }
+.ing-chk { display:none; }
+.ing-lbl {
+  font-size:11px; padding:4px 11px; border-radius:var(--r-full);
+  border:1px solid var(--border); background:transparent;
+  color:var(--txt-s); cursor:pointer; transition:all .18s; touch-action:manipulation;
+}
+.ing-chk:checked + .ing-lbl { background:var(--green-dim); color:var(--green-l); border-color:var(--green); }
+.ing-match-info { font-size:11px; color:var(--txt-s); font-style:italic; }
+.ing-reset { font-size:11px; padding:4px 12px; border-radius:var(--r-full); border:1px solid var(--border); background:transparent; color:var(--txt-s); cursor:pointer; margin-left:8px; transition:all .18s; }
+.ing-reset:hover { border-color:var(--rose); color:var(--rose-l); }
+
+/* ─── COUNT ─────────────────────────────────────────── */
+.count { font-size:11px; color:var(--txt-s); margin:.9rem 0 .6rem; letter-spacing:.5px; }
+
+/* ─── GRID ──────────────────────────────────────────── */
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px; }
+
+/* ─── CARD ──────────────────────────────────────────── */
+.card {
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:.85rem 1rem; cursor:pointer;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+  box-shadow:var(--shadow); animation:cardIn .35s ease both; position:relative; overflow:hidden;
+}
+.card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--card-accent,var(--amber)),transparent);
+  opacity:0; transition:opacity .3s;
+}
+.card:hover { border-color:rgba(255,255,255,.13); transform:translateY(-2px); box-shadow:var(--shadow),0 0 20px rgba(200,152,64,.1); }
+.card:hover::before, .card.open::before { opacity:1; }
+.card.open { border-color:var(--border-hi); background:var(--bg-hover); }
+
+/* accent per spirit */
+.card[data-base~="gin"]    { --card-accent: var(--green-l); }
+.card[data-base~="vodka"]  { --card-accent: var(--indigo-l); }
+.card[data-base~="whisky"] { --card-accent: var(--amber-l); }
+.card[data-base~="rum"]    { --card-accent: var(--rose-l); }
+.card[data-base~="tequila"]{ --card-accent: var(--sky-l); }
+.card[data-base~="brandy"] { --card-accent: var(--burnt-l); }
+.card[data-base~="wine"]   { --card-accent: #c47080; }
+.card[data-base~="beer"]   { --card-accent: var(--amber-l); }
+.card[data-base~="peach schnapps"] { --card-accent: #f0a870; }
+.card[data-base~="virgin"] { --card-accent: var(--teal-l); }
+
+.card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.card-left { flex:1; min-width:0; }
+.card-emoji { font-size:20px; margin-bottom:3px; }
+.card-name { font-family:var(--ff-disp); font-size:14px; font-weight:700; color:var(--txt-h); margin-bottom:1px; line-height:1.2; }
+.card-meta { font-size:11px; color:var(--txt-s); margin-bottom:7px; }
+.chill-flag { display:inline-block; font-size:9px; background:rgba(58,122,170,.18); color:var(--sky-l); border:1px solid rgba(58,122,170,.3); border-radius:var(--r-full); padding:1px 7px; margin-left:5px; vertical-align:middle; letter-spacing:.5px; }
+
+.tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:3px; align-items:center; }
+.tag { font-size:9px; font-weight:500; letter-spacing:.4px; padding:2px 7px; border-radius:var(--r-full); line-height:1.5; text-transform:uppercase; }
+.t-sig { background:rgba(200,152,64,.16); color:var(--amber-l); border:1px solid rgba(200,152,64,.28); }
+.t-ind { background:var(--green-dim);   color:var(--green-l);  border:1px solid rgba(74,124,89,.3); }
+.t-sum { background:rgba(220,170,40,.13); color:#e8c054;         border:1px solid rgba(220,170,40,.24); }
+.t-mon { background:rgba(60,110,190,.15); color:#7ea0d8;         border:1px solid rgba(60,110,190,.28); }
+.t-win { background:rgba(90,70,180,.15);  color:#a898e0;         border:1px solid rgba(90,70,180,.28); }
+.t-cls { background:var(--glass);        color:var(--txt-s);    border:1px solid var(--border); }
+.t-fut { background:var(--rose-dim);     color:var(--rose-l);   border:1px solid rgba(176,90,106,.3); }
+.t-vir { background:var(--teal-dim);     color:var(--teal-l);   border:1px solid rgba(58,138,138,.3); }
+.t-beer{ background:rgba(200,152,64,.13);color:#d4a04a;         border:1px solid rgba(200,152,64,.25); }
+
+.dots { display:flex; gap:4px; align-items:center; margin-left:2px; }
+.dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.06); }
+.dot.on { background:var(--amber); border-color:var(--amber-l); box-shadow:0 0 4px var(--amber); }
+
+.chevron { font-size:14px; color:var(--txt-s); transition:transform .3s cubic-bezier(.34,1.56,.64,1),color .2s; flex-shrink:0; margin-top:2px; line-height:1; }
+.card.open .chevron { transform:rotate(180deg); color:var(--amber); }
+
+/* ─── DETAIL ────────────────────────────────────────── */
+.detail { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s; opacity:0; }
+.card.open .detail { max-height:1200px; opacity:1; }
+.d-inner { border-top:1px solid var(--border); margin-top:9px; padding-top:9px; }
+
+/* batch toggle */
+.batch-row { display:flex; align-items:center; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+.batch-lbl { font-size:9px; color:var(--txt-s); text-transform:uppercase; letter-spacing:1.5px; }
+.batch-btn { font-size:10px; padding:3px 10px; border-radius:var(--r-full); border:1px solid var(--border); background:transparent; color:var(--txt-s); cursor:pointer; transition:all .15s; touch-action:manipulation; }
+.batch-btn.active { background:var(--amber-dim); color:var(--amber-l); border-color:var(--amber); }
+
+.dlabel { font-size:9px; font-weight:500; color:var(--amber); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:5px; margin-top:9px; display:flex; align-items:center; gap:5px; }
+.dlabel:first-child { margin-top:0; }
+
+.ratio-wrap { display:flex; flex-wrap:wrap; gap:5px; }
+.ri { font-size:11px; background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:var(--r-sm); padding:3px 9px; color:var(--txt-p); transition:background .2s; }
+.ri:hover { background:rgba(255,255,255,.09); }
+.ri strong { font-weight:500; color:var(--txt-h); }
+
+.dtext { font-size:12px; color:var(--txt-p); line-height:1.65; }
+
+/* technique glossary tooltips */
+.tech {
+  display:inline; border-bottom:1px dashed rgba(200,152,64,.45);
+  color:inherit; cursor:help; position:relative;
+}
+.tech-tip {
+  display:none; position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+  background:#2a2520; border:1px solid var(--border-hi); border-radius:var(--r-md);
+  padding:7px 10px; font-size:11px; color:var(--txt-p); line-height:1.5;
+  width:200px; z-index:100; box-shadow:0 8px 24px rgba(0,0,0,.6); pointer-events:none;
+  white-space:normal;
+}
+.tech-tip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:#2a2520; }
+.tech:hover .tech-tip, .tech.tip-open .tech-tip { display:block; }
+
+.dnote { font-size:11px; color:var(--txt-s); font-style:italic; margin-top:8px; padding:8px 10px; border-left:2px solid rgba(200,152,64,.25); background:rgba(200,152,64,.04); border-radius:0 var(--r-sm) var(--r-sm) 0; line-height:1.55; }
+
+/* ─── MOOD PICKER ───────────────────────────────────── */
+.mood-wrap { animation:fadeIn .3s ease; }
+.mood-step { display:none; }
+.mood-step.active { display:block; animation:fadeIn .25s ease; }
+.mood-q { font-family:var(--ff-disp); font-size:18px; color:var(--txt-h); margin-bottom:.35rem; }
+.mood-sub { font-size:12px; color:var(--txt-s); margin-bottom:1.25rem; }
+.mood-opts { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:1.5rem; }
+.mood-btn {
+  padding:.9rem .75rem; border-radius:var(--r-lg); border:1px solid var(--border);
+  background:var(--glass); color:var(--txt-p); cursor:pointer; text-align:left;
+  transition:all .2s; touch-action:manipulation; font-family:var(--ff-body);
+}
+.mood-btn:hover { border-color:var(--border-hi); background:var(--bg-hover); transform:translateY(-1px); }
+.mood-btn.selected { border-color:var(--amber); background:var(--amber-dim); }
+.mood-btn-emoji { font-size:24px; display:block; margin-bottom:5px; }
+.mood-btn-label { font-size:13px; font-weight:500; color:var(--txt-h); display:block; margin-bottom:2px; }
+.mood-btn-desc { font-size:11px; color:var(--txt-s); display:block; }
+.mood-nav { display:flex; gap:8px; align-items:center; margin-top:.5rem; }
+.mood-next { padding:9px 22px; border-radius:var(--r-full); background:var(--amber); color:#0e0d0b; font-weight:500; font-size:13px; font-family:var(--ff-body); border:none; cursor:pointer; transition:all .2s; }
+.mood-next:hover { background:var(--amber-l); }
+.mood-next:disabled { opacity:.3; cursor:not-allowed; }
+.mood-back { padding:9px 16px; border-radius:var(--r-full); border:1px solid var(--border); background:transparent; color:var(--txt-s); font-size:13px; font-family:var(--ff-body); cursor:pointer; transition:all .2s; }
+.mood-back:hover { border-color:var(--border-hi); color:var(--txt-p); }
+.mood-prog { display:flex; gap:5px; align-items:center; }
+.mood-dot { width:6px; height:6px; border-radius:50%; background:var(--border); transition:background .2s; }
+.mood-dot.done { background:var(--amber); }
+.mood-results { }
+.mood-rec-title { font-family:var(--ff-disp); font-size:16px; color:var(--txt-h); margin-bottom:1rem; }
+.mood-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:8px; }
+.mood-card {
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:.85rem 1rem; cursor:pointer; transition:all .2s; animation:cardIn .35s ease both;
+  position:relative; overflow:hidden;
+}
+.mood-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--card-accent,var(--amber)),transparent);
+}
+.mood-card:hover { border-color:var(--border-hi); transform:translateY(-2px); }
+.mood-card-name { font-family:var(--ff-disp); font-size:14px; font-weight:700; color:var(--txt-h); margin-bottom:2px; }
+.mood-card-meta { font-size:11px; color:var(--txt-s); margin-bottom:6px; }
+.mood-card-why { font-size:11px; color:var(--txt-p); font-style:italic; padding:6px 8px; background:rgba(200,152,64,.06); border-left:2px solid var(--amber-dim); border-radius:0 var(--r-sm) var(--r-sm) 0; }
+.mood-restart { margin-top:1.25rem; padding:8px 20px; border-radius:var(--r-full); border:1px solid var(--border); background:transparent; color:var(--txt-s); font-size:12px; font-family:var(--ff-body); cursor:pointer; transition:all .2s; }
+.mood-restart:hover { border-color:var(--border-hi); color:var(--txt-p); }
+
+.qd-hero {
+  background:var(--bg-card); border:1px solid var(--border-hi); border-radius:var(--r-xl);
+  padding:1.5rem; cursor:pointer; transition:all .2s; position:relative; overflow:hidden;
+  text-align:center; margin-bottom:.5rem;
+}
+.qd-hero::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,transparent,var(--amber-l),transparent);
+}
+.qd-hero:hover { transform:translateY(-3px); box-shadow:0 8px 32px rgba(200,152,64,.15); }
+.qd-hero-emoji { font-size:40px; margin-bottom:.5rem; }
+.qd-hero-name { font-family:var(--ff-disp); font-size:22px; font-weight:700; color:var(--txt-h); margin-bottom:4px; }
+.qd-hero-meta { font-size:12px; color:var(--txt-s); margin-bottom:.75rem; }
+.qd-hero-why { font-size:12px; color:var(--txt-p); font-style:italic; padding:8px 12px; background:rgba(200,152,64,.06); border-left:2px solid var(--amber-dim); border-radius:0 var(--r-sm) var(--r-sm) 0; text-align:left; margin-bottom:.75rem; }
+.qd-hero-tap { font-size:11px; color:var(--amber); letter-spacing:.5px; }
+
+
+
+/* ─── ANIMATIONS ────────────────────────────────────── */
+@keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn    { from{opacity:0} to{opacity:1} }
+@keyframes cardIn    { from{opacity:0;transform:translateY(8px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+.card:nth-child(1){animation-delay:.02s}.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.06s}
+.card:nth-child(4){animation-delay:.08s}.card:nth-child(5){animation-delay:.10s}.card:nth-child(6){animation-delay:.12s}
+.card:nth-child(7){animation-delay:.14s}.card:nth-child(8){animation-delay:.16s}.card:nth-child(9){animation-delay:.18s}
+.card:nth-child(10){animation-delay:.20s}.card:nth-child(11){animation-delay:.22s}.card:nth-child(12){animation-delay:.24s}
+
+/* ─── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg-deep)}
+::-webkit-scrollbar-thumb{background:rgba(200,152,64,.25);border-radius:3px}
+
+/* ─── MOBILE ────────────────────────────────────────── */
+@media(max-width:640px){
+  .rb{ padding:1.25rem .85rem 4rem; }
+  .stats{ grid-template-columns:repeat(2,1fr); gap:6px; }
+  .stat-n{ font-size:20px; }
+  .grid{ grid-template-columns:1fr; gap:8px; }
+  .mood-opts{ grid-template-columns:1fr 1fr; gap:6px; }
+  .mood-btn{ padding:.7rem .6rem; }
+  .mood-btn-emoji{ font-size:20px; }
+  .tabs .tab{ font-size:10px; }
+  .tab-emoji{ font-size:15px; }
+  .frow{ gap:4px; }
+  .fbtn{ font-size:10px; padding:4px 10px; }
+  .tech-tip{ width:160px; font-size:10px; }
+  .mood-cards{ grid-template-columns:1fr; }
+}
+@media(max-width:380px){
+  .tabs{ gap:2px; padding:3px; }
+  .tab{ padding:6px 2px; font-size:9px; }
+  .tab-emoji{ font-size:13px; }
+  .mood-opts{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="rb">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-eye">✦ Curated by Siddharth ✦</div>
+  <h1 class="hdr-title">Home Bar Recipe Book 🍹</h1>
+  <p class="hdr-sub">Every recipe. Every season. Every mood.</p>
+</div>
+<div class="dvdr"><span style="color:var(--amber);font-size:13px">🥃</span></div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">🍸 Drinks</div></div>
+  <div class="stat"><div class="stat-n" id="s-classic">0</div><div class="stat-l">🎩 Classics</div></div>
+  <div class="stat"><div class="stat-n" id="s-indian">0</div><div class="stat-l">🌶️ Indian</div></div>
+  <div class="stat"><div class="stat-n" id="s-sig">0</div><div class="stat-l">⭐ Signatures</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('recipes',this)"><span class="tab-emoji">📖</span>Recipes</button>
+  <button class="tab" onclick="switchTab('mood',this)"><span class="tab-emoji">🎯</span>By Mood</button>
+  <button class="tab" onclick="switchTab('quick',this)"><span class="tab-emoji">⚡</span>Quick Pick</button>
+  <button class="tab" onclick="switchTab('bar',this)"><span class="tab-emoji">🧊</span>My Bar</button>
+</div>
+
+<!-- ═══ RECIPES PANEL ═══ -->
+<div id="panel-recipes" class="panel active">
+
+  <div class="srch-wrap">
+    <svg class="srch-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input class="srch" type="text" placeholder="Search spirits, ingredients, names…" id="srch" oninput="onSearch()" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="srch-clear" id="srchClear" onclick="clearSearch()">✕</button>
+  </div>
+
+  <div class="rlabel">🫙 By Spirit</div>
+  <div class="frow" id="baseF">
+    <button class="fbtn active" data-val="all"     onclick="setF('base','all',this)">All</button>
+    <button class="fbtn" data-val="gin"     onclick="setF('base','gin',this)">🌿 Gin</button>
+    <button class="fbtn" data-val="vodka"   onclick="setF('base','vodka',this)">🧊 Vodka</button>
+    <button class="fbtn" data-val="whisky"  onclick="setF('base','whisky',this)">🥃 Whisky</button>
+    <button class="fbtn" data-val="rum"     onclick="setF('base','rum',this)">🍬 Rum</button>
+    <button class="fbtn" data-val="tequila" onclick="setF('base','tequila',this)">🌵 Tequila</button>
+    <button class="fbtn" data-val="brandy"  onclick="setF('base','brandy',this)">🍂 Brandy</button>
+    <button class="fbtn" data-val="wine"    onclick="setF('base','wine',this)">🍷 Wine</button>
+    <button class="fbtn" data-val="beer"    onclick="setF('base','beer',this)">🍺 Beertini</button>
+    <button class="fbtn" data-val="peach schnapps" onclick="setF('base','peach schnapps',this)">🍑 Peach</button>
+    <button class="fbtn" data-val="virgin"  onclick="setF('base','virgin',this)">🌊 Virgin</button>
+  </div>
+
+  <div class="rlabel">🏷️ By Type</div>
+  <div class="frow" id="typeF">
+    <button class="fbtn active" onclick="setF('type','all',this)">All</button>
+    <button class="fbtn" onclick="setF('type','signature',this)">⭐ Signature</button>
+    <button class="fbtn" onclick="setF('type','indian',this)">🌶️ Indian</button>
+    <button class="fbtn" onclick="setF('type','classic',this)">🎩 Classic</button>
+    <button class="fbtn" onclick="setF('type','beertini',this)">🍺 Beertini</button>
+    <button class="fbtn" onclick="setF('type','future',this)">🔮 Future bar</button>
+  </div>
+
+  <div class="rlabel">🌤️ By Season</div>
+  <div class="frow" id="seasonF">
+    <button class="fbtn active" onclick="setF('season','all',this)">All seasons</button>
+    <button class="fbtn" onclick="setF('season','summer',this)">☀️ Summer</button>
+    <button class="fbtn" onclick="setF('season','monsoon',this)">🌧️ Monsoon</button>
+    <button class="fbtn" onclick="setF('season','winter',this)">❄️ Winter</button>
+  </div>
+
+  <div class="count" id="countLbl"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ═══ QUICK DECISION PANEL ═══ -->
+<div id="panel-quick" class="panel">
+  <div id="quickWrap"></div>
+</div>
+
+<!-- ═══ MOOD PANEL ═══ -->
+<div id="panel-mood" class="panel">
+  <div class="mood-wrap" id="moodWrap"></div>
+</div>
+
+<!-- ═══ MY BAR PANEL ═══ -->
+<div id="panel-bar" class="panel">
+  <div class="ing-filter-wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.75rem">
+      <div>
+        <div style="font-family:var(--ff-disp);font-size:16px;color:var(--txt-h);margin-bottom:2px">What's in your bar?</div>
+        <div class="ing-intro">Tick what you have. See every drink you can make — and what's one ingredient away.</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="ing-reset" onclick="selectMyBar()">⚡ Load my bar</button>
+        <button class="ing-reset" onclick="resetIngredients()">✕ Clear all</button>
+      </div>
+    </div>
+    <div class="ing-grid" id="ingGrid"></div>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:.5rem;">
+      <span class="ing-match-info" id="ingMatchInfo"></span>
+    </div>
+  </div>
+  <div class="count" id="barCountLbl" style="margin-top:1rem;font-size:13px;"></div>
+  <div id="barGrid"></div>
+</div>
+
+</div><!-- .rb -->
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   TECHNIQUE GLOSSARY
+═══════════════════════════════════════════════════════ */
+const TECH = {
+  'fine strain':      'Pour through a fine mesh strainer to remove tiny ice shards and pulp. Gives a cleaner, silkier mouthfeel.',
+  'double strain':    'Shake strainer + fine mesh strainer together. Removes all pulp, seeds and froth you don\'t want.',
+  'express':          'Hold citrus peel skin-side down over the glass and give it a sharp squeeze/twist — sprays the aromatic oils onto the drink surface.',
+  'muddle':           '3-4 gentle presses with a muddler or the back of a spoon. You want the oils, not shredded pulp. Never crush hard.',
+  'stir':             'Stir with a long bar spoon, 20-30 rotations. Chills and dilutes without aerating — for spirit-forward drinks.',
+  'shake hard':       'Cap the shaker tight, shake vigorously for 10-12 seconds. Creates chill, dilution, and texture all at once.',
+  'build over ice':   'Add ingredients directly into the glass over ice, in order. No shaker needed.',
+  'float':            'Pour gently over the back of a bar spoon so it sits on top of the drink without mixing.',
+  'dry shake':        'Shake without ice first — creates foam from egg white or cream. Then shake again with ice.',
+  'cold brew':        'Steep in cold water in the fridge for 6-8 hours. Slower, smoother extraction — less bitterness than hot brew.',
+};
+
+function wrapTech(text) {
+  return text.replace(
+    /\b(fine strain|double strain|express(?:ed)?(?: peel| lemon| orange)?|muddle|stir(?:ring)?|shake hard|build over ice|float|dry shake|cold brew)\b/gi,
+    (m) => {
+      const key = Object.keys(TECH).find(k => m.toLowerCase().startsWith(k));
+      if (!key) return m;
+      return `<span class="tech" ontouchstart="toggleTip(this)">${m}<span class="tech-tip">${TECH[key]}</span></span>`;
+    }
+  );
+}
+
+function toggleTip(el) {
+  // mobile: toggle on tap
+  const wasOpen = el.classList.contains('tip-open');
+  document.querySelectorAll('.tech.tip-open').forEach(t => t.classList.remove('tip-open'));
+  if (!wasOpen) el.classList.add('tip-open');
+}
+document.addEventListener('click', () => {
+  document.querySelectorAll('.tech.tip-open').forEach(t => t.classList.remove('tip-open'));
+});
+
+/* ═══════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════ */
+const D = [
+/* ── GIN ──────────────────────────────────────────── */
+{name:"G&T",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["gin","tonic","lime"],
+ ratio:[["Gin","2"],["Tonic","4"],["Lime","wedge"]],
+ method:"Start with the glass. Cut a lime wheel and press it against the inside of the glass — this is your garnish first, not an afterthought. Fill the glass with ice to the brim — not halfway. Pour gin over the ice. Add tonic gently down the side of the glass, never over the ice directly — carbonation dies on impact. Give one single slow stir with a bar spoon. Serve immediately.",garnish:"Lime wheel pressed inside the glass before ice goes in",note:"Sepoy & Co or Svami tonic with Greater Than — lets the botanicals breathe. Schweppes for a casual night. The order matters: garnish → ice → gin → tonic → one stir."},
+{name:"Gimlet",base:["gin"],type:["classic"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["gin","lime","simple syrup"],
+ ratio:[["Gin","3"],["Fresh lime","1"],["Simple syrup","0.5"]],
+ method:"Chill the cocktail glass in the freezer 20 mins before. Cut a thin lime wheel and set it aside — this is your garnish, ready before you start. Juice the lime fresh, right now, not earlier. Add gin, fresh lime juice and simple syrup to the shaker. Fill with ice. Shake hard for 12 seconds — this is a cold drink, longer shake gives you the chill. Fine strain into the frosted cocktail glass. Balance the lime wheel on the rim.",garnish:"Fresh lime wheel balanced on the rim — cut before you start",note:"Greater Than's raw mango and coriander notes shine here. The glass temperature is half the drink. Never use bottled lime juice."},
+{name:"Tom Collins",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["gin","lime","simple syrup","soda"],
+ ratio:[["Gin","3"],["Lime","1"],["Simple syrup","1"],["Soda","3"]],
+ method:"Cut a lime wheel — your garnish — and press it against the inside of the highball glass before anything else. Fill with ice to the brim. Add gin, then lime juice, then simple syrup, in that order. Open the soda immediately before using. Pour it slowly down the inside of the glass. One gentle stir with the bar spoon — just enough to combine, not enough to kill the fizz. Serve.",garnish:"Lime wheel pressed inside the glass before ice — plus an optional mint sprig at the top",note:""},
+{name:"French 75",base:["gin"],type:["classic"],season:["monsoon","winter"],complexity:2,glass:"Flute",chill:true,
+ ing:["gin","lime","simple syrup","sparkling wine"],
+ ratio:[["Gin","2"],["Lime","0.75"],["Simple syrup","0.75"],["Sparkling wine","3"]],
+ method:"Chill the flute in the freezer. Cut a long thin lemon twist and set it aside. Shake gin, fresh lime juice, and syrup with ice — shake hard for 10 seconds. Fine strain into the frosted flute in a slow, controlled pour — fill it only halfway. Top gently with cold sparkling wine, poured down the inside of the flute so the bubbles don't die. Twist the lemon peel over the glass and drop it in.",garnish:"Long thin lemon twist — cut before shaking, dropped in at the end",note:"Elegant celebratory drink. Use a dry sparkling wine — prosecco works well. The visual of the bubbles rising through the drink in a frosted flute is the whole presentation."},
+{name:"Bee's Knees",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["gin","lime","honey"],
+ ratio:[["Gin","3"],["Fresh lime","1"],["Honey syrup","1"]],
+ method:"Make honey syrup ahead — 2:1 honey to warm water, stir to dissolve, cool completely, bottle it. Freeze the cocktail glass. Peel a wide strip of lemon and set it aside. Add gin, fresh lime juice, honey syrup to shaker. Fill with ice. Shake hard for 12 seconds — honey needs good agitation to integrate. Fine strain into the frosted glass. Hold the lemon peel skin-side down, pinch it sharply over the surface — the oils will visibly shimmer on top. Drop the peel in.",garnish:"Expressed lemon peel — prepared before shaking, expressed over the finished drink",note:"Honey syrup is non-negotiable — do not substitute simple syrup. The floral note of honey against gin botanicals is the entire point of this drink. Make a batch of honey syrup, it lasts 2 weeks in the fridge."},
+{name:"Clover Club",base:["gin"],type:["classic"],season:["summer"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["gin","lime","simple syrup","raspberry"],
+ ratio:[["Gin","3"],["Lime","1"],["Simple syrup","0.75"],["Raspberry syrup","0.75"]],
+ method:"Shake hard with ice. Double strain into chilled cocktail glass.",garnish:"3 fresh raspberries",note:"One of the most beautiful drinks in existence. The pink blush is natural and earns its place."},
+{name:"Aviation",base:["gin"],type:["classic"],season:["monsoon","winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["gin","triple sec","lime","simple syrup"],
+ ratio:[["Gin","3"],["Maraschino or triple sec","1"],["Lime","0.75"],["Simple syrup","0.25"]],
+ method:"Shake hard with ice. Fine strain into chilled cocktail glass.",garnish:"Cherry or lemon twist",note:"Uses triple sec as a substitute for Maraschino — legitimate shortcut for a home bar."},
+{name:"Vesper Martini",base:["gin","vodka"],type:["classic"],season:["monsoon","winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["gin","vodka","vermouth"],
+ ratio:[["Gin","3"],["Vodka","1"],["Dry vermouth","0.5"]],
+ method:"Freeze the cocktail glass 20-30 mins before — it should be frosted when you pull it out. Cut a long wide lemon peel first, set it aside. Fill the shaker with as much ice as it will hold — more ice, faster chill, less dilution. Add gin, vodka, vermouth. Shake very hard for 12-15 seconds. The shaker should be almost painful to hold — that is right. Fine strain into the frosted glass in one smooth pour. Hold the lemon peel skin-side down over the glass surface, give it a sharp pinch — you will see and smell the oils spray. Wipe the peel around the rim. Drop it in.",garnish:"Large expressed lemon peel — cut and ready before you start",note:"Glass cold enough to frost is non-negotiable. No vermouth? Call it a Dry Martini — still exceptional. This is her drink. Make it flawlessly."},
+{name:"Negroni",base:["gin"],type:["classic","future"],season:["winter"],complexity:2,glass:"Lowball",chill:true,
+ ing:["gin","campari","sweet vermouth"],
+ ratio:[["Gin","1"],["Campari","1"],["Sweet vermouth","1"]],
+ method:"Before you touch a bottle — cut a wide orange peel and set it on the bar. Chill the lowball glass. Add gin, Campari, and sweet vermouth directly into a mixing glass or the shaker tin (no ice yet — add ice last). Fill with large ice cubes. Stir with the bar spoon 30 full rotations — slow, deliberate, back of the spoon against the glass. You are building texture and chill, not rushing. Place one large cube in the chilled lowball. Strain the Negroni over the single cube in one clean pour. Hold the orange peel skin-side down over the glass, pinch firmly — the oils will spray visibly. Wipe the peel around the entire rim, then around the outside of the glass too. Drop it in.",garnish:"Wide expressed orange peel — cut first, expressed last, wiped on rim and outside of glass",note:"Future bar — needs Campari. The greatest equal-parts cocktail ever made. The orange peel express over a Negroni is one of the most aromatic moments in bartending. Do it properly."},
+{name:"White Lady",base:["gin"],type:["classic"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["gin","triple sec","lime"],
+ ratio:[["Gin","3"],["Triple sec","1"],["Lime","1"]],
+ method:"Shake hard with ice. Fine strain into chilled cocktail glass.",garnish:"Lemon twist",note:"Clean, bright, elegant. Triple sec earns its place here."},
+{name:"Singapore Sling",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:3,glass:"Highball",chill:false,
+ ing:["gin","triple sec","lime","simple syrup","soda","grenadine"],
+ ratio:[["Gin","2"],["Triple sec","0.5"],["Lime","1"],["Simple syrup","0.5"],["Soda","3"],["Grenadine","0.5"]],
+ method:"Shake gin, triple sec, lime, syrup, grenadine with ice. Strain into ice-filled highball. Top soda.",garnish:"Lime wheel, cherry if available",note:"Grenadine on demand — pomegranate syrup works. A classic that looks impressive on a home bar."},
+{name:"Gulabi Fizz",base:["gin"],type:["signature","indian"],season:["summer","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["gin","rooh afza","lime","soda"],
+ ratio:[["Gin","4"],["Rooh Afza","1"],["Fresh lime","1"],["Soda","3"]],
+ method:"Fill glass with ice. Pour gin, Rooh Afza, lime in order. Top cold soda gently. Let the blush bleed naturally — do not stir.",garnish:"Expressed lemon peel, dried rose bud",note:"Gulabi means rosy. Menu-ready — appeals to everyone immediately. The visual blush is part of the drink."},
+{name:"Bijlee",base:["gin"],type:["signature","indian"],season:["summer"],complexity:2,glass:"Highball",chill:false,
+ ing:["gin","glucon-d","honey","orange juice","lime","soda"],
+ ratio:[["Gin","3"],["Glucon-D mix","1"],["Honey syrup","0.5"],["Fresh OJ","0.5"],["Lime","0.5"],["Soda","3"]],
+ method:"Mix Glucon-D cold — fixed 1 tsp to 60ml water every time. Build over ice, single slow stir, top soda.",garnish:"Orange wheel",note:"Conversation drink — guests will ask what's in it. Consistency of Glucon-D ratio is critical."},
+{name:"Kokum Gin Sour",base:["gin"],type:["indian"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["gin","kokum syrup","lime","simple syrup"],
+ ratio:[["Gin","3"],["Kokum syrup","1"],["Fresh lime","0.75"],["Simple syrup","0.25"]],
+ method:"Shake hard with ice. Fine strain into chilled glass. Taste before adding syrup — kokum carries its own tartness.",garnish:"Dried kokum or lime wheel",note:"Deep purple-red colour is stunning in a cocktail glass. Kokum is cooling and digestive — perfect for Pune summers."},
+{name:"Darjeeling G&T",base:["gin"],type:["indian"],season:["monsoon","winter"],complexity:2,glass:"Highball",chill:false,
+ ing:["gin","tonic","lime","darjeeling tea"],
+ ratio:[["Gin","2"],["Darjeeling cold brew","1"],["Tonic","3"],["Lime","0.5"]],
+ method:"Cold brew Darjeeling — 1 tsp leaves in 200ml cold water, 6-8 hrs in fridge. Build like a G&T, sub one quarter tonic volume with cold brew.",garnish:"Lemon twist, optional clove",note:"Floral muscatel notes of Darjeeling and gin botanicals are a natural pairing. Monsoon evening drink."},
+{name:"Aam Panna Fizz",base:["gin","vodka"],type:["indian"],season:["summer"],complexity:2,glass:"Highball",chill:false,
+ ing:["gin","aam panna","lime","soda"],
+ ratio:[["Gin or vodka","2"],["Aam Panna","1"],["Fresh lime","0.5"],["Soda","3"]],
+ method:"Build over ice. Pour spirit, aam panna, lime. Top soda gently. Stir once.",garnish:"Lime wedge, pinch of kala namak on top",note:"Raw mango season special — April to June only. Kala namak garnish is the move."},
+{name:"Rose Lassi Gin",base:["gin"],type:["indian","signature"],season:["summer"],complexity:3,glass:"Highball",chill:false,
+ ing:["gin","yogurt","rooh afza","cardamom","lime"],
+ ratio:[["Gin","2"],["Fresh lassi (thin)","2"],["Rooh Afza","0.75"],["Cardamom","1 pinch"],["Lime","0.5"]],
+ method:"Make thin lassi — yogurt whisked well with water 1:2, strain. Shake all with ice hard. Fine strain into glass with fresh ice.",garnish:"Dried rose petals, cardamom pod",note:"Only works with thin strained lassi. Yogurt-based cocktails are tricky — temp and texture need control. This one rewards the effort."},
+
+/* ── VODKA ─────────────────────────────────────────── */
+{name:"Vodka Soda",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","soda","lime"],ratio:[["Vodka","1"],["Soda","3"],["Lime","squeeze"]],method:"Build over ice. Pour vodka. Soda down the side. Squeeze lime, drop in.",garnish:"Lime wedge",note:""},
+{name:"Cosmopolitan",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["vodka","triple sec","lime","cranberry"],ratio:[["Vodka","3"],["Triple sec","1"],["Lime","1"],["Cranberry","1"]],method:"Shake hard with ice. Fine strain into chilled cocktail glass.",garnish:"Expressed orange peel",note:"Chilled glass mandatory. Cranberry on demand."},
+{name:"Moscow Mule",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","lime","ginger beer"],ratio:[["Vodka","2"],["Lime","1"],["Ginger beer","4"]],method:"Build over ice. Lime squeeze. Top ginger beer gently.",garnish:"Lime wedge, mint sprig",note:"Ginger beer on demand — not ginger ale, the bite is the point."},
+{name:"Vodka Gimlet",base:["vodka"],type:["classic"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["vodka","lime","simple syrup"],ratio:[["Vodka","3"],["Fresh lime","1"],["Simple syrup","0.5"]],method:"Shake with ice. Fine strain into chilled cocktail glass.",garnish:"Lime wheel",note:""},
+{name:"Sex on the Beach",base:["vodka"],type:["classic"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","triple sec","orange juice","cranberry"],ratio:[["Vodka","2"],["Triple sec","1"],["Orange juice","2"],["Cranberry","2"]],method:"Build over ice. Pour vodka, triple sec, OJ, cranberry. Stir gently once.",garnish:"Orange wheel, lime wedge",note:"Simple, crowd-pleasing, no technique required."},
+{name:"Screwdriver",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","orange juice"],ratio:[["Vodka","1"],["Fresh orange juice","3"]],method:"Build over ice. Pour vodka, top OJ. Stir once.",garnish:"Orange wheel",note:"Use fresh squeezed OJ only. Packaged juice makes this drink ordinary."},
+{name:"Jaljeera Vodka",base:["vodka"],type:["indian"],season:["summer"],complexity:2,glass:"Highball",chill:false,
+ ing:["vodka","jaljeera","lime","soda"],ratio:[["Vodka","2"],["Jaljeera concentrate","1"],["Fresh lime","0.5"],["Soda","3"]],method:"Build over ice. Pour vodka, jaljeera, lime. Top soda. Stir once slowly.",garnish:"Lime wedge, kala namak rim",note:"Cumin-coriander-mint profile against vodka is unusual and genuinely works. Available bottled at any kirana."},
+{name:"Nimbu Pani Vodka",base:["vodka"],type:["indian","signature"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","lime","simple syrup","soda","salt"],
+ ratio:[["Vodka","2"],["Fresh lime","1"],["Simple syrup","0.75"],["Soda","3"],["Salt","pinch"]],
+ method:"Squeeze lime into glass. Add syrup and a small pinch of salt. Build over ice — vodka first, top soda gently.",garnish:"Lime wheel, salt rim optional",note:"This is what nimbu pani is. Don't overthink it. The salt is non-negotiable — it rounds every flavour out. Every Indian guest will reach for this."},
+{name:"Vodka Tonic",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","tonic"],ratio:[["Vodka","1"],["Tonic","3"]],method:"Build over ice. Tonic gently down the side.",garnish:"Lime wedge",note:""},
+
+/* ── WHISKY ────────────────────────────────────────── */
+{name:"Whisky Neat",base:["whisky"],type:["classic"],season:["winter","monsoon"],complexity:1,glass:"Lowball",chill:true,
+ ing:["whisky"],ratio:[["Teacher's 50","60ml"]],method:"Chilled lowball. Pour. Let it breathe 30 seconds.",garnish:"None",note:"No interference. This is the drink."},
+{name:"Whisky on the Rock",base:["whisky"],type:["classic"],season:["winter","monsoon"],complexity:1,glass:"Lowball",chill:false,
+ ing:["whisky"],ratio:[["Teacher's 50","2"],["Ice","1 large cube"]],method:"One large cube in chilled lowball. Pour whisky over slowly.",garnish:"Expressed lemon peel optional",note:"One cube only — controls dilution, melts slower."},
+{name:"Whisky Highball",base:["whisky"],type:["classic"],season:["summer","monsoon","winter"],complexity:1,glass:"Highball",chill:false,
+ ing:["whisky","soda"],ratio:[["Teacher's 50","1"],["Chilled soda","3"]],method:"Prepare the glass and the garnish first. Cut a lemon peel — a good wide strip using the Y-peeler. Set it aside. Chill the highball glass if possible. Fill the glass completely with ice — all the way to the brim. Pour the whisky over the ice, let it settle. Open your soda immediately before pouring — carbonation starts dying the moment it's open. Pour the soda slowly down the side of the tilted glass. Hold the lemon peel skin-side down over the glass, give it a firm pinch — spray the oils across the entire surface. Wipe the rim with the peel. Drop it in. One single gentle stir with the bar spoon and stop.",garnish:"Expressed lemon peel — cut before ice goes in, expressed at the very end",note:"The pour technique is the whole thing — soda directly onto ice kills carbonation in seconds. The lemon express transforms the aroma of the drink entirely."},
+{name:"Old Fashioned",base:["whisky"],type:["classic"],season:["winter"],complexity:3,glass:"Lowball",chill:true,
+ ing:["whisky","simple syrup","bitters"],ratio:[["Teacher's 50","8"],["Simple syrup","1"],["Angostura bitters","2 dashes"]],method:"Before anything else — cut a wide orange peel and set it aside. Chill the lowball glass. Add 2 dashes Angostura and the simple syrup to the glass first. Add a small splash of whisky and stir just enough to dissolve the syrup — this is your base. Now add one large cube of ice. Pour the rest of the whisky over the cube. Stir slowly with the bar spoon, 20-25 rotations — you are chilling and diluting, not mixing aggressively. Hold the orange peel skin-side down over the glass surface, give it a sharp pinch to spray the oils. Wipe the peel around the rim of the glass — every inch of it. Drop the peel in. Serve immediately.",garnish:"Wide expressed orange peel — prepared before you start, wiped around the full rim",note:"This drink is about ritual as much as recipe. Do not rush the stir. Do not shake it. The orange peel express is not optional — it changes the aroma entirely. Requires Angostura."},
+{name:"Rob Roy",base:["whisky"],type:["classic"],season:["winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["whisky","sweet vermouth","bitters"],ratio:[["Scotch whisky","2"],["Sweet vermouth","1"],["Angostura bitters","2 dashes"]],method:"Stir over ice 30 seconds. Strain into chilled cocktail glass.",garnish:"Expressed orange peel or cherry",note:"A Manhattan made with Scotch. Teacher's 50 works very well here. Requires Angostura."},
+{name:"Whisky Sour",base:["whisky"],type:["classic"],season:["monsoon","winter"],complexity:2,glass:"Lowball",chill:false,
+ ing:["whisky","lime","simple syrup"],ratio:[["Teacher's 50","2"],["Fresh lime","1"],["Simple syrup","0.75"]],method:"Cut a lime wheel and set it aside — garnish first. Add whisky, fresh lime juice, simple syrup to the shaker. Fill with ice. Shake very hard for 12 seconds. Fine strain into a lowball glass over fresh ice. Lay the lime wheel flat on top of the drink — do not perch it on the rim, lay it flat so it floats. If you have Angostura, add 2 dashes across the lime wheel in a zigzag — the orange-brown against the green wheel is a classic finish.",garnish:"Lime wheel laid flat on top of the drink — placed before the Angostura dash",note:"One of the most satisfying drinks in existence. Teacher's 50 holds up beautifully here. The Angostura zigzag on the floating lime wheel is a visual signature — do it every time."},
+{name:"Penicillin",base:["whisky"],type:["classic"],season:["winter"],complexity:3,glass:"Lowball",chill:false,
+ ing:["whisky","honey","ginger","lime"],ratio:[["Blended Scotch","2"],["Honey-ginger syrup","1"],["Fresh lime","0.75"]],method:"Make honey-ginger syrup — simmer 2:1 honey-water with grated ginger 5 mins, strain, cool. Shake all with ice. Strain into lowball over large cube.",garnish:"Candied ginger",note:"One of the great modern classics. Teacher's 50 works as the blended Scotch. The honey-ginger syrup is a batch to keep in fridge."},
+{name:"Adrak Highball",base:["whisky"],type:["indian","signature"],season:["winter","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["whisky","ginger","honey","soda"],ratio:[["Teacher's 50","2"],["Fresh ginger juice","0.5"],["Honey syrup","0.5"],["Soda","3"]],method:"Grate fresh ginger, squeeze through cloth or strainer. Build over ice — whisky, ginger juice, honey syrup, top soda gently.",garnish:"Thin ginger slice or candied ginger",note:"Adrak means ginger. Pune winter evenings. Sharp ginger heat against Teacher's malt is exactly right."},
+{name:"Chai Old Fashioned",base:["whisky"],type:["indian","signature"],season:["winter"],complexity:3,glass:"Lowball",chill:true,
+ ing:["whisky","chai","simple syrup","bitters"],ratio:[["Teacher's 50","8"],["Masala chai syrup","1"],["Angostura bitters","2 dashes"]],method:"Brew strong chai with cardamom, cinnamon, clove, ginger. Strain, add equal sugar, dissolve, cool. Build Old Fashioned method with chai syrup instead of simple syrup.",garnish:"Expressed orange peel, cinnamon stick",note:"Project drink — takes effort, result is extraordinary. Make syrup in batches, refrigerate. Cardamom and whisky is a natural Indian pairing."},
+{name:"Thandai Whisky",base:["whisky"],type:["indian","signature"],season:["winter"],complexity:3,glass:"Lowball",chill:false,
+ ing:["whisky","milk","almonds","cardamom","saffron","rose"],ratio:[["Teacher's 50","2"],["Thandai syrup","1"],["Chilled milk","1"]],method:"Make thandai syrup — blend almonds, fennel, cardamom, rose petals, saffron, sugar, strain. Shake whisky and thandai syrup with ice, strain into glass with one cube, float chilled milk.",garnish:"Pinch of saffron, rose petal",note:"Holi season drink. Thandai syrup available ready-made in winter. Extraordinary when made well."},
+{name:"Ginger Whisky Sour",base:["whisky"],type:["indian","signature"],season:["monsoon","winter"],complexity:2,glass:"Lowball",chill:false,
+ ing:["whisky","ginger","honey","lime"],
+ ratio:[["Teacher's 50","2"],["Fresh ginger juice","0.5"],["Honey syrup","0.75"],["Fresh lime","1"]],
+ method:"Shake hard with ice — everything together. Fine strain into lowball over fresh ice.",garnish:"Thin ginger slice, lime wheel",note:"Distinct from the Adrak Highball — this is a shaken sour, much colder and more rounded. The honey softens the ginger heat into something very drinkable. Monsoon staple."},
+
+/* ── RUM ───────────────────────────────────────────── */
+{name:"Daiquiri",base:["rum"],type:["classic"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["rum","lime","simple syrup"],ratio:[["White rum","3"],["Fresh lime","1"],["Simple syrup","0.5"]],method:"Freeze the cocktail glass 20 mins prior — it should be cold to the touch when you pull it out. Cut a thin lime wheel and set it on the bar. Juice the lime fresh. Add rum, lime juice, simple syrup to the shaker. Fill with ice right to the top. Shake harder and longer than you think — 12-15 seconds, the shaker should frost over. Fine strain in one clean pour into the frosted glass. Balance the lime wheel on the rim — don't drop it in, balance it.",garnish:"Thin lime wheel balanced on the rim — prepared before you shake",note:"The holy trinity. Rock Paper Rum Coastal White is ideal. A warm glass ruins this drink. The visual of the lime wheel balanced perfectly on the rim is your restaurant tell."},
+{name:"Mojito",base:["rum"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","lime","simple syrup","soda","mint"],ratio:[["White rum","3"],["Fresh lime","1"],["Simple syrup","1"],["Soda","3"],["Mint","8-10 leaves"]],method:"Prepare your garnish first — pick a perfect mint sprig, the fullest one, set it aside. Take your mint leaves and slap them once between your palms firmly — this wakes the oils without bruising. Drop them into the glass. Cut your lime into wedges and squeeze them over the mint — juice directly onto the mint, not the glass. Add simple syrup. Muddle gently 3-4 slow presses — you are pressing for oil extraction, not grinding. Add rum. Fill the glass with crushed ice or regular ice packed tightly. Top with cold soda slowly down the side. Slap the reserved mint sprig one more time and tuck it into the ice beside the straw so the nose hits mint on every sip.",garnish:"Full mint sprig tucked into ice — slapped twice, prepared before muddling starts",note:"Over-muddling is the single most common mistake. 3-4 gentle presses only. The double slap of the garnish mint is what separates a bartender's Mojito from everyone else's."},
+{name:"Daiquiri (Hemingway)",base:["rum"],type:["classic"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["rum","lime","grapefruit","triple sec"],ratio:[["White rum","3"],["Lime","1"],["Grapefruit juice","0.5"],["Triple sec","0.5"]],method:"Shake hard with ice. Fine strain into chilled cocktail glass.",garnish:"Lime wheel",note:"Papa Hemingway's drink — drier than a classic Daiquiri. Grapefruit on demand. Triple sec earns its keep here."},
+{name:"El Presidente",base:["rum"],type:["classic"],season:["monsoon","winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["rum","triple sec","grenadine","vermouth"],ratio:[["White rum","2"],["Triple sec","0.5"],["Grenadine","0.25"],["Dry vermouth","0.5"]],method:"Stir over ice 30 seconds. Strain into chilled cocktail glass.",garnish:"Expressed orange peel",note:"Stirred rum cocktail — underrated and elegant. Grenadine on demand."},
+{name:"Planter's Punch",base:["rum"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","lime","simple syrup","orange juice","soda"],ratio:[["Dark rum","2"],["Lime","1"],["Simple syrup","0.75"],["Orange juice","2"],["Soda","1"]],method:"Shake rum, lime, syrup, OJ with ice. Strain into ice-filled highball. Top soda.",garnish:"Orange wheel, lime wedge",note:"Old Monk works beautifully here. Tropical and generous."},
+{name:"Kokum Daiquiri",base:["rum"],type:["indian","signature"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["rum","kokum syrup","lime","simple syrup"],ratio:[["White rum","3"],["Kokum syrup","0.75"],["Fresh lime","0.75"],["Simple syrup","0.25"]],method:"Shake hard with ice. Fine strain into chilled cocktail glass. Taste before adding syrup — kokum carries tartness.",garnish:"Dried kokum or lime wheel",note:"Deep purple colour is stunning. Kokum and rum share a tropical profile — natural pairing."},
+{name:"Hibiscus Rum Cooler",base:["rum"],type:["indian","signature"],season:["summer","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","hibiscus","lime","simple syrup","soda"],ratio:[["White rum","2"],["Hibiscus cold brew","1"],["Lime","0.75"],["Simple syrup","0.5"],["Soda","2"]],method:"Cold brew dried hibiscus — steep in cold water 4-6 hrs. Build over ice, shake rum, hibiscus brew, lime, syrup. Strain into highball, top soda.",garnish:"Hibiscus flower if available, lime wheel",note:"Dried gudhal flowers at any kirana or pansari. Stunning deep crimson colour. Natural sourness means less lime needed — taste as you go."},
+{name:"Old Monk Neat",base:["rum"],type:["classic"],season:["winter","monsoon"],complexity:1,glass:"Lowball",chill:false,
+ ing:["rum"],ratio:[["Old Monk","60ml"]],method:"Pour. Serve.",garnish:"None",note:"Some things don't need help."},
+{name:"Old Monk & Cola",base:["rum"],type:["classic"],season:["summer","monsoon","winter"],complexity:1,glass:"Highball",chill:false,
+ ing:["rum","cola","lime"],ratio:[["Old Monk","1"],["Cola","3"],["Lime","squeeze"]],method:"Build over ice. Lime squeeze. Drop in.",garnish:"Lime wedge",note:"This is what most guests will want. Cold glass, fresh ice, cold cola poured gently."},
+{name:"Dark & Stormy",base:["rum"],type:["classic"],season:["monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["rum","lime","ginger beer"],ratio:[["Old Monk","2"],["Fresh lime","1"],["Ginger beer","4"]],method:"Build over ice. Lime squeeze. Top ginger beer — pour gently to float on top.",garnish:"Lime wedge",note:"Old Monk against ginger beer is exactly right. The monsoon drink."},
+{name:"Rum Old Fashioned",base:["rum"],type:["classic"],season:["winter"],complexity:3,glass:"Lowball",chill:true,
+ ing:["rum","simple syrup","bitters"],ratio:[["Old Monk","8"],["Simple syrup","1"],["Angostura bitters","2 dashes"]],method:"Add bitters and syrup. Stir. Add rum. Large cube. Stir 20 rotations. Express orange peel.",garnish:"Expressed orange peel",note:"Old Monk has enough character to carry an Old Fashioned. Underrated move."},
+{name:"Coconut Rum Cooler",base:["rum"],type:["indian"],season:["summer"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","coconut water","lime","simple syrup"],ratio:[["White rum","2"],["Fresh coconut water","3"],["Lime","0.75"],["Simple syrup","0.25"]],method:"Build over ice. Pour rum, coconut water, lime, syrup. Stir gently.",garnish:"Lime wedge",note:"Fresh coconut water only — packaged versions are too sweet. A Pune summer drink that needs no introduction."},
+{name:"Chai Rum",base:["rum"],type:["indian","signature"],season:["monsoon","winter"],complexity:2,glass:"Irish glass or mug",chill:false,
+ ing:["rum","chai","milk","sugar"],
+ ratio:[["Old Monk","2"],["Strong masala chai","4"],["Milk","1"]],
+ method:"Brew strong masala chai — double strength. Warm the glass with hot water, discard. Pour rum in first. Top with hot chai. Float a small pour of milk.",garnish:"Cardamom pod, small pinch of ground cardamom on top",note:"The desi Irish Coffee. Nobody asks for it — everyone who gets it asks for another. Monsoon evenings only. Don't sweeten the chai too much; the Old Monk carries the sweetness."},
+
+/* ── TEQUILA ───────────────────────────────────────── */
+{name:"Margarita",base:["tequila"],type:["classic","future"],season:["summer"],complexity:2,glass:"Lowball or Cocktail glass",chill:true,
+ ing:["tequila","triple sec","lime"],
+ ratio:[["Blanco tequila","2"],["Triple sec","1"],["Fresh lime","1"]],
+ method:"Shake hard with ice. Fine strain into chilled glass. Salt rim optional — wipe half the rim with lime, press into salt.",garnish:"Salt rim, lime wheel",note:"Future bar — needs a blanco tequila. Patrón Silver or even local options work. Do not make this with bad tequila. The quality of the lime matters enormously. This is one of the most ordered cocktails in Pune bars right now."},
+{name:"Paloma",base:["tequila"],type:["classic","future"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["tequila","lime","grapefruit soda","salt"],
+ ratio:[["Blanco tequila","2"],["Fresh lime","0.5"],["Grapefruit soda","4"],["Salt","pinch"]],
+ method:"Build over ice. Pour tequila, squeeze lime, add salt. Top grapefruit soda gently — Sting works if you can't find proper grapefruit soda.",garnish:"Lime wheel, salt rim optional",note:"Future bar — easier than a Margarita and arguably more refreshing. The Paloma has overtaken the Margarita in Mexico and it's getting there in India. Sting grapefruit works as a substitute. Light, citrus-forward, summer."},
+{name:"Tequila Sour",base:["tequila"],type:["classic","future"],season:["summer","monsoon"],complexity:2,glass:"Lowball",chill:false,
+ ing:["tequila","lime","simple syrup"],
+ ratio:[["Blanco tequila","2"],["Fresh lime","1"],["Simple syrup","0.75"]],
+ method:"Shake hard with ice. Strain into lowball over fresh ice.",garnish:"Lime wheel",note:"Future bar. Essentially a Daiquiri structure. Clean, sharp, honest. Lets the tequila speak."},
+
+/* ── BRANDY ────────────────────────────────────────── */
+{name:"Brandy Soda",base:["brandy"],type:["classic"],season:["winter","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["brandy","soda"],ratio:[["St Remy VSOP","1"],["Soda","2"]],method:"Build over ice. Soda down the side.",garnish:"Lime wedge optional",note:"Most brandy drinkers in India want exactly this."},
+{name:"Brandy Neat",base:["brandy"],type:["classic"],season:["winter"],complexity:1,glass:"Lowball",chill:false,
+ ing:["brandy"],ratio:[["St Remy VSOP","60ml"]],method:"Room temperature glass. Pour. Let guests lead.",garnish:"None",note:""},
+{name:"Sidecar",base:["brandy"],type:["classic"],season:["winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["brandy","triple sec","lime"],ratio:[["St Remy VSOP","2"],["Triple sec","1"],["Fresh lime","1"]],method:"Shake with ice. Fine strain into chilled cocktail glass. Optional sugar rim.",garnish:"Expressed lemon peel",note:"Classic most people haven't tried. St Remy handles this well."},
+{name:"Brandy Alexander",base:["brandy"],type:["classic"],season:["winter"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["brandy","triple sec","cream"],ratio:[["St Remy VSOP","2"],["Triple sec","1"],["Fresh cream","1"]],method:"Shake with ice. Fine strain into chilled cocktail glass.",garnish:"Fresh grated nutmeg on top",note:"Rich and indulgent. A dessert cocktail. Fresh cream only — not UHT."},
+{name:"Between the Sheets",base:["brandy","rum"],type:["classic"],season:["monsoon","winter"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["brandy","rum","triple sec","lime"],ratio:[["Brandy","1"],["White rum","1"],["Triple sec","1"],["Lime","0.5"]],method:"Shake hard with ice. Fine strain into chilled cocktail glass.",garnish:"Lemon twist",note:"Equal-parts cocktail. Brandy and rum together sounds odd, works brilliantly."},
+{name:"Stinger",base:["brandy"],type:["classic"],season:["winter"],complexity:2,glass:"Lowball",chill:false,
+ ing:["brandy","peppermint","mint"],ratio:[["St Remy VSOP","2"],["Peppermint syrup or fresh mint","0.75"]],method:"Stir over ice. Strain into lowball over large cube.",garnish:"Fresh mint sprig",note:"Peppermint syrup from any baking store. A winter after-dinner drink."},
+
+/* ── WINE ──────────────────────────────────────────── */
+{name:"Aperol Spritz",base:["wine"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Wine glass",chill:false,
+ ing:["aperol","sparkling wine","soda"],
+ ratio:[["Prosecco or sparkling wine","3"],["Aperol","2"],["Soda","1"]],
+ method:"Fill wine glass with ice. Pour Aperol. Top with cold prosecco gently. Splash of soda.",garnish:"Orange slice, inside the glass",note:"The default 'I don't know what I want' drink for Pune guests — especially evenings. Aperol is available at most liquor stores now. Bitter-sweet, low-alcohol, crowd-proof. Learn this one, it earns its keep."},
+{name:"Kalimotxo (Simple)",base:["wine"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["wine","cola","lime"],ratio:[["Red wine","1"],["Cola","1"],["Lime","squeeze"]],method:"Fill glass with ice. Pour wine, pour cola gently. Squeeze lime.",garnish:"Lime wedge",note:"Don't spend on the wine — you're mixing it with cola."},
+{name:"Kalimotxo (Elevated)",base:["wine"],type:["signature"],season:["summer","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["wine","craft cola","lime"],ratio:[["Tempranillo","1"],["Craft cola","1"],["Lime","squeeze"]],method:"Fill glass with ice. Pour wine. Add craft cola gently. Lime squeeze. Express orange peel over top. Place rosemary sprig.",garnish:"Fresh rosemary, expressed orange peel",note:"Svami or Sepoy craft cola only. Rosemary-Tempranillo combination is a genuine surprise."},
+{name:"Spritzer",base:["wine"],type:["classic"],season:["summer"],complexity:1,glass:"Wine glass",chill:false,
+ ing:["wine","soda"],ratio:[["Sauvignon Blanc","3"],["Soda","1"]],method:"Very cold wine into chilled glass. Light soda top. Serve immediately.",garnish:"Lemon wheel",note:""},
+{name:"Kir",base:["wine"],type:["classic"],season:["monsoon","winter"],complexity:1,glass:"Wine glass",chill:false,
+ ing:["wine","berry syrup"],ratio:[["Dry white wine","4"],["Cassis or berry syrup","0.5"]],method:"Pour berry syrup into glass first. Top with cold white wine. Do not stir.",garnish:"None",note:"Cassis (blackcurrant liqueur) is traditional — substitute blackberry or blueberry syrup for a home bar version."},
+{name:"Sangria",base:["wine"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Highball or pitcher",chill:false,
+ ing:["wine","triple sec","orange juice","lime","simple syrup","soda"],ratio:[["Red wine","4"],["Triple sec","0.5"],["OJ","1"],["Lime juice","0.5"],["Simple syrup","0.5"],["Soda","1"]],method:"Mix wine, triple sec, OJ, lime, syrup in pitcher. Refrigerate 30 mins minimum. Add soda and ice when serving.",garnish:"Orange and lime slices in the pitcher",note:"Batch drink — make in a pitcher. Improves with 30-60 mins rest in fridge. Great for a group."},
+{name:"Wine Neat",base:["wine"],type:["classic"],season:["summer","winter"],complexity:1,glass:"Wine glass",chill:false,
+ ing:["wine"],ratio:[["Wine","one pour"]],method:"Sauvignon Blanc — very cold, white wine glass. Shiraz — room temperature, red wine glass.",garnish:"None",note:"No garnish, no ice in the wine. Serve correctly and step back."},
+
+/* ── BEER ──────────────────────────────────────────── */
+{name:"Beer Straight",base:["beer"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Pilsner",chill:false,
+ ing:["beer"],ratio:[["Craft beer","1 bottle"]],method:"Rinse pilsner glass with cold water. Tilt 45°, pour down the side. Straighten toward end to build a finger of head.",garnish:"None",note:"Kölsch and Basmati Blonde — summer. Carlsberg Elephant — when you want strength."},
+{name:"Beer & Lime",base:["beer"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Pilsner",chill:false,
+ ing:["beer","lime","kala namak"],ratio:[["Beer","1"],["Lime","squeeze"],["Kala namak","pinch"]],method:"Pour cold beer into rinsed glass. Squeeze fresh lime over the top. Optional pinch of kala namak.",garnish:"Lime wedge on rim",note:"The most honest summer drink in India. Kala namak takes it somewhere special."},
+{name:"Michelada",base:["beer"],type:["classic","indian"],season:["summer"],complexity:2,glass:"Pilsner",chill:false,
+ ing:["beer","lime","kala namak","chaat masala","tabasco"],ratio:[["Beer","1 bottle"],["Lime","1"],["Kala namak","pinch"],["Chaat masala","pinch"],["Tabasco","3 dashes"]],method:"Rim glass with lime and kala namak mix. Add lime juice, tabasco, chaat masala. Pour cold beer slowly over.",garnish:"Lime wheel on rim",note:"The Indian Michelada — uses chaat masala instead of Worcestershire. Surprisingly good."},
+{name:"Shandy",base:["beer"],type:["classic"],season:["summer"],complexity:1,glass:"Pilsner",chill:false,
+ ing:["beer","lime soda","lime"],ratio:[["Kölsch","1"],["Lime soda","1"],["Lime","squeeze"]],method:"Pour chilled beer. Top lime soda gently. Lime squeeze.",garnish:"Lime wedge",note:"Kölsch is light enough not to fight the soda."},
+
+/* ── NEW CLASSICS ──────────────────────────────────── */
+{name:"Paper Plane",base:["whisky"],type:["classic"],season:["monsoon","winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["whisky","triple sec","lime","bitters"],
+ ratio:[["Blended Scotch","1"],["Triple sec","1"],["Fresh lime","1"],["Aperol or Campari","1"]],
+ method:"Cut a lemon twist and set it aside. Add all four ingredients in equal parts to the shaker. Fill with ice. Shake very hard for 12 seconds — equal-parts drinks need aggressive integration. Fine strain into chilled cocktail glass. Express the lemon twist over the surface, drop in.",garnish:"Expressed lemon twist — cut before you start",note:"One of the greatest modern classics. The equal-parts structure means every ingredient is equal — use a jigger religiously here. Teacher's 50 works well. Future bar for Aperol, but triple sec gives a different but acceptable result."},
+{name:"Naked & Famous",base:["whisky"],type:["classic"],season:["winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["whisky","triple sec","lime"],
+ ratio:[["Blended Scotch","1"],["Triple sec","1"],["Fresh lime","1"],["Simple syrup","0.5"]],
+ method:"Chill the glass. Shake whisky, triple sec, lime juice, syrup with ice hard. Fine strain into chilled cocktail glass.",garnish:"Expressed orange peel",note:"Paper Plane's sibling — a little more approachable. Good gateway cocktail for whisky-curious guests."},
+{name:"Corpse Reviver No.2",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["gin","triple sec","lime","vermouth"],
+ ratio:[["Gin","1"],["Triple sec","1"],["Dry vermouth","1"],["Fresh lime","1"]],
+ method:"Chill the glass thoroughly. Add equal parts gin, triple sec, dry vermouth, fresh lime to shaker. Fill with ice. Shake hard for 12 seconds. Fine strain into the frosted glass. A tiny drop of absinthe or anise spirit rinsed around the glass beforehand is traditional — skip if unavailable.",garnish:"Expressed lemon peel",note:"Classic equal-parts aperitif cocktail. Bright, sour, herbal. A great starter drink."},
+{name:"Jungle Bird",base:["rum"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Lowball",chill:false,
+ ing:["rum","triple sec","lime","simple syrup","orange juice"],
+ ratio:[["Dark rum","2"],["Triple sec","0.75"],["Fresh lime","0.75"],["OJ","1"],["Simple syrup","0.5"]],
+ method:"Cut an orange wheel and set it aside. Add all to shaker. Shake hard with ice. Strain into lowball over fresh ice. Lay the orange wheel flat on top.",garnish:"Orange wheel laid flat on drink surface",note:"Old Monk is perfect here. A tropical rum cocktail with enough bitterness from the triple sec and lime to stop it being sweet. Summer evenings."},
+{name:"Trinidad Sour",base:["whisky"],type:["classic"],season:["winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["whisky","bitters","lime","honey","simple syrup"],
+ ratio:[["Angostura bitters","1"],["Teacher's 50","0.75"],["Honey syrup","0.75"],["Fresh lime","0.5"]],
+ method:"Chill the glass. Yes — Angostura is the primary ingredient here, not a dash. Add all to shaker. Shake hard with ice 12 seconds. Fine strain into chilled cocktail glass.",garnish:"Expressed orange peel",note:"The drink where Angostura is the base spirit. It sounds insane and tastes extraordinary. Complex, bitter, spiced, layered. Only for the curious."},
+{name:"Bamboo",base:["wine"],type:["classic"],season:["monsoon","winter"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["wine","vermouth","bitters"],
+ ratio:[["Dry sherry or dry white wine","1"],["Dry vermouth","1"],["Angostura bitters","2 dashes"]],
+ method:"Chill the glass. Add wine, vermouth, bitters to a mixing glass with lots of ice. Stir 30 rotations — slow and deliberate. Strain into chilled cocktail glass.",garnish:"Expressed lemon peel",note:"A low-alcohol stirred cocktail. Sophisticated, dry, aromatic. Excellent for guests who want something elegant but lighter."},
+{name:"Espresso Martini",base:["vodka"],type:["classic"],season:["monsoon","winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["vodka","triple sec","coffee","simple syrup"],
+ ratio:[["Vodka","2"],["Strong cold espresso or cold brew coffee","1"],["Triple sec","0.5"],["Simple syrup","0.25"]],
+ method:"Freeze the glass. Brew espresso and let it cool completely — or use good quality cold brew. Add vodka, cold coffee, triple sec, syrup to shaker. Fill with lots of ice. Shake VERY hard for 15 seconds — you are building a foam layer. Fine strain into frosted glass in one single pour without stopping. The foam settles on top.",garnish:"3 coffee beans placed in a triangle on the foam — do this immediately before serving",note:"The foam is the signature. It only forms with cold coffee and vigorous shaking. Three beans in a triangle is tradition — health, wealth, happiness. If the foam collapses, your coffee was too warm. Triple sec substitutes for Kahlua — different profile but works."},
+{name:"Paloma",base:["tequila"],type:["classic","future"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["tequila","lime","grapefruit soda","salt"],
+ ratio:[["Blanco tequila","2"],["Fresh lime","0.5"],["Grapefruit soda","4"],["Salt","pinch"]],
+ method:"Cut a lime wheel and press it inside the glass before ice. Rim half the glass with salt — run the cut lime around just half the rim, dip into salt. Fill glass with ice. Pour tequila. Squeeze lime. Add a pinch of salt. Top grapefruit soda slowly down the side. One slow stir.",garnish:"Lime wheel pressed inside glass before ice, salt half-rim",note:"Future bar. Easier than a Margarita and arguably more refreshing. Sting grapefruit works as a substitute. The half salt rim means every sip is different — the guest controls the salinity."},
+
+/* ── NEW GIN ───────────────────────────────────────── */
+{name:"Southside",base:["gin"],type:["classic"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["gin","lime","simple syrup","mint"],
+ ratio:[["Gin","3"],["Fresh lime","1"],["Simple syrup","0.75"],["Mint","6-8 leaves"]],
+ method:"Freeze the cocktail glass. Pick your garnish mint sprig and set aside. Add mint leaves, lime juice, syrup to shaker and muddle gently — 3 presses only. Add gin and ice. Shake hard 12 seconds. Double strain through both strainers into the frosted glass — you want zero mint debris. Slap the garnish mint and place it on top.",garnish:"Slapped mint sprig laid on top of the drink",note:"A Gimlet with mint. Clean, cold, stunning. The double strain is mandatory — no mint shreds in a chilled cocktail."},
+{name:"Last Word",base:["gin"],type:["classic"],season:["monsoon","winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["gin","lime","triple sec","simple syrup"],
+ ratio:[["Gin","1"],["Green Chartreuse or triple sec","1"],["Maraschino or triple sec","1"],["Fresh lime","1"]],
+ method:"Chill the glass. Equal parts — measure precisely. Shake hard with ice. Fine strain into frosted glass.",garnish:"Lime wheel on rim",note:"One of the greatest equal-parts cocktails. The herbal complexity is usually from Green Chartreuse — use triple sec as an accessible substitute that changes but doesn't ruin it."},
+{name:"Bramble",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Lowball",chill:false,
+ ing:["gin","lime","simple syrup","berry syrup"],
+ ratio:[["Gin","2"],["Fresh lime","1"],["Simple syrup","0.75"],["Blackberry or mixed berry syrup","0.5 float"]],
+ method:"Cut a lime wheel garnish and set it aside. Build gin, lime, syrup over crushed ice or regular ice packed tight in the lowball. Stir briefly. Slowly drizzle the berry syrup over the back of the bar spoon so it creates a bleeding purple layer through the drink — do not mix it in. Place lime wheel on the side.",garnish:"Lime wheel on the side, fresh berry on top if available",note:"The purple-pink bleed through a clear gin drink is one of the most striking visuals behind a bar. Berry syrup from any good store works. Serve with a straw."},
+{name:"Pegu Club",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["gin","triple sec","lime","bitters"],
+ ratio:[["Gin","3"],["Triple sec","1"],["Fresh lime","0.75"],["Angostura bitters","2 dashes"]],
+ method:"Chill the glass. Add gin, triple sec, lime, bitters to shaker. Fill with ice. Shake hard. Fine strain into frosted cocktail glass.",garnish:"Expressed lime peel",note:"An older classic — gin-forward, slightly bitter, dry. Similar structure to a White Lady but with bitters adding depth. Very good with Greater Than."},
+
+/* ── NEW VODKA ─────────────────────────────────────── */
+{name:"Pornstar Martini",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["vodka","triple sec","passion fruit","lime","simple syrup"],
+ ratio:[["Vodka","2"],["Triple sec","0.5"],["Passion fruit pulp or juice","1"],["Lime","0.5"],["Simple syrup","0.5"]],
+ method:"Chill the glass and a shot glass. Add vodka, triple sec, passion fruit, lime, syrup to shaker. Fill with ice. Shake hard. Fine strain into frosted cocktail glass. Serve with a small shot of prosecco or sparkling wine on the side — the guest pours it in themselves.",garnish:"Half a passion fruit placed on top of the foam — or a lime wheel if passion fruit unavailable",note:"The prosecco shot on the side is the signature experience. Passion fruit pulp from the fruit directly or frozen. A crowd-pleasing elegant drink."},
+{name:"Watermelon Vodka Spritz",base:["vodka"],type:["indian","signature"],season:["summer"],complexity:2,glass:"Highball",chill:false,
+ ing:["vodka","watermelon","lime","simple syrup","soda"],
+ ratio:[["Vodka","2"],["Fresh watermelon juice","2"],["Lime","0.5"],["Simple syrup","0.25"],["Soda","2"]],
+ method:"Juice fresh watermelon by blending and straining. Set a watermelon triangle aside as garnish. Build over ice — vodka, watermelon juice, lime, syrup. Stir once. Top soda gently. Add garnish.",garnish:"Small watermelon triangle on rim — cut before juicing",note:"Summer only — May to July when watermelon is at peak. Fresh juice only, blended and strained. The colour in a highball glass is stunning. Light, hydrating, genuinely refreshing."},
+{name:"Black Russian",base:["vodka"],type:["classic"],season:["monsoon","winter"],complexity:1,glass:"Lowball",chill:false,
+ ing:["vodka","coffee","simple syrup"],
+ ratio:[["Vodka","2"],["Cold brew coffee or strong cold espresso","1"],["Simple syrup","0.25"]],
+ method:"Build over ice in lowball. Pour vodka. Add cold coffee. Add syrup. Stir gently once with bar spoon.",garnish:"3 coffee beans",note:"The simpler ancestor of the Espresso Martini. Cold brew works beautifully. Kahlua is traditional but cold brew plus syrup is a legitimate home bar substitute."},
+
+/* ── NEW WHISKY ────────────────────────────────────── */
+{name:"Blood and Sand",base:["whisky"],type:["classic"],season:["monsoon","winter"],complexity:3,glass:"Cocktail glass",chill:true,
+ ing:["whisky","triple sec","lime","orange juice"],
+ ratio:[["Blended Scotch","1"],["Triple sec","1"],["OJ","1"],["Lime","0.5"]],
+ method:"Chill the glass. Cut an orange twist and set it aside. Add whisky, triple sec, fresh orange juice, lime to shaker. Shake hard with ice. Fine strain into chilled cocktail glass. Express orange twist, drop in.",garnish:"Expressed orange twist — prepared before shaking",note:"A rarity — a Scotch cocktail with orange juice. Named after the 1922 Rudolph Valentino film. Teacher's 50 works. Unusual but very drinkable."},
+{name:"Mamie Taylor",base:["whisky"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["whisky","lime","ginger beer"],
+ ratio:[["Blended Scotch","2"],["Fresh lime","0.75"],["Ginger beer","4"]],
+ method:"Cut a lime wheel and set aside. Build over ice in highball. Squeeze lime, drop in spent shell. Pour whisky. Top ginger beer gently down the side. Place lime wheel on top.",garnish:"Lime wheel floating on top — placed before serving",note:"A Whisky Moscow Mule in structure. Lighter and more refreshing than a highball. Ginger beer on demand."},
+{name:"Mint Julep",base:["whisky"],type:["classic"],season:["summer"],complexity:2,glass:"Lowball",chill:false,
+ ing:["whisky","simple syrup","mint"],
+ ratio:[["Bourbon or blended Scotch","2"],["Simple syrup","0.75"],["Mint","8-10 leaves"]],
+ method:"Pick the fullest mint sprig and set it aside as garnish. Add remaining mint leaves and simple syrup to glass. Muddle gently — 4 slow presses. Fill glass completely with crushed ice. Pour whisky over the ice slowly. Stir briefly with bar spoon to chill. Pack more crushed ice on top to create a dome. Place the mint sprig so it emerges from the ice. The condensation on the outside of a Mint Julep is part of the experience — serve immediately.",garnish:"Full mint sprig emerging from the ice dome — prepared before muddling",note:"A summer whisky drink. Teacher's 50 works well. The garnish mint should be at nose level so the aroma hits before the sip. Classic Kentucky Derby drink."},
+
+/* ── NEW RUM ────────────────────────────────────────── */
+{name:"Rum Punch",base:["rum"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["rum","lime","simple syrup","orange juice","grenadine"],
+ ratio:[["White or dark rum","2"],["Fresh lime","1"],["Simple syrup","0.75"],["OJ","2"],["Grenadine","0.25"]],
+ method:"Cut an orange wheel and set it aside. Build over ice — rum, lime, syrup, OJ, grenadine. Stir once. Place orange wheel on top.",garnish:"Orange wheel laid on top of the drink",note:"The bartender's rule — 1 of sour (lime), 2 of sweet (syrup), 3 of strong (rum), 4 of weak (OJ). This is the base equation. Rock Paper Rum or Old Monk both work."},
+{name:"Caipirinha (Rum version)",base:["rum"],type:["classic"],season:["summer"],complexity:2,glass:"Lowball",chill:false,
+ ing:["rum","lime","simple syrup"],
+ ratio:[["White rum","3"],["Lime","1"],["Simple syrup","1"]],
+ method:"Cut the lime into 8 small wedges. Place wedges into the glass. Add simple syrup. Muddle the lime firmly — you want both juice and the oils from the peel. Fill with crushed ice or ice packed tight. Pour rum over. Stir briskly.",garnish:"Lime wedge resting on ice",note:"Technically a Caipirinha uses cachaça (Brazilian sugarcane spirit), but white rum gives you the same structure. Rock Paper Rum Coastal White is ideal. Muddle the lime harder here than a Mojito — you want the peel oils."},
+{name:"Pina Colada",base:["rum"],type:["classic"],season:["summer"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","coconut","pineapple","simple syrup"],
+ ratio:[["White rum","2"],["Coconut milk or coconut cream","1"],["Pineapple juice","2"],["Simple syrup","0.25"]],
+ method:"Add all to shaker with plenty of ice. Shake very hard for 15 seconds — coconut needs aggressive mixing. Pour unstrained into a highball glass with ice. Or blend everything with ice for a frozen version.",garnish:"Pineapple wedge on rim if available, or lime wheel",note:"Pineapple and coconut water on demand. Coconut milk instead of cream for a lighter version. A genuinely difficult drink to make poorly — forgiving and crowd-pleasing."},
+
+/* ── NEW BRANDY ─────────────────────────────────────── */
+{name:"Vieux Carré",base:["brandy","whisky"],type:["classic"],season:["winter"],complexity:3,glass:"Lowball",chill:true,
+ ing:["brandy","whisky","vermouth","bitters"],
+ ratio:[["St Remy VSOP","1"],["Teacher's 50","1"],["Sweet vermouth","1"],["Angostura bitters","2 dashes"]],
+ method:"Chill the lowball. Add brandy, whisky, sweet vermouth, bitters to mixing glass with ice. Stir 30 rotations — slow and deliberate. Place large ice cube in chilled lowball. Strain over the cube.",garnish:"Expressed orange peel, wiped on rim",note:"New Orleans classic — brandy and Scotch split the base. The combination of St Remy and Teacher's 50 is genuinely excellent here. A serious winter drink."},
+{name:"Chicago Fizz",base:["brandy","rum"],type:["classic"],season:["monsoon","winter"],complexity:2,glass:"Highball",chill:false,
+ ing:["brandy","rum","lime","simple syrup","soda"],
+ ratio:[["Brandy","1"],["White rum","1"],["Fresh lime","0.75"],["Simple syrup","0.5"],["Soda","3"]],
+ method:"Cut a lime wheel and press inside the highball glass before ice. Fill with ice. Shake brandy, rum, lime, syrup with ice. Strain into the glass over ice. Top with soda down the side.",garnish:"Lime wheel pressed inside glass before ice",note:"Brandy and rum together again — different from Between the Sheets, longer and more refreshing. A crowd-pleaser that feels elegant."},
+
+/* ── NEW WINE ───────────────────────────────────────── */
+{name:"Tinto de Verano",base:["wine"],type:["classic"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["wine","lime soda","lime"],
+ ratio:[["Shiraz or Tempranillo","1"],["Lemon soda or Sprite","1"],["Lime","squeeze"]],
+ method:"Cut a lemon wheel and set aside. Fill highball with ice. Pour red wine. Top lemon soda very gently. Squeeze lime. Place lemon wheel on top.",garnish:"Lemon wheel floating on top of the drink",note:"Spanish summer drink — lighter and sweeter than Kalimotxo, the soda is lemon not cola. Works especially well with Shiraz. An approachable wine drink for guests who find wine too serious."},
+{name:"Glühwein",base:["wine"],type:["classic"],season:["winter"],complexity:2,glass:"Mug or wine glass",chill:false,
+ ing:["wine","simple syrup","orange","cinnamon","clove"],
+ ratio:[["Red wine","4"],["Simple syrup","0.5"],["Orange slices","2"],["Cinnamon sticks","2"],["Cloves","4"]],
+ method:"Add wine, syrup, orange slices, cinnamon, cloves to a small pot. Warm over low heat — do not boil, ever. Simmer gently for 15 mins until the spices have infused. Strain into a warm mug.",garnish:"Cinnamon stick in the mug, orange slice on the side",note:"German mulled wine. Pune winters are mild but real enough for this on a cold December evening. Use Shiraz. Cloves from any kirana. Do not boil — boiling kills the wine and the alcohol."},
+
+/* ── NEW INDIAN ─────────────────────────────────────── */
+{name:"Paan Gin Fizz",base:["gin"],type:["indian","signature"],season:["monsoon","winter"],complexity:3,glass:"Highball",chill:false,
+ ing:["gin","lime","simple syrup","soda","rose","cardamom"],
+ ratio:[["Gin","2"],["Paan syrup or rose-cardamom syrup","1"],["Fresh lime","0.75"],["Soda","3"]],
+ method:"Make paan-style syrup — dissolve sugar in water 1:1, add rose water, crushed cardamom, a few drops of kewra water if available, a pinch of mukhwas (fennel-anise mix). Strain, cool. Build over ice — gin, syrup, lime. Top soda gently. Stir once.",garnish:"Fresh rose petal, fennel seeds on top",note:"The after-dinner paan translated into a cocktail. Fragrant, unusual, deeply Indian. Paan syrup available at some specialty stores in Pune. Otherwise rose-cardamom syrup is the shortcut."},
+{name:"Tamarind Whisky Sour",base:["whisky"],type:["indian","signature"],season:["summer","monsoon"],complexity:2,glass:"Lowball",chill:false,
+ ing:["whisky","tamarind","lime","simple syrup","kala namak"],
+ ratio:[["Teacher's 50","2"],["Tamarind concentrate","0.75"],["Fresh lime","0.5"],["Simple syrup","0.5"],["Kala namak","pinch"]],
+ method:"Dissolve tamarind concentrate in a little warm water, strain any seeds. Add whisky, tamarind, lime, syrup to shaker. Fill with ice. Shake hard for 12 seconds. Fine strain into lowball over fresh ice. Add a tiny pinch of kala namak on top — do not stir in.",garnish:"Lime wheel, pinch of kala namak floating on top",note:"Tamarind and whisky is an extraordinary pairing — the sour-sweet depth of imli against Teacher's malt. Tamarind concentrate from any kirana. Kala namak on top is non-negotiable. Imli Sour is what you can call it for guests."},
+{name:"Cardamom Old Fashioned",base:["whisky"],type:["indian","signature"],season:["winter"],complexity:3,glass:"Lowball",chill:true,
+ ing:["whisky","cardamom syrup","bitters"],
+ ratio:[["Teacher's 50","8"],["Cardamom simple syrup","1"],["Angostura bitters","2 dashes"]],
+ method:"Make cardamom syrup — crush 6 green cardamom pods, simmer in 1:1 sugar-water 10 mins, strain, cool. Prepare wide orange peel garnish first. Build exactly as an Old Fashioned — bitters and syrup first, stir with a splash of whisky, large cube, rest of whisky, stir 20-25 rotations. Express orange peel over surface, wipe rim, drop in.",garnish:"Wide expressed orange peel — prepared before building the drink",note:"The Indian variation on the Old Fashioned. Cardamom and Scotch whisky is one of the great natural Indian pairings. The cardamom syrup keeps in the fridge for 2 weeks — make a batch."},
+{name:"Kala Khatta Vodka",base:["vodka"],type:["indian","signature"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","kokum syrup","lime","kala namak","soda"],
+ ratio:[["Vodka","2"],["Kokum syrup","1"],["Fresh lime","0.5"],["Kala namak","pinch"],["Soda","3"]],
+ method:"Cut a dried kokum piece or lime wheel for garnish. Build over ice — vodka, kokum syrup, lime, kala namak. Top soda gently. Place garnish.",garnish:"Dried kokum piece or lime wheel on rim",note:"Named after the kala khatta ice gola of every Indian childhood. The kokum-kala namak combination is deeply familiar and surprisingly sophisticated in a cocktail. Summer only."},
+{name:"Masala Chai Rum",base:["rum"],type:["indian","signature"],season:["monsoon","winter"],complexity:2,glass:"Lowball",chill:false,
+ ing:["rum","chai","honey","lime"],
+ ratio:[["White rum","2"],["Masala chai syrup","1"],["Honey syrup","0.5"],["Fresh lime","0.5"]],
+ method:"Make chai syrup — brew very strong masala chai with cardamom, ginger, cinnamon, clove. Strain, add equal sugar, dissolve. Cool. Shake rum, chai syrup, honey, lime with ice hard. Strain into lowball over fresh ice.",garnish:"Cinnamon stick, cardamom pod",note:"Different from the Chai Rum hot drink — this is a cold shaken cocktail. The white rum lets the chai spices come through more clearly than Old Monk would. A monsoon evening drink that surprises people."},
+{name:"Nimbu Ginger Beer Mule",base:["vodka"],type:["indian","signature"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","lime","ginger beer","kala namak","mint"],
+ ratio:[["Vodka","2"],["Fresh lime","1"],["Ginger beer","4"],["Kala namak","pinch"]],
+ method:"Slap a mint sprig and set aside as garnish. Build over ice — vodka, lime squeeze, kala namak. Top ginger beer gently. Place mint garnish.",garnish:"Slapped mint sprig, lime wedge",note:"The Indian Moscow Mule. Kala namak instead of regular salt changes the profile completely — the sulphurous, tangy depth ties it to nimbu pani territory. Summer staple."},
+
+/* ── BEERTINIS ──────────────────────────────────────── */
+{name:"Classic Beertini",base:["beer","gin"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["beer","gin","lime","simple syrup"],
+ ratio:[["Gin","1"],["Cold light beer","2"],["Fresh lime","0.5"],["Simple syrup","0.25"]],
+ method:"Freeze the cocktail glass. Add gin, lime, simple syrup to shaker with plenty of ice. Shake hard 10 seconds. Fine strain into the frosted glass — fill it halfway. Gently top with ice-cold light beer poured over the back of the bar spoon so the foam stays intact. Do not stir.",garnish:"Lime wheel balanced on rim — cut before you shake",note:"Kölsch or Basmati Blonde work beautifully here. The delicate beer foam on top of a gin sour base is the whole trick. Pour the beer as gently as you would a French 75 Champagne top."},
+{name:"Shandy Martini",base:["beer","vodka"],type:["classic"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["beer","vodka","lime","honey","ginger"],
+ ratio:[["Vodka","1"],["Fresh ginger juice","0.25"],["Honey syrup","0.5"],["Lime","0.5"],["Cold Kölsch","2"]],
+ method:"Freeze the cocktail glass. Juice fresh ginger through a cloth. Add vodka, ginger juice, honey syrup, lime to shaker with ice. Shake hard. Fine strain into frosted glass halfway. Top very gently with ice-cold Kölsch down the side of the tilted glass. The layers are the visual.",garnish:"Thin ginger slice on the rim, cut before shaking",note:"A summer beertini — the ginger-honey base under cold Kölsch is light and unusual. Kölsch only — heavier beers overwhelm it."},
+{name:"Dark Monk Beertini",base:["beer","rum"],type:["indian","signature"],season:["monsoon","winter"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["beer","rum","cola","lime","simple syrup"],
+ ratio:[["Old Monk","1"],["Cola","0.5"],["Lime","0.5"],["Simple syrup","0.25"],["Dark craft beer","1.5"]],
+ method:"Freeze the glass. Add Old Monk, lime, simple syrup to shaker with ice. Shake hard. Fine strain into frosted cocktail glass — fill it halfway. Add a tiny splash of cold cola. Top with ice-cold Carlsberg Elephant or dark beer very gently. Do not stir — the layers matter.",garnish:"Expressed orange peel, floated on top before beer",note:"Old Monk's molasses and vanilla character under a dark beer is deeply satisfying. Carlsberg Elephant's malt works with the rum. A monsoon evening beertini."},
+{name:"Hibiscus Beer Spritz",base:["beer","gin"],type:["indian","signature"],season:["summer","monsoon"],complexity:2,glass:"Wine glass or Highball",chill:false,
+ ing:["beer","gin","hibiscus","lime","simple syrup"],
+ ratio:[["Gin","1"],["Hibiscus cold brew","1"],["Lime","0.5"],["Simple syrup","0.25"],["Cold light beer","2"]],
+ method:"Cold brew dried hibiscus flowers 4-6 hrs. Cut a lime wheel and set aside. In the glass over ice, combine gin, hibiscus brew, lime, syrup. Stir once. Top cold Kölsch gently over the back of a spoon. The deep crimson-pink bleed through the beer foam is the presentation.",garnish:"Lime wheel inside the glass before ice, hibiscus flower on top if available",note:"The hibiscus cold brew creates a stunning colour gradient through the beer. Dried gudhal flowers from any kirana. Summer signature beertini."},
+{name:"Ginger Beer Beertini",base:["beer","whisky"],type:["classic"],season:["monsoon","winter"],complexity:2,glass:"Lowball",chill:false,
+ ing:["whisky","beer","ginger","honey","lime"],
+ ratio:[["Teacher's 50","1"],["Fresh ginger juice","0.25"],["Honey syrup","0.5"],["Lime","0.5"],["Cold craft beer","2"]],
+ method:"Add whisky, ginger juice, honey, lime to shaker with ice. Shake hard. Strain into lowball over fresh ice. Top cold craft beer gently down the side. Single slow stir.",garnish:"Candied ginger, lime wedge",note:"A winter beertini. Teacher's 50 and craft beer share a malt profile — the ginger and honey are the bridge. Basmati Blonde or Kölsch both work."},
+{name:"Velvet Monk",base:["beer","rum"],type:["indian","signature"],season:["winter"],complexity:1,glass:"Highball",chill:false,
+ ing:["rum","beer","cola","lime"],
+ ratio:[["Old Monk","1"],["Cola","1"],["Cold dark beer","1"],["Lime","squeeze"]],
+ method:"Fill highball with ice. Pour Old Monk. Add cola halfway. Top dark beer gently. Lime squeeze dropped in. Do not stir.",garnish:"Lime wedge on rim",note:"A half-and-half beertini — rum cola meets dark beer. Carlsberg Elephant makes this rich and heavy. A cold winter evening drink."},
+
+/* ── STYLISED CLASSICS ──────────────────────────────── */
+{name:"Zesty G&T",base:["gin"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["gin","tonic","lime","triple sec"],
+ ratio:[["Gin","2"],["Triple sec","0.25"],["Tonic","4"],["Lime","wedge"]],
+ method:"Cut a lime wheel and press it against the inside of the glass — garnish first. Fill with ice to the brim. Pour gin. Add a small pour of triple sec over the ice — just enough to add orange warmth, not enough to dominate. Add tonic gently down the side. One slow stir. The triple sec bleeds gently through the tonic.",garnish:"Lime wheel inside glass, expressed orange peel floated on top",note:"The orange fragrance from the triple sec lifts the botanicals of Greater Than beautifully. A quarter measure only — this is a subtle upgrade, not a different drink. The expressed orange peel on top doubles down on the citrus aroma."},
+{name:"Smoked Honey Highball",base:["whisky"],type:["signature"],season:["winter","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["whisky","honey","soda","lime"],
+ ratio:[["Teacher's 50","2"],["Honey syrup","0.5"],["Chilled soda","3"],["Lime","squeeze"]],
+ method:"Make honey syrup — 2:1 honey to warm water. Cut a lemon peel and set aside. Chill the highball glass with ice. Add Teacher's 50 and honey syrup directly to the glass. Pack with ice fully. Add soda down the side in a slow pour. Express lemon peel over the surface — spray it deliberately across the foam. Drop in.",garnish:"Expressed lemon peel — prepared before ice goes in",note:"The honey rounds Teacher's 50 into something smoother and warmer without touching its character. A stylised highball — barely changed, noticeably better. The lemon express over the honey-sweetened surface is exceptional."},
+{name:"Cardamom Gimlet",base:["gin"],type:["signature","indian"],season:["summer","monsoon"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["gin","lime","simple syrup","cardamom"],
+ ratio:[["Gin","3"],["Fresh lime","1"],["Cardamom simple syrup","0.5"]],
+ method:"Make cardamom syrup — crush 4 green pods, simmer 1:1 sugar-water 10 mins, strain, cool. Freeze the cocktail glass. Cut a lime wheel garnish and set aside. Add gin, lime, cardamom syrup to shaker. Fill with ice. Shake hard 12 seconds. Fine strain into frosted glass. Balance lime wheel on rim.",garnish:"Lime wheel on rim, cardamom pod resting beside it",note:"The classic Gimlet with one Indian substitution — cardamom syrup for plain simple syrup. Greater Than's botanical profile and cardamom are a natural match. Make the syrup in a batch."},
+{name:"Rosé Daiquiri",base:["rum"],type:["signature"],season:["summer"],complexity:2,glass:"Cocktail glass",chill:true,
+ ing:["rum","lime","simple syrup","rooh afza"],
+ ratio:[["White rum","3"],["Fresh lime","1"],["Simple syrup","0.25"],["Rooh Afza","0.5"]],
+ method:"Freeze the cocktail glass. Cut a thin lime wheel garnish and set aside. Add rum, lime, simple syrup, Rooh Afza to shaker. Fill with ice. Shake hard 12-15 seconds. Fine strain into frosted glass — the colour will be a deep blush pink. Balance the lime wheel on the rim.",garnish:"Lime wheel balanced on rim — prepared before shaking",note:"Rooh Afza as the sweetener in a Daiquiri — the rose-herb profile against Rock Paper Rum is unexpected and stunning. The colour in a frosted cocktail glass is restaurant-grade presentation."},
+{name:"Spiced Old Fashioned",base:["whisky"],type:["signature"],season:["winter"],complexity:3,glass:"Lowball",chill:true,
+ ing:["whisky","simple syrup","bitters","cardamom"],
+ ratio:[["Teacher's 50","8"],["Cardamom syrup","0.5"],["Simple syrup","0.5"],["Angostura bitters","2 dashes"]],
+ method:"Split the sweetener — half cardamom syrup, half plain simple syrup. Cut a wide orange peel and set aside. Build exactly as an Old Fashioned — bitters and syrups first, splash of whisky, stir to dissolve. Large cube. Rest of whisky. Stir 20-25 rotations. Express orange peel over surface, wipe rim and outside of glass, drop in.",garnish:"Wide expressed orange peel — prepared before building",note:"A stylised Old Fashioned — the split syrup adds cardamom warmth without overwhelming the whisky. The Teacher's 50 backbone remains. Subtle, seasonal, distinctly Indian."},
+{name:"Honey Bee Mojito",base:["rum"],type:["signature"],season:["summer","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","lime","honey","mint","soda"],
+ ratio:[["White rum","3"],["Fresh lime","1"],["Honey syrup","1"],["Mint","8-10 leaves"],["Soda","3"]],
+ method:"Pick the fullest mint sprig and set aside as garnish — always first. Slap remaining mint leaves between palms. Add to glass with lime wedges and honey syrup. Muddle gently 3-4 presses. Add rum. Fill with ice. Top cold soda down the side. Slap the garnish mint sprig hard and tuck it next to the straw.",garnish:"Firmly slapped mint sprig at nose level — prepared before anything else",note:"Honey syrup replaces simple syrup in the classic Mojito — warmer, more floral, pairs beautifully with Rock Paper Rum's clean profile. The mint aroma on the nose is the signature."},
+
+/* ── TRENDY & MODERN INDIAN ─────────────────────────── */
+{name:"Banarasi Patiala",base:["whisky"],type:["indian","signature"],season:["winter","monsoon"],complexity:2,glass:"Lowball",chill:false,
+ ing:["whisky","rooh afza","lime","soda","ginger"],
+ ratio:[["Teacher's 50","2"],["Rooh Afza","0.5"],["Fresh ginger juice","0.25"],["Fresh lime","0.5"],["Soda","2"]],
+ method:"Juice fresh ginger through a cloth — just a teaspoon. Add whisky, Rooh Afza, ginger juice, lime to shaker with ice. Shake briefly — 6-8 seconds only, don't over-dilute. Strain into a lowball over one large cube. Top a splash of soda down the side. Express a lemon peel over the top.",garnish:"Expressed lemon peel, a small sprig of mint on the cube",note:"The Patiala peg meets Banarasi rose — Teacher's 50 with Rooh Afza and ginger. Bold, Indian, deeply familiar in a new form. The ginger heat and rose sweetness are unexpected against Scotch malt. A conversation drink."},
+{name:"Iced Spice Chai Spiked",base:["rum","whisky"],type:["indian","signature"],season:["monsoon","winter"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","chai","honey","milk","simple syrup"],
+ ratio:[["Old Monk or Teacher's 50","2"],["Masala chai cold brew","3"],["Honey syrup","0.5"],["Chilled milk","0.5"]],
+ method:"Cold brew masala chai — steep 1 tsp strong masala chai blend in 200ml cold water for 8 hrs with crushed cardamom, ginger, cinnamon. Strain cold. Add spirit and honey syrup to shaker with ice. Shake hard. Strain into highball over fresh ice. Pour cold brew tea. Float cold milk over the back of a spoon — it creates a creamy layer on top.",garnish:"Cinnamon stick, star anise, cardamom pod on top of the milk float",note:"The viral iced chai trend — spiked and made properly. Old Monk's vanilla character works better than Teacher's here. The cold milk float is the signature visual. Make the cold brew the night before. Instagram-ready without trying."},
+{name:"Imli Mule",base:["vodka"],type:["indian","signature"],season:["summer","monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["vodka","tamarind","lime","ginger beer","kala namak"],
+ ratio:[["Vodka","2"],["Tamarind concentrate","0.75"],["Fresh lime","0.5"],["Kala namak","pinch"],["Ginger beer","4"]],
+ method:"Dissolve tamarind concentrate in a tiny splash of warm water, strain seeds, cool. Slap a mint sprig and set aside as garnish. Build over ice — vodka, tamarind, lime, kala namak. Stir once. Top ginger beer very gently down the side.",garnish:"Slapped mint sprig, dried tamarind piece on rim if available",note:"The Moscow Mule goes to a Banaras chaat stall. The imli-kala namak-ginger combination is deeply Indian and deeply delicious. Tamarind concentrate from any kirana. One of the most crowd-pleasing Indian cocktails you can make."},
+{name:"Aam Panna Margarita",base:["gin"],type:["indian","signature"],season:["summer"],complexity:2,glass:"Lowball or Cocktail glass",chill:true,
+ ing:["gin","aam panna","lime","triple sec","kala namak"],
+ ratio:[["Gin","2"],["Aam Panna concentrate","1"],["Triple sec","0.5"],["Fresh lime","0.75"],["Kala namak","rim"]],
+ method:"Raw mango season only — April to June. Mix kala namak and regular salt 50/50 for the rim. Run a lime wedge around half the glass rim, press into the salt mix. Freeze the glass. Add gin, aam panna, triple sec, lime to shaker with plenty of ice. Shake very hard. Fine strain into rimmed glass over one cube or straight up.",garnish:"Kala namak and salt half-rim, lime wheel on the side",note:"A Margarita structure without tequila — gin instead. The raw mango sourness replaces lime as the primary sour element. Triple sec bridges the citrus. The kala namak rim is mandatory — it transforms this into something unmistakably Indian."},
+{name:"Jamun Mojito",base:["rum"],type:["indian","signature"],season:["monsoon"],complexity:2,glass:"Highball",chill:false,
+ ing:["rum","lime","simple syrup","mint","soda","jamun"],
+ ratio:[["White rum","3"],["Fresh lime","0.75"],["Jamun (Java plum) pulp or syrup","1"],["Simple syrup","0.25"],["Mint","8-10 leaves"],["Soda","3"]],
+ method:"Jamun is peak monsoon — July to August. If using fresh jamun, blend and strain through a fine cloth for a deep purple juice. Pick mint garnish sprig and set aside. Slap remaining mint. Muddle mint, lime, simple syrup gently in glass — 3 presses. Add rum, jamun. Fill with ice. Top soda gently. Slap the garnish mint hard and place at nose level.",garnish:"Firmly slapped mint sprig, jamun fruit on the rim if available",note:"Monsoon exclusive. The deep blue-purple of jamun juice bleeding through a Mojito in a highball glass is extraordinary. Jamun carries natural tartness — reduce the lime if the fruit is very sour. Season-specific, which makes it special."},
+{name:"Peach Schnapps Fizz",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","peach schnapps","lime","soda"],
+ ratio:[["Vodka","1"],["Peach Schnapps","1"],["Fresh lime","0.5"],["Soda","3"]],
+ method:"Cut a lime wheel and press inside the glass before ice. Fill with ice. Pour vodka and peach schnapps together. Squeeze lime. Top soda gently down the side. One slow stir.",garnish:"Lime wheel inside glass, thin peach slice on rim if available",note:"Peach Schnapps brings natural sweetness — no simple syrup needed. Light, fragrant, crowd-pleasing. A beginner-friendly cocktail that tastes like effort."},
+{name:"Fuzzy Navel",base:["vodka"],type:["classic"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","peach schnapps","orange juice"],
+ ratio:[["Vodka","1"],["Peach Schnapps","1"],["Fresh orange juice","3"]],
+ method:"Cut an orange wheel and set aside. Build over ice — vodka, peach schnapps, fresh OJ. Stir gently once. Place orange wheel on top.",garnish:"Orange wheel laid flat on top of the drink",note:"Classic Peach Schnapps cocktail. Fresh squeezed OJ makes the difference. Summer only — peachy, citrusy, no technique required."},
+{name:"Peach Bellini",base:["wine"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Flute",chill:true,
+ ing:["peach schnapps","sparkling wine"],
+ ratio:[["Peach Schnapps","1"],["Cold sparkling wine or prosecco","3"]],
+ method:"Chill the flute 20 mins prior. Pour peach schnapps into the frosted flute first. Top with very cold sparkling wine poured slowly down the inside of the tilted glass. Do not stir — the schnapps rises naturally.",garnish:"None needed — the peachy foam is the visual",note:"Traditionally made with fresh white peach purée — Peach Schnapps is the home bar substitute and works beautifully. Celebratory, elegant, minimal effort. Perfect for her."},
+{name:"Peach Mule",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","peach schnapps","lime","ginger beer"],
+ ratio:[["Vodka","1"],["Peach Schnapps","0.75"],["Fresh lime","0.5"],["Ginger beer","4"]],
+ method:"Cut a lime wheel and set aside. Build over ice — vodka, peach schnapps, lime squeeze. Top ginger beer gently down the side. Place lime wheel on top.",garnish:"Lime wheel floating on top, peach slice if available",note:"Moscow Mule with a peach dimension. The schnapps softens the ginger bite and adds fruit fragrance. Ginger beer on demand."},
+{name:"Peach Sour",base:["whisky","vodka"],type:["classic"],season:["summer","monsoon"],complexity:2,glass:"Lowball",chill:false,
+ ing:["whisky","peach schnapps","lime","simple syrup"],
+ ratio:[["Teacher's 50 or Vodka","2"],["Peach Schnapps","0.75"],["Fresh lime","0.75"],["Simple syrup","0.25"]],
+ method:"Cut a lime wheel and set aside. Add spirit, peach schnapps, lime, syrup to shaker with ice. Shake hard 12 seconds. Fine strain into lowball over fresh ice. Lay the lime wheel flat on top of the drink.",garnish:"Lime wheel laid flat on the surface — not on rim",note:"Teacher's 50 version is the more interesting choice — the Scotch malt and peach combination is underexplored and genuinely good. Vodka version is cleaner and more crowd-pleasing. Make both and decide."},
+{name:"Peach Gin Smash",base:["gin"],type:["signature"],season:["summer"],complexity:2,glass:"Lowball",chill:false,
+ ing:["gin","peach schnapps","lime","mint","simple syrup"],
+ ratio:[["Gin","2"],["Peach Schnapps","0.75"],["Fresh lime","0.75"],["Simple syrup","0.25"],["Mint","6 leaves"]],
+ method:"Pick a mint sprig garnish and set aside. Slap remaining mint. Add mint, lime, syrup to shaker — muddle gently 3 presses. Add gin, peach schnapps, ice. Shake hard 10 seconds. Double strain into lowball over ice. Slap garnish mint hard and press into the ice.",garnish:"Firmly slapped mint sprig pressed into the ice",note:"A Gin Smash with peach schnapps in the base — fragrant, light, complex for its simplicity. Greater Than's botanical profile and peach are a beautiful match."},
+{name:"Woo Woo",base:["vodka"],type:["classic"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["vodka","peach schnapps","cranberry"],
+ ratio:[["Vodka","2"],["Peach Schnapps","1"],["Cranberry juice","3"]],
+ method:"Cut a lime wheel and set aside. Build over ice — vodka, peach schnapps, cranberry. Stir once. Place lime wheel on top.",garnish:"Lime wheel on top of the drink",note:"Peachy, cranberry, easy. A crowd drink that requires no skill and no apology. Cranberry on demand."},
+{name:"Sex on Monk's Beach",base:["rum","vodka"],type:["indian","signature"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["rum","vodka","peach schnapps","orange juice","cranberry"],
+ ratio:[["Old Monk","0.5"],["Vodka","1"],["Peach Schnapps","0.5"],["Orange juice","2"],["Cranberry","1"]],
+ method:"Cut an orange wheel and set aside. Build over ice — vodka, Old Monk, peach schnapps, OJ, cranberry. Stir gently once. Orange wheel on top.",garnish:"Orange wheel on top, lime wedge on rim",note:"Sex on the Beach with Old Monk splitting the base. The rum's vanilla-molasses under the peach and citrus is richer and more interesting than the standard version. Crowd drink with a home bar twist."},
+
+/* ── VIRGIN ────────────────────────────────────────── */
+{name:"Kokum Cooler",base:["virgin"],type:["indian"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["kokum syrup","lime","kala namak","soda"],ratio:[["Kokum syrup","1"],["Fresh lime","0.5"],["Kala namak","pinch"],["Soda","4"]],method:"Mix kokum syrup and lime. Add kala namak. Top cold soda. Stir.",garnish:"Dried kokum, lime wedge",note:"The best non-alcoholic option for a home bar. Tart, complex, genuinely satisfying."},
+{name:"Masala Nimbu Soda",base:["virgin"],type:["indian"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["lime","simple syrup","cumin","soda"],ratio:[["Fresh lime","1"],["Simple syrup","to taste"],["Cumin powder","pinch"],["Soda","4"]],method:"Squeeze lime into glass with ice. Add syrup and cumin. Top soda, stir once.",garnish:"Lime wheel, cumin pinch on top",note:"Serve to guests who aren't drinking — better than most mocktails."},
+{name:"Aam Panna Cooler",base:["virgin"],type:["indian"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["aam panna","kala namak","soda","lime"],ratio:[["Aam Panna","1"],["Kala namak","pinch"],["Soda","3"],["Lime","0.5"]],method:"Mix aam panna with lime and kala namak. Build over ice, top soda.",garnish:"Lime wedge",note:"Raw mango season — April to June. Homemade or good quality only."},
+{name:"Darjeeling Iced Tea",base:["virgin"],type:["indian"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["darjeeling tea","honey","lime","soda"],ratio:[["Darjeeling cold brew","3"],["Honey","0.5"],["Lime","0.5"],["Soda","1"]],method:"Cold brew Darjeeling 6-8 hrs in fridge. Mix with honey and lime. Build over ice, light soda top.",garnish:"Lemon slice, sprig of fresh mint",note:"Elegant non-alcoholic drink. Floral and complex. Guests who don't drink will appreciate something this thoughtful."},
+{name:"Rose Sharbat Fizz",base:["virgin"],type:["indian"],season:["summer"],complexity:1,glass:"Highball",chill:false,
+ ing:["rooh afza","lime","soda","kala namak"],ratio:[["Rooh Afza","1"],["Lime","0.5"],["Soda","4"],["Kala namak","tiny pinch"]],method:"Build over ice. Pour Rooh Afza, lime, kala namak. Top soda gently. Do not over-stir.",garnish:"Dried rose bud, lime wedge",note:"Simple, beautiful, always works. The kala namak pinch is the secret — balances the sweetness."},
+{name:"Virgin Imli Mule",base:["virgin"],type:["indian"],season:["summer","monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["tamarind","lime","ginger beer","kala namak","simple syrup"],ratio:[["Tamarind concentrate","1"],["Fresh lime","0.5"],["Simple syrup","0.5"],["Kala namak","pinch"],["Ginger beer","5"]],method:"Dissolve tamarind in a tiny splash of water, strain, cool. Mix tamarind, lime, syrup, kala namak in glass over ice. Top ginger beer gently.",garnish:"Dried tamarind on rim, slapped mint sprig",note:"The non-alcoholic Imli Mule — just as satisfying. Works as a mocktail for guests who don't drink but want something interesting."},
+{name:"Jamun Sharbat Fizz",base:["virgin"],type:["indian"],season:["monsoon"],complexity:1,glass:"Highball",chill:false,
+ ing:["jamun","lime","simple syrup","kala namak","soda"],ratio:[["Jamun juice or pulp","1"],["Fresh lime","0.5"],["Simple syrup","0.5"],["Kala namak","pinch"],["Soda","4"]],method:"Blend and strain jamun. Mix with lime, syrup, kala namak. Build over ice, top soda gently. Stir once.",garnish:"Jamun on the rim, lime wedge",note:"Monsoon only. The deep purple colour in a highball over ice is a statement. Kala namak and jamun is a classic Indian pairing."},
+];
+
+/* ═══════════════════════════════════════════════════════
+   INGREDIENT LIST (for My Bar) — comprehensive, matches all ing: arrays
+═══════════════════════════════════════════════════════ */
+const ALL_INGS = [
+  /* spirits */
+  "gin","vodka","whisky","rum","brandy","tequila","peach schnapps",
+  /* beer & wine */
+  "beer","wine","sparkling wine","aperol",
+  /* mixers */
+  "tonic","soda","ginger beer","cola","lime soda","craft cola",
+  /* fresh */
+  "lime","orange juice","grapefruit","cranberry","milk","coconut water",
+  /* syrups & sweeteners */
+  "simple syrup","honey","triple sec","vermouth","grenadine","bitters",
+  /* indian pantry */
+  "rooh afza","kokum syrup","aam panna","jaljeera","darjeeling tea",
+  "tamarind","jamun","hibiscus","aam panna",
+  /* fresh aromatics */
+  "ginger","mint","chai",
+  /* spices & salts */
+  "kala namak","chaat masala","tabasco","cardamom","saffron","cumin",
+  /* dairy */
+  "yogurt",
+];
+/* de-duplicate */
+const ALL_INGS_DEDUPED = [...new Set(ALL_INGS)];
+
+const ING_EMOJI = {
+  gin:'🌿',vodka:'🧊',whisky:'🥃',rum:'🍬',tequila:'🌵',brandy:'🍂','peach schnapps':'🍑',
+  beer:'🍺',wine:'🍷','sparkling wine':'🍾',aperol:'🟠',
+  tonic:'🫧',soda:'💧','ginger beer':'🫚',cola:'🟤','lime soda':'🟡','craft cola':'✨',
+  lime:'🍋','orange juice':'🍊',cranberry:'🔴',milk:'🥛','coconut water':'🥥',
+  'simple syrup':'🍬',honey:'🍯','triple sec':'🍊',vermouth:'🍸',grenadine:'🌹',bitters:'💧',
+  'rooh afza':'🌸','kokum syrup':'🟣','aam panna':'🥭',jaljeera:'🌿','darjeeling tea':'🍵',
+  tamarind:'🟤',jamun:'🟣',hibiscus:'🌺',
+  ginger:'🫚',mint:'🌱',chai:'☕',
+  'kala namak':'🧂','chaat masala':'🌶️',tabasco:'🌶️',cardamom:'💚',saffron:'🌼',cumin:'🟤',
+  yogurt:'🥛',
+};
+
+let selectedIngs = new Set();
+
+function buildIngGrid() {
+  const g = document.getElementById('ingGrid');
+  g.innerHTML = '';
+  // Group ingredients by category for better UX
+  const GROUPS = [
+    {label:'🫙 Spirits', items:["gin","vodka","whisky","rum","brandy","tequila","peach schnapps"]},
+    {label:'🍺 Beer & Wine', items:["beer","wine","sparkling wine","aperol"]},
+    {label:'🫧 Mixers', items:["tonic","soda","ginger beer","cola","lime soda","craft cola"]},
+    {label:'🍋 Fresh', items:["lime","orange juice","cranberry","milk","coconut water"]},
+    {label:'🍯 Syrups & Mods', items:["simple syrup","honey","triple sec","vermouth","grenadine","bitters"]},
+    {label:'🌶️ Indian Pantry', items:["rooh afza","kokum syrup","aam panna","jaljeera","darjeeling tea","tamarind","jamun","hibiscus"]},
+    {label:'🌱 Aromatics', items:["ginger","mint","chai","cardamom","saffron","cumin"]},
+    {label:'🧂 Spice & Salt', items:["kala namak","chaat masala","tabasco","yogurt"]},
+  ];
+  GROUPS.forEach(group => {
+    const groupDiv = document.createElement('div');
+    groupDiv.style.cssText = 'width:100%;margin-bottom:.75rem;';
+    groupDiv.innerHTML = `<div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-xs);margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--border)">${group.label}</div><div class="ing-group-pills" style="display:flex;flex-wrap:wrap;gap:5px;"></div>`;
+    const pillWrap = groupDiv.querySelector('.ing-group-pills');
+    group.items.forEach(ing => {
+      const id = 'ing-' + ing.replace(/[\s]/g,'-');
+      const emoji = ING_EMOJI[ing] || '•';
+      pillWrap.innerHTML += `<input type="checkbox" class="ing-chk" id="${id}" value="${ing}" onchange="renderBar()"><label class="ing-lbl" for="${id}">${emoji} ${ing}</label>`;
+    });
+    g.appendChild(groupDiv);
+  });
+}
+
+function resetIngredients() {
+  document.querySelectorAll('.ing-chk').forEach(c => c.checked = false);
+  selectedIngs.clear();
+  renderBar();
+}
+
+function renderBar() {
+  selectedIngs = new Set([...document.querySelectorAll('.ing-chk:checked')].map(c => c.value));
+  const grid = document.getElementById('barGrid');
+  const info = document.getElementById('ingMatchInfo');
+  const countLbl = document.getElementById('barCountLbl');
+  grid.innerHTML = '';
+
+  if (selectedIngs.size === 0) {
+    countLbl.textContent = '';
+    info.textContent = '';
+    grid.innerHTML = '<div class="no-res" style="padding:2rem 0">☝️ Tick the ingredients you have above — we\'ll show every drink you can make right now.</div>';
+    return;
+  }
+
+  // Fuzzy match: a drink ingredient is matched if ANY selected ingredient is contained in it or vice versa
+  function ingMatched(drinkIng) {
+    const d = drinkIng.toLowerCase();
+    for (const sel of selectedIngs) {
+      const s = sel.toLowerCase();
+      if (d.includes(s) || s.includes(d)) return true;
+    }
+    return false;
+  }
+
+  // Score: fully makeable = 2, mostly makeable (1 missing) = 1, else 0
+  const scored = D.map(d => {
+    const missing = d.ing.filter(i => !ingMatched(i));
+    if (missing.length === 0) return {d, score:2, missing:[]};
+    if (missing.length === 1) return {d, score:1, missing};
+    return {d, score:0, missing};
+  }).filter(x => x.score > 0).sort((a,b) => b.score - a.score || a.d.complexity - b.d.complexity);
+
+  const makeable = scored.filter(x => x.score === 2);
+  const almostMakeable = scored.filter(x => x.score === 1);
+
+  info.textContent = '';
+  countLbl.innerHTML = `<span style="color:var(--green-l)">✓ ${makeable.length} drink${makeable.length!==1?'s':''} you can make now</span>${almostMakeable.length ? ` &nbsp;·&nbsp; <span style="color:var(--amber)">~ ${almostMakeable.length} with 1 more ingredient</span>` : ''}`;
+
+  if (!makeable.length && !almostMakeable.length) {
+    grid.innerHTML = '<div class="no-res">🍸 Nothing matches yet — add more ingredients above.</div>';
+    return;
+  }
+
+  if (makeable.length) {
+    const secLabel = document.createElement('div');
+    secLabel.className = 'rlabel';
+    secLabel.innerHTML = '✅ Make right now';
+    grid.appendChild(secLabel);
+    const makeGrid = document.createElement('div');
+    makeGrid.className = 'grid';
+    makeable.forEach((x, i) => makeGrid.appendChild(buildCard(x.d, 'bar-' + i, 1)));
+    grid.appendChild(makeGrid);
+  }
+
+  if (almostMakeable.length) {
+    const secLabel2 = document.createElement('div');
+    secLabel2.className = 'rlabel';
+    secLabel2.style.marginTop = '1.5rem';
+    secLabel2.innerHTML = '🛒 One ingredient away';
+    grid.appendChild(secLabel2);
+    const almostGrid = document.createElement('div');
+    almostGrid.className = 'grid';
+    almostMakeable.forEach((x, i) => {
+      const card = buildCard(x.d, 'almost-' + i, 1);
+      // Add missing ingredient badge
+      const badge = document.createElement('div');
+      badge.style.cssText = 'font-size:10px;color:var(--amber);margin-top:4px;padding:3px 8px;background:var(--amber-dim);border-radius:var(--r-full);display:inline-block;border:1px solid rgba(200,152,64,.2)';
+      badge.textContent = '+ need: ' + x.missing.join(', ');
+      card.querySelector('.card-left').appendChild(badge);
+      almostGrid.appendChild(card);
+    });
+    grid.appendChild(almostGrid);
+  }
+}
+
+// Pre-load the user's actual bar
+function selectMyBar() {
+  const myBar = ["gin","vodka","whisky","rum","brandy","beer","wine","tonic","soda","cola","lime","orange juice","simple syrup","honey","triple sec","rooh afza","kokum syrup","aam panna","darjeeling tea","ginger","mint","kala namak","bitters","sparkling wine","ginger beer","cranberry","hibiscus","tamarind","cardamom","chai","milk","simple syrup"];
+  document.querySelectorAll('.ing-chk').forEach(c => {
+    c.checked = myBar.some(m => c.value.toLowerCase().includes(m) || m.includes(c.value.toLowerCase()));
+  });
+  renderBar();
+}
+
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'mood') initMood();
+  if (name === 'quick') initQD();
+}
+
+/* ═══════════════════════════════════════════════════════
+   FILTERS & SEARCH
+═══════════════════════════════════════════════════════ */
+let fBase='all', fType='all', fSeason='all';
+
+function setF(cat, val, btn) {
+  if (cat==='base') fBase=val; else if (cat==='type') fType=val; else fSeason=val;
+  const row = cat==='base'?'baseF': cat==='type'?'typeF':'seasonF';
+  document.querySelectorAll('#'+row+' .fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function onSearch() {
+  const val = document.getElementById('srch').value;
+  document.getElementById('srchClear').classList.toggle('show', val.length > 0);
+  render();
+}
+
+function clearSearch() {
+  document.getElementById('srch').value = '';
+  document.getElementById('srchClear').classList.remove('show');
+  render();
+}
+
+function matches(d) {
+  const s = document.getElementById('srch').value.toLowerCase();
+  const bm = fBase==='all' || d.base.includes(fBase);
+  const tm = fType==='all' || d.type.includes(fType);
+  const sm = fSeason==='all' || d.season.includes(fSeason);
+  const srm = !s || d.name.toLowerCase().includes(s)
+    || d.base.some(b => b.includes(s))
+    || d.type.some(t => t.includes(s))
+    || d.ratio.some(r => r[0].toLowerCase().includes(s))
+    || (d.note && d.note.toLowerCase().includes(s));
+  return bm && tm && sm && srm;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SPIRIT / EMOJI HELPERS
+═══════════════════════════════════════════════════════ */
+const SE = {gin:'🌿',vodka:'🧊',whisky:'🥃',rum:'🍬',tequila:'🌵',brandy:'🍂',wine:'🍷',beer:'🍺',virgin:'🌊','peach schnapps':'🍑'};
+function getEmoji(bases) {
+  for (const s of ['gin','vodka','whisky','rum','tequila','brandy','wine','beer','peach schnapps','virgin'])
+    if (bases.includes(s)) return SE[s] || '🍹';
+  return '🍹';
+}
+
+function tagHtml(d) {
+  let h = '';
+  if (d.type.includes('signature')) h += '<span class="tag t-sig">⭐ Sig</span>';
+  if (d.type.includes('indian'))    h += '<span class="tag t-ind">🌶️ Indian</span>';
+  if (d.type.includes('future'))    h += '<span class="tag t-fut">🔮 Future</span>';
+  if (d.type.includes('beertini'))  h += '<span class="tag t-beer">🍺 Beertini</span>';
+  if (d.season.includes('summer'))  h += '<span class="tag t-sum">☀️</span>';
+  if (d.season.includes('monsoon')) h += '<span class="tag t-mon">🌧️</span>';
+  if (d.season.includes('winter'))  h += '<span class="tag t-win">❄️</span>';
+  h += '<span class="dots" title="Complexity">';
+  for (let i=1;i<=3;i++) h += `<span class="dot${i<=d.complexity?' on':''}"></span>`;
+  h += '</span>';
+  return h;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CARD BUILDER (shared by recipes + my bar)
+═══════════════════════════════════════════════════════ */
+function buildCard(d, idPrefix, batchMult) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.setAttribute('data-base', d.base.join(' '));
+
+  const bases = d.base.filter(b => !['virgin'].includes(b)).map(b => b.charAt(0).toUpperCase()+b.slice(1)).join(' · ');
+  const emoji = getEmoji(d.base);
+  const chillHtml = d.chill ? '<span class="chill-flag">❄ CHILL GLASS</span>' : '';
+
+  // Batch-multiplied ratio
+  const mult = batchMult || 1;
+  const ratioHtml = d.ratio.map(r => {
+    const num = parseFloat(r[1]);
+    const val = !isNaN(num) ? (num * mult % 1 === 0 ? num * mult : (num * mult).toFixed(1)) : r[1];
+    return `<span class="ri">${r[0]} <strong>${val}</strong></span>`;
+  }).join('');
+
+  card.innerHTML = `
+    <div class="card-head">
+      <div class="card-left">
+        <div class="card-emoji">${emoji}</div>
+        <div class="card-name">${d.name}${chillHtml}</div>
+        <div class="card-meta">${bases||'Virgin'} &nbsp;·&nbsp; ${d.glass}</div>
+        <div class="tags">${tagHtml(d)}</div>
+      </div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="detail">
+      <div class="d-inner">
+        <div class="batch-row">
+          <span class="batch-lbl">Batch for:</span>
+          <button class="batch-btn active" onclick="setBatch(this,1,'${idPrefix}')">1</button>
+          <button class="batch-btn" onclick="setBatch(this,4,'${idPrefix}')">4 people</button>
+          <button class="batch-btn" onclick="setBatch(this,8,'${idPrefix}')">8 people</button>
+          <button class="batch-btn" onclick="setBatch(this,12,'${idPrefix}')">12 people</button>
+        </div>
+        <div class="dlabel">⚗️ Ratio</div>
+        <div class="ratio-wrap" id="ratio-${idPrefix}">${ratioHtml}</div>
+        <div class="dlabel">📋 Method</div>
+        <div class="dtext">${wrapTech(d.method)}</div>
+        <div class="dlabel">🌿 Garnish</div>
+        <div class="dtext">${d.garnish||'None'}</div>
+        ${d.note ? `<div class="dnote">💬 ${d.note}</div>` : ''}
+      </div>
+    </div>`;
+
+  card.addEventListener('click', e => {
+    if (e.target.closest('.batch-btn') || e.target.closest('.tech')) return;
+    const op = card.classList.contains('open');
+    document.querySelectorAll('.card.open').forEach(c => c.classList.remove('open'));
+    if (!op) card.classList.add('open');
+  });
+
+  // Store data for batch recalc
+  card._data = d;
+  card._idPrefix = idPrefix;
+  return card;
+}
+
+function setBatch(btn, mult, idPrefix) {
+  // find parent card
+  const card = btn.closest('.card');
+  card.querySelectorAll('.batch-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const d = card._data;
+  const wrap = card.querySelector('.ratio-wrap');
+  wrap.innerHTML = d.ratio.map(r => {
+    const num = parseFloat(r[1]);
+    const val = !isNaN(num) ? (num * mult % 1 === 0 ? num * mult : (num * mult).toFixed(1)) : r[1];
+    return `<span class="ri">${r[0]} <strong>${val}</strong></span>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER RECIPES
+═══════════════════════════════════════════════════════ */
+function render() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  let cnt = 0;
+  D.forEach((d, i) => {
+    if (!matches(d)) return;
+    cnt++;
+    grid.appendChild(buildCard(d, 'r'+i, 1));
+  });
+  document.getElementById('countLbl').textContent = cnt + ' drink' + (cnt!==1?'s':'') + ' showing';
+  if (!cnt) grid.innerHTML = '<div class="no-res">🍸 No drinks match — try different filters.</div>';
+  document.getElementById('s-total').textContent = D.length;
+  document.getElementById('s-classic').textContent = D.filter(d=>d.type.includes('classic')).length;
+  document.getElementById('s-indian').textContent = D.filter(d=>d.type.includes('indian')).length;
+  document.getElementById('s-sig').textContent = D.filter(d=>d.type.includes('signature')).length;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOOD PICKER
+═══════════════════════════════════════════════════════ */
+const MOOD_STEPS = [
+  {
+    q: "What's the vibe tonight?",
+    sub: "Set the direction and we'll find the right drink.",
+    key: 'mood',
+    opts: [
+      {val:'refreshing', emoji:'🌊', label:'Cool & Refreshing',   desc:'Something light, citrusy, fizzy'},
+      {val:'warming',    emoji:'🔥', label:'Warming & Deep',       desc:'Rich, slow, spirit-forward'},
+      {val:'social',     emoji:'🎉', label:'Party & Social',       desc:'Crowd-pleasing, easy to batch'},
+      {val:'elegant',    emoji:'✨', label:'Elegant & Composed',   desc:'Proper technique, show it off'},
+    ]
+  },
+  {
+    q: "What season are you in?",
+    sub: "Pune weather changes everything.",
+    key: 'season',
+    opts: [
+      {val:'summer',  emoji:'☀️',  label:'Summer',  desc:'March – June, hot & dry'},
+      {val:'monsoon', emoji:'🌧️', label:'Monsoon', desc:'July – September, humid & grey'},
+      {val:'winter',  emoji:'❄️',  label:'Winter',  desc:'November – February, cool evenings'},
+    ]
+  },
+  {
+    q: "How strong do you want it?",
+    sub: "Honest question. Right answer every time.",
+    key: 'strength',
+    opts: [
+      {val:'light',    emoji:'💧', label:'Light & Low',     desc:'1 part spirit, lots of mixer'},
+      {val:'medium',   emoji:'🌤️',label:'Medium',          desc:'Standard pour, balanced'},
+      {val:'strong',   emoji:'⚡', label:'Strong',          desc:'Spirit-forward, short & serious'},
+    ]
+  }
+];
+
+let moodAnswers = {};
+let moodStep = 0;
+
+// Mood scoring: returns a "why" note and a score
+function scoreDrink(d, answers) {
+  let score = 0;
+  const {mood, season, strength} = answers;
+
+  // Season match (highest weight)
+  if (d.season.includes(season)) score += 3;
+
+  // Mood match
+  const moodMap = {
+    refreshing: ['gin','vodka','beer','virgin'],
+    warming:    ['whisky','rum','brandy'],
+    social:     ['wine','beer','vodka','rum'],
+    elegant:    ['gin','whisky','brandy','tequila'],
+  };
+  if (mood && moodMap[mood] && d.base.some(b => moodMap[mood].includes(b))) score += 2;
+
+  // Strength
+  const strengthMap = { light:1, medium:2, strong:3 };
+  const target = strengthMap[strength] || 2;
+  if (d.complexity === target) score += 2;
+  else if (Math.abs(d.complexity - target) === 1) score += 1;
+
+  // Bonus: signature & indian
+  if (d.type.includes('signature')) score += 1;
+
+  return score;
+}
+
+function getMoodWhy(d, answers) {
+  const lines = [];
+  if (d.season.includes(answers.season)) lines.push(`Perfect for ${answers.season}`);
+  if (d.type.includes('signature')) lines.push('House signature');
+  if (d.type.includes('indian')) lines.push('Indian touch');
+  if (answers.mood === 'refreshing' && d.complexity === 1) lines.push('Easy & refreshing');
+  if (answers.mood === 'warming' && ['whisky','rum','brandy'].some(s => d.base.includes(s))) lines.push('Warming spirit base');
+  if (answers.mood === 'elegant' && d.complexity >= 2) lines.push('Proper technique involved');
+  if (answers.strength === 'strong' && d.complexity === 3) lines.push('Spirit-forward, no fuss');
+  return lines.slice(0,2).join(' · ') || 'Good all-rounder for tonight';
+}
+
+function initMood() {
+  moodAnswers = {};
+  moodStep = 0;
+  renderMoodStep();
+}
+
+function renderMoodStep() {
+  const wrap = document.getElementById('moodWrap');
+  if (moodStep >= MOOD_STEPS.length) {
+    renderMoodResults();
+    return;
+  }
+  const step = MOOD_STEPS[moodStep];
+  const progHtml = MOOD_STEPS.map((_,i) => `<span class="mood-dot${i<=moodStep?' done':''}"></span>`).join('');
+  const optsHtml = step.opts.map(o => `
+    <button class="mood-btn${moodAnswers[step.key]===o.val?' selected':''}" onclick="selectMood('${step.key}','${o.val}',this)">
+      <span class="mood-btn-emoji">${o.emoji}</span>
+      <span class="mood-btn-label">${o.label}</span>
+      <span class="mood-btn-desc">${o.desc}</span>
+    </button>`).join('');
+
+  wrap.innerHTML = `
+    <div class="mood-step active">
+      <div class="mood-prog">${progHtml}</div>
+      <div style="margin-bottom:1.25rem"></div>
+      <div class="mood-q">${step.q}</div>
+      <div class="mood-sub">${step.sub}</div>
+      <div class="mood-opts">${optsHtml}</div>
+      <div class="mood-nav">
+        ${moodStep > 0 ? '<button class="mood-back" onclick="moodBack()">← Back</button>' : ''}
+        <button class="mood-next" id="moodNextBtn" onclick="moodNext()" ${!moodAnswers[step.key]?'disabled':''}>
+          ${moodStep < MOOD_STEPS.length-1 ? 'Next →' : 'Show me drinks'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function selectMood(key, val, btn) {
+  moodAnswers[key] = val;
+  btn.closest('.mood-opts').querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('moodNextBtn').disabled = false;
+}
+
+function moodNext() {
+  moodStep++;
+  renderMoodStep();
+}
+
+function moodBack() {
+  moodStep--;
+  renderMoodStep();
+}
+
+function renderMoodResults() {
+  const wrap = document.getElementById('moodWrap');
+  const scored = D.map(d => ({d, score: scoreDrink(d, moodAnswers)}))
+    .filter(x => x.score > 0)
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 6);
+
+  const cardsHtml = scored.map(({d}) => {
+    const bases = d.base.filter(b=>b!=='virgin').map(b=>b.charAt(0).toUpperCase()+b.slice(1)).join(' · ');
+    const why = getMoodWhy(d, moodAnswers);
+    const emoji = getEmoji(d.base);
+    return `
+      <div class="mood-card" data-base="${d.base.join(' ')}" onclick="jumpToRecipe('${d.name}')">
+        <div style="font-size:18px;margin-bottom:3px">${emoji}</div>
+        <div class="mood-card-name">${d.name}</div>
+        <div class="mood-card-meta">${bases||'Virgin'} · ${d.glass}</div>
+        <div class="mood-card-why">${why}</div>
+      </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="mood-results">
+      <div class="mood-rec-title">Tonight's drinks for you 🍹</div>
+      <div class="mood-cards">${cardsHtml}</div>
+      <button class="mood-restart" onclick="initMood()">← Start over</button>
+    </div>`;
+}
+
+function jumpToRecipe(name) {
+  // Switch to recipes tab, search the drink
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-recipes').classList.add('active');
+  document.querySelectorAll('.tab')[0].classList.add('active');
+  document.getElementById('srch').value = name;
+  document.getElementById('srchClear').classList.add('show');
+  render();
+  // Open the card
+  setTimeout(() => {
+    const cards = document.querySelectorAll('#grid .card');
+    if (cards.length === 1) cards[0].click();
+  }, 100);
+}
+
+/* ═══════════════════════════════════════════════════════
+   QUICK DECISION ENGINE
+═══════════════════════════════════════════════════════ */
+const QD_STEPS = [
+  {
+    key:'who',
+    q:'Who are you making this for?',
+    sub:'Changes everything — her glass or yours.',
+    opts:[
+      {val:'me',     emoji:'🧔', label:'Just me',       desc:'My drink, my rules'},
+      {val:'her',    emoji:'💃', label:'For her',        desc:'Vesper territory — elegant'},
+      {val:'both',   emoji:'🥂', label:'Both of us',    desc:'Something we share'},
+      {val:'guests', emoji:'🎉', label:'Guests',         desc:'Making for a group'},
+    ]
+  },
+  {
+    key:'time',
+    q:'How much time do you have?',
+    sub:'Honest answer — no judgment.',
+    opts:[
+      {val:'2min',  emoji:'⚡', label:'2 minutes',  desc:'Build and done'},
+      {val:'5min',  emoji:'🕐', label:'5 minutes',  desc:'Can shake or stir'},
+      {val:'10min', emoji:'🍵', label:'10+ minutes', desc:'Full ritual, worth it'},
+    ]
+  },
+  {
+    key:'mood',
+    q:"What's the feeling right now?",
+    sub:'Go with your gut.',
+    opts:[
+      {val:'light',   emoji:'🌊', label:'Light & Bright',  desc:'Citrus, fresh, fizzy'},
+      {val:'deep',    emoji:'🔥', label:'Deep & Warming',   desc:'Spirit-forward, slow'},
+      {val:'festive', emoji:'✨', label:'Festive',          desc:'Something impressive'},
+      {val:'easy',    emoji:'😌', label:'Just Easy',        desc:'Something reliable'},
+    ]
+  },
+  {
+    key:'season',
+    q:'What season is it?',
+    sub:'Pune weather changes the answer.',
+    opts:[
+      {val:'summer',  emoji:'☀️',  label:'Summer',  desc:'Hot, dry, sweating'},
+      {val:'monsoon', emoji:'🌧️', label:'Monsoon', desc:'Grey, humid, rainy'},
+      {val:'winter',  emoji:'❄️',  label:'Winter',  desc:'Cool evenings, cosy'},
+    ]
+  },
+];
+
+let qdAnswers = {};
+let qdStep = 0;
+
+function qdScore(d, ans) {
+  let score = 0;
+  const {who, time, mood, season} = ans;
+
+  if (d.season.includes(season)) score += 4;
+
+  // who
+  if (who === 'her') {
+    if (['Vesper Martini','Gimlet','Cosmopolitan','French 75','Bee\'s Knees','Gulabi Fizz','Spritzer','Kir','Bramble','Pornstar Martini'].includes(d.name)) score += 4;
+    if (d.complexity >= 2) score += 1;
+  }
+  if (who === 'me') {
+    if (d.base.includes('whisky')) score += 3;
+    if (['Old Fashioned','Whisky Highball','Penicillin','Adrak Highball','Chai Old Fashioned','Whisky Sour'].includes(d.name)) score += 2;
+  }
+  if (who === 'guests') {
+    if (d.complexity === 1) score += 2;
+    if (['Mojito','G&T','Old Monk & Cola','Tom Collins','Vodka Soda','Beer Straight'].includes(d.name)) score += 2;
+  }
+  if (who === 'both') {
+    if (d.complexity === 2) score += 2;
+  }
+
+  // time
+  if (time === '2min' && d.complexity === 1) score += 3;
+  if (time === '5min' && d.complexity <= 2) score += 2;
+  if (time === '10min' && d.complexity === 3) score += 3;
+
+  // mood
+  if (mood === 'light' && d.season.includes('summer')) score += 2;
+  if (mood === 'light' && d.base.some(b => ['gin','vodka','beer','wine','virgin'].includes(b))) score += 2;
+  if (mood === 'deep' && d.base.some(b => ['whisky','rum','brandy'].includes(b))) score += 3;
+  if (mood === 'deep' && d.complexity === 3) score += 1;
+  if (mood === 'festive' && d.type.includes('signature')) score += 3;
+  if (mood === 'festive' && d.complexity >= 2) score += 1;
+  if (mood === 'easy' && d.complexity === 1) score += 3;
+
+  if (d.type.includes('signature')) score += 1;
+  return score;
+}
+
+function qdWhy(d, ans) {
+  const lines = [];
+  if (d.season.includes(ans.season)) lines.push(`Made for ${ans.season}`);
+  if (d.type.includes('signature')) lines.push('House signature');
+  if (d.type.includes('indian')) lines.push('Indian touch');
+  if (ans.time === '2min' && d.complexity === 1) lines.push('Ready in 2 minutes');
+  if (ans.time === '10min' && d.complexity === 3) lines.push('Worth the effort');
+  if (ans.mood === 'deep' && d.base.includes('whisky')) lines.push('Whisky, spirit-forward');
+  if (ans.mood === 'festive' && d.type.includes('signature')) lines.push('Showstopper');
+  return lines.slice(0,2).join(' · ') || 'Solid choice for tonight';
+}
+
+function initQD() {
+  qdAnswers = {};
+  qdStep = 0;
+  renderQDStep();
+}
+
+function renderQDStep() {
+  const wrap = document.getElementById('quickWrap');
+  if (qdStep >= QD_STEPS.length) { renderQDResults(); return; }
+  const step = QD_STEPS[qdStep];
+  const progHtml = QD_STEPS.map((_,i) => `<span class="mood-dot${i<=qdStep?' done':''}"></span>`).join('');
+  const optsHtml = step.opts.map(o => `
+    <button class="mood-btn${qdAnswers[step.key]===o.val?' selected':''}" onclick="selectQD('${step.key}','${o.val}',this)">
+      <span class="mood-btn-emoji">${o.emoji}</span>
+      <span class="mood-btn-label">${o.label}</span>
+      <span class="mood-btn-desc">${o.desc}</span>
+    </button>`).join('');
+  wrap.innerHTML = `
+    <div class="mood-step active">
+      <div class="mood-prog">${progHtml}</div>
+      <div style="margin-bottom:1.25rem"></div>
+      <div class="mood-q">${step.q}</div>
+      <div class="mood-sub">${step.sub}</div>
+      <div class="mood-opts">${optsHtml}</div>
+      <div class="mood-nav">
+        ${qdStep > 0 ? '<button class="mood-back" onclick="qdBack()">← Back</button>' : ''}
+        <button class="mood-next" id="qdNextBtn" onclick="qdNext()" ${!qdAnswers[step.key]?'disabled':''}>
+          ${qdStep < QD_STEPS.length-1 ? 'Next →' : 'Give me a drink'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function selectQD(key, val, btn) {
+  qdAnswers[key] = val;
+  btn.closest('.mood-opts').querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('qdNextBtn').disabled = false;
+}
+
+function qdNext() { qdStep++; renderQDStep(); }
+function qdBack() { qdStep--; renderQDStep(); }
+
+function renderQDResults() {
+  const wrap = document.getElementById('quickWrap');
+  const scored = D.map(d => ({d, score: qdScore(d, qdAnswers)}))
+    .filter(x => x.score > 0)
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 4);
+
+  // Top pick
+  const top = scored[0];
+  const rest = scored.slice(1);
+
+  const topBases = top.d.base.filter(b=>b!=='virgin').map(b=>b.charAt(0).toUpperCase()+b.slice(1)).join(' · ');
+  const topWhy = qdWhy(top.d, qdAnswers);
+  const topEmoji = getEmoji(top.d.base);
+
+  const altHtml = rest.map(({d}) => {
+    const bases = d.base.filter(b=>b!=='virgin').map(b=>b.charAt(0).toUpperCase()+b.slice(1)).join(' · ');
+    return `<div class="mood-card" data-base="${d.base.join(' ')}" onclick="jumpToRecipe('${d.name}')">
+      <div style="font-size:16px;margin-bottom:2px">${getEmoji(d.base)}</div>
+      <div class="mood-card-name">${d.name}</div>
+      <div class="mood-card-meta">${bases||'Virgin'} · ${d.glass}</div>
+      <div class="mood-card-why">${qdWhy(d, qdAnswers)}</div>
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="mood-results">
+      <div class="mood-rec-title">Make this tonight</div>
+      <div class="qd-hero" onclick="jumpToRecipe('${top.d.name}')" data-base="${top.d.base.join(' ')}">
+        <div class="qd-hero-emoji">${topEmoji}</div>
+        <div class="qd-hero-name">${top.d.name}</div>
+        <div class="qd-hero-meta">${topBases||'Virgin'} &nbsp;·&nbsp; ${top.d.glass}</div>
+        <div class="qd-hero-why">${topWhy}</div>
+        <div class="qd-hero-tap">Tap to see the recipe →</div>
+      </div>
+      ${rest.length ? `<div style="font-size:11px;color:var(--txt-s);letter-spacing:1px;text-transform:uppercase;margin:1.25rem 0 .6rem">Also good tonight</div>
+      <div class="mood-cards">${altHtml}</div>` : ''}
+      <button class="mood-restart" onclick="initQD()">← Start over</button>
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+buildIngGrid();
+render();
+initQD();
+</script>
+</body>
+</html>
