@@ -998,6 +998,331 @@ body::after {
   .resp-cards-grid, .resp-cards-2col { grid-template-columns:1fr; }
   .resp-safety-grid { grid-template-columns:1fr; }
 }
+
+/* ════════════════════════════════════════════════════════
+   TONIGHT'S PICKS — Discovery Homepage Section
+════════════════════════════════════════════════════════ */
+.discovery-section {
+  margin-bottom: 2.5rem;
+  animation: fadeUp .6s .15s ease both;
+}
+.discovery-section + .discovery-section { margin-top: -1rem; }
+
+.disc-label {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 10px; font-weight: 600;
+}
+.disc-label::after { content:''; flex:1; height:1px; background: linear-gradient(to right, rgba(200,148,58,.3), transparent); }
+
+/* Tonight's Picks hero strip */
+.tonights-picks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.tonights-picks .pick-main {
+  grid-column: 1 / -1;
+}
+@media(min-width:640px) {
+  .tonights-picks {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+  .tonights-picks .pick-main {
+    grid-column: auto;
+    grid-row: 1 / 3;
+  }
+}
+
+.pick-card {
+  background: var(--bg-card); backdrop-filter: blur(14px);
+  border: 1px solid var(--border); border-radius: var(--r-xl);
+  padding: 1.1rem 1.15rem; cursor: pointer;
+  transition: all .3s cubic-bezier(.34,1.2,.64,1);
+  box-shadow: var(--shadow-sm); overflow: hidden; position: relative;
+}
+.pick-card::before {
+  content:''; position: absolute; top:0; left:10%; right:10%; height:1px;
+  background: linear-gradient(90deg, transparent, var(--card-accent,var(--amber-l)), transparent);
+  opacity:0; transition: opacity .3s;
+}
+.pick-card:hover { border-color: var(--border-hi); transform: translateY(-3px); box-shadow: var(--shadow); }
+.pick-card:hover::before { opacity:1; }
+
+.pick-card.pick-main {
+  background: linear-gradient(145deg, rgba(200,148,58,0.08), var(--bg-card));
+  border-color: rgba(200,148,58,.25);
+  padding: 1.4rem;
+}
+.pick-card.pick-main::before { opacity: .5; }
+
+.pick-emoji { font-size: 24px; margin-bottom: 6px; display:block; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); }
+.pick-card.pick-main .pick-emoji { font-size: 36px; margin-bottom: 10px; }
+.pick-name {
+  font-family: var(--ff-disp); font-size: 16px; font-weight: 600;
+  color: var(--txt-h); line-height: 1.2; margin-bottom: 3px;
+}
+.pick-card.pick-main .pick-name { font-size: 22px; }
+.pick-meta { font-size: 11px; color: var(--txt-s); margin-bottom: 8px; }
+.pick-note {
+  font-size: 11px; color: var(--txt-p); font-style: italic;
+  line-height: 1.55;
+}
+.pick-card.pick-main .pick-note { font-size: 12px; }
+.pick-badge {
+  display: inline-block; margin-top: 8px;
+  font-size: 9px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: var(--r-full);
+  background: var(--amber-dim); color: var(--amber-l); border: 1px solid rgba(200,148,58,.3);
+}
+
+/* ════════════════════════════════════════════════════════
+   MOOD DISCOVERY STRIPS (Based on Mood / Weather)
+════════════════════════════════════════════════════════ */
+.mood-strip {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.mood-strip::-webkit-scrollbar { display: none; }
+
+.mood-pill-card {
+  flex-shrink: 0; min-width: 140px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: .9rem 1rem; cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.2,.64,1);
+  text-align: center;
+}
+.mood-pill-card:hover { border-color: var(--border-hi); transform: translateY(-2px); background: var(--bg-hover); }
+.mood-pill-card.mpc-active { border-color: var(--border-hi); background: var(--amber-dim); }
+.mpc-emoji { font-size: 26px; display:block; margin-bottom: 5px; }
+.mpc-label { font-size: 12px; font-weight: 600; color: var(--txt-h); display:block; margin-bottom: 2px; }
+.mpc-desc { font-size: 10px; color: var(--txt-s); display:block; line-height: 1.4; }
+
+/* Mood results inline grid */
+.mood-inline-results {
+  margin-top: 1rem;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 10px;
+  animation: fadeUp .4s ease both;
+}
+.mood-inline-empty {
+  font-size: 12px; color: var(--txt-s); font-style: italic; margin-top: .75rem;
+}
+
+/* ════════════════════════════════════════════════════════
+   3-INGREDIENT WINS
+════════════════════════════════════════════════════════ */
+.quick-wins-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px;
+}
+.qw-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: .9rem 1rem; cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.2,.64,1); overflow: hidden; position: relative;
+}
+.qw-card::before {
+  content:''; position: absolute; top:0; left:10%; right:10%; height:1px;
+  background: linear-gradient(90deg, transparent, var(--card-accent,var(--amber-l)), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.qw-card:hover { border-color: var(--border-hi); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.qw-card:hover::before { opacity: 1; }
+.qw-emoji { font-size: 20px; margin-bottom: 4px; display:block; }
+.qw-name { font-family: var(--ff-disp); font-size: 15px; font-weight: 600; color: var(--txt-h); margin-bottom: 3px; line-height:1.2; }
+.qw-ings { font-size: 10px; color: var(--txt-s); line-height: 1.6; }
+
+/* ════════════════════════════════════════════════════════
+   GUIDED PATHS
+════════════════════════════════════════════════════════ */
+.paths-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 12px;
+}
+.path-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 1.25rem 1.3rem; overflow: hidden; position: relative;
+  transition: all .3s cubic-bezier(.34,1.2,.64,1);
+}
+.path-card::before {
+  content:''; position: absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--path-color,var(--amber-l)), transparent);
+}
+.path-card:hover { border-color: var(--border-hi); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.path-header { display: flex; align-items: center; gap: 10px; margin-bottom: .75rem; }
+.path-icon { font-size: 28px; flex-shrink: 0; }
+.path-title { font-family: var(--ff-disp); font-size: 18px; font-weight: 600; color: var(--txt-h); line-height: 1.2; }
+.path-intro { font-size: 12px; color: var(--txt-s); line-height: 1.7; margin-bottom: .9rem; }
+.path-drinks {
+  display: flex; flex-wrap: wrap; gap: 5px;
+}
+.path-drink-pill {
+  font-size: 10px; font-weight: 500;
+  padding: 4px 11px; border-radius: var(--r-full);
+  border: 1px solid var(--border); background: transparent;
+  color: var(--txt-p); cursor: pointer; transition: all .2s;
+  font-family: var(--ff-body);
+}
+.path-drink-pill:hover { background: var(--glass-hi); border-color: var(--border-mid); color: var(--txt-h); }
+
+/* ════════════════════════════════════════════════════════
+   ENHANCED MY BAR — Next Bottle Suggestions
+════════════════════════════════════════════════════════ */
+.next-buys-section {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(145deg, rgba(200,148,58,.05), var(--bg-card));
+  border: 1px solid rgba(200,148,58,.2);
+  border-radius: var(--r-xl);
+}
+.next-buys-title {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--amber); margin-bottom: .85rem; font-weight: 600;
+}
+.next-buy-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.next-buy-card {
+  flex: 1; min-width: 160px;
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: .75rem .85rem;
+}
+.nbc-name { font-size: 13px; font-weight: 600; color: var(--txt-h); margin-bottom: 3px; }
+.nbc-unlocks { font-size: 10px; color: var(--green-l); margin-bottom: 2px; }
+.nbc-note { font-size: 10px; color: var(--txt-s); font-style: italic; line-height: 1.5; }
+
+/* ════════════════════════════════════════════════════════
+   FLAVOUR PROFILE BARS (on recipe cards)
+════════════════════════════════════════════════════════ */
+.flavor-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px;
+}
+.flavor-bar {
+  display: flex; align-items: center; gap: 5px; flex: 1; min-width: 80px;
+}
+.fb-label { font-size: 9px; color: var(--txt-s); letter-spacing: .5px; width: 36px; flex-shrink: 0; }
+.fb-track { flex: 1; height: 3px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+.fb-fill { height: 100%; border-radius: 2px; transition: width .5s ease; }
+.fb-fill.sweet { background: var(--amber); }
+.fb-fill.sour  { background: var(--green-l); }
+.fb-fill.bitter{ background: var(--indigo-l); }
+.fb-fill.strong{ background: var(--rose-l); }
+
+/* Metadata badges on expanded cards */
+.card-meta-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0 8px;
+}
+.cmg-item {
+  background: rgba(255,255,255,.025); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 5px 8px;
+}
+.cmg-key { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--txt-xs); margin-bottom: 2px; }
+.cmg-val { font-size: 11px; color: var(--txt-p); font-weight: 500; }
+
+/* Editorial note on expanded card */
+.card-editorial {
+  font-size: 12px; color: var(--amber); font-style: italic;
+  padding: 8px 11px; background: rgba(200,148,58,.05);
+  border-left: 2px solid rgba(200,148,58,.35);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  margin-bottom: 10px; line-height: 1.6;
+}
+
+/* Substitutions */
+.card-subs {
+  font-size: 11px; color: var(--txt-s); line-height: 1.7;
+  padding: 7px 10px; background: rgba(61,122,84,.05);
+  border: 1px solid rgba(61,122,84,.15); border-radius: var(--r-sm);
+  margin-bottom: 8px;
+}
+.card-subs strong { color: var(--green-l); }
+
+/* ════════════════════════════════════════════════════════
+   MICRO-GUIDES (Craft School)
+════════════════════════════════════════════════════════ */
+.craft-school-section {
+  margin: 2rem 0 2.5rem;
+}
+.craft-guides-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 10px;
+}
+.guide-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden;
+  cursor: pointer; transition: all .25s;
+}
+.guide-card:hover { border-color: var(--border-mid); transform: translateY(-2px); }
+.guide-card.open .guide-body { display: block; }
+.guide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 1.1rem; gap: 10px;
+}
+.guide-head-left { display: flex; align-items: center; gap: 10px; }
+.guide-icon { font-size: 22px; flex-shrink: 0; }
+.guide-title { font-family: var(--ff-disp); font-size: 16px; font-weight: 600; color: var(--txt-h); }
+.guide-tagline { font-size: 10px; color: var(--txt-s); margin-top: 1px; }
+.guide-body {
+  display: none; padding: 0 1.1rem 1.1rem;
+  border-top: 1px solid var(--border); padding-top: .85rem; margin-top: -1px;
+}
+.guide-body p { font-size: 12px; color: var(--txt-p); line-height: 1.75; margin-bottom: .6rem; }
+.guide-body p:last-child { margin-bottom: 0; }
+.guide-body strong { color: var(--txt-h); }
+.guide-body em { color: var(--amber-l); font-style: normal; }
+
+/* ════════════════════════════════════════════════════════
+   BEER STYLE GUIDE Section
+════════════════════════════════════════════════════════ */
+.beer-style-guide {
+  margin-bottom: 1.5rem;
+}
+.bsg-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 8px;
+  margin-bottom: 1rem;
+}
+.bsg-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: .9rem 1rem;
+  transition: border-color .2s;
+}
+.bsg-card:hover { border-color: var(--border-mid); }
+.bsg-name { font-size: 13px; font-weight: 600; color: var(--txt-h); margin-bottom: 3px; }
+.bsg-spectrum {
+  display: flex; align-items: center; gap: 6px; margin: 5px 0 6px;
+}
+.bsg-spec-label { font-size: 9px; color: var(--txt-xs); letter-spacing:.5px; width: 36px; text-align:right; flex-shrink:0; }
+.bsg-spec-label:first-child { text-align:left; }
+.bsg-spec-track {
+  flex: 1; height: 3px; background: rgba(255,255,255,.06);
+  border-radius: 2px; overflow: hidden; position: relative;
+}
+.bsg-spec-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(to right, rgba(80,160,200,.6), rgba(200,148,58,.8));
+}
+.bsg-desc { font-size: 11px; color: var(--txt-s); line-height: 1.6; margin-bottom: 4px; }
+.bsg-if { font-size: 10px; color: var(--amber); font-style:italic; }
+
+/* Beer cocktails strip */
+.beer-cocktails-strip {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: .75rem;
+}
+.bcc-pill {
+  font-size: 10px; padding: 4px 12px; border-radius: var(--r-full);
+  background: var(--amber-dim); color: var(--amber-l);
+  border: 1px solid rgba(200,148,58,.25); cursor: pointer;
+  font-family: var(--ff-body); transition: all .2s;
+}
+.bcc-pill:hover { background: var(--glass-hi); color: var(--txt-h); }
+
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE EXTRAS
+════════════════════════════════════════════════════════ */
+@media(max-width:640px){
+  .tonights-picks { grid-template-columns: 1fr; }
+  .tonights-picks .pick-main { grid-column: auto; grid-row: auto; }
+  .paths-grid { grid-template-columns: 1fr; }
+  .craft-guides-grid { grid-template-columns: 1fr; }
+  .bsg-grid { grid-template-columns: 1fr; }
+  .card-meta-grid { grid-template-columns: 1fr 1fr; }
+  .next-buy-row { flex-direction: column; }
+}
 </style>
 </head>
 <body>
@@ -1061,6 +1386,81 @@ body::after {
 
 <!-- ═══ RECIPES PANEL ═══ -->
 <div id="panel-recipes" class="panel active" role="tabpanel">
+
+  <!-- ── TONIGHT'S PICKS ── -->
+  <div class="discovery-section" id="tonightSection">
+    <div class="disc-label">✦ Tonight's Picks</div>
+    <div class="tonights-picks" id="tonightGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- ── BASED ON MOOD ── -->
+  <div class="discovery-section" id="moodDiscSection">
+    <div class="disc-label">🎯 Based on Mood</div>
+    <div class="mood-strip">
+      <div class="mood-pill-card" onclick="filterMoodDisc('chill',this)">
+        <span class="mpc-emoji">😌</span>
+        <span class="mpc-label">Chill</span>
+        <span class="mpc-desc">Low-key, slow sipping</span>
+      </div>
+      <div class="mood-pill-card" onclick="filterMoodDisc('bold',this)">
+        <span class="mpc-emoji">🔥</span>
+        <span class="mpc-label">Bold</span>
+        <span class="mpc-desc">Spirit-forward, serious</span>
+      </div>
+      <div class="mood-pill-card" onclick="filterMoodDisc('romantic',this)">
+        <span class="mpc-emoji">💫</span>
+        <span class="mpc-label">Romantic</span>
+        <span class="mpc-desc">Elegant, composed</span>
+      </div>
+      <div class="mood-pill-card" onclick="filterMoodDisc('party',this)">
+        <span class="mpc-emoji">🎉</span>
+        <span class="mpc-label">Party</span>
+        <span class="mpc-desc">Crowd-proof, easy to batch</span>
+      </div>
+      <div class="mood-pill-card" onclick="filterMoodDisc('summer',this)">
+        <span class="mpc-emoji">☀️</span>
+        <span class="mpc-label">Summer</span>
+        <span class="mpc-desc">Light, citrus, fizzy</span>
+      </div>
+      <div class="mood-pill-card" onclick="filterMoodDisc('monsoon',this)">
+        <span class="mpc-emoji">🌧️</span>
+        <span class="mpc-label">Monsoon</span>
+        <span class="mpc-desc">Warm, cosy, rainy evening</span>
+      </div>
+      <div class="mood-pill-card" onclick="filterMoodDisc('winter',this)">
+        <span class="mpc-emoji">❄️</span>
+        <span class="mpc-label">Winter</span>
+        <span class="mpc-desc">Deep, slow, warming</span>
+      </div>
+    </div>
+    <div id="moodDiscResults"></div>
+  </div>
+
+  <!-- ── QUICK 3-INGREDIENT WINS ── -->
+  <div class="discovery-section" id="quickWinsSection">
+    <div class="disc-label">⚡ Quick 3-Ingredient Wins</div>
+    <div class="quick-wins-grid" id="quickWinsGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- ── GUIDED PATHS ── -->
+  <div class="discovery-section" id="pathsSection">
+    <div class="disc-label">🗺️ Start Here — Guided Paths</div>
+    <div class="paths-grid" id="pathsGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- ── CRAFT SCHOOL: MICRO-GUIDES ── -->
+  <div class="craft-school-section" id="craftSchoolSection">
+    <div class="disc-label">📚 Craft School</div>
+    <div class="craft-guides-grid" id="craftGuidesGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
 
   <div class="srch-wrap">
     <svg class="srch-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -1134,6 +1534,7 @@ body::after {
     </div>
   </div>
   <div class="count" id="barCountLbl" style="margin-top:1rem;font-size:13px;"></div>
+  <div id="nextBuysSection"></div>
   <div id="barGrid"></div>
 </div>
 
@@ -1149,6 +1550,22 @@ body::after {
       <div class="beer-hero-stat"><div class="beer-hero-stat-n" id="bs-craft">0</div><div class="beer-hero-stat-l">Craft</div></div>
       <div class="beer-hero-stat"><div class="beer-hero-stat-n" id="bs-strong">0</div><div class="beer-hero-stat-l">Strong ≥7%</div></div>
       <div class="beer-hero-stat"><div class="beer-hero-stat-n" id="bs-styles">0</div><div class="beer-hero-stat-l">Styles</div></div>
+    </div>
+  </div>
+
+  <!-- ── BEER STYLE GUIDE ── -->
+  <div class="beer-style-guide">
+    <div class="disc-label">📖 Know Your Styles</div>
+    <div class="bsg-grid" id="bsgGrid"><!-- populated by JS --></div>
+    <div class="disc-label" style="margin-top:1.25rem">🍺 Beer Cocktails — Simple Ones Worth Making</div>
+    <div class="beer-cocktails-strip">
+      <button class="bcc-pill" onclick="jumpToRecipe('Beer & Lime')">🍋 Beer & Lime</button>
+      <button class="bcc-pill" onclick="jumpToRecipe('Michelada')">🌶️ Michelada</button>
+      <button class="bcc-pill" onclick="jumpToRecipe('Shandy')">🌿 Shandy</button>
+      <button class="bcc-pill" onclick="jumpToRecipe('Beer Straight')">🍺 Perfect Pour</button>
+    </div>
+    <div style="font-size:11px;color:var(--txt-s);font-style:italic;margin-top:.6rem;line-height:1.6">
+      Beer cocktails are simple: cold beer + a few things = something interesting. The Michelada is India's contribution to the beer cocktail canon. Start there.
     </div>
   </div>
 
@@ -2281,6 +2698,7 @@ function renderBar() {
     countLbl.textContent = '';
     info.textContent = '';
     grid.innerHTML = '<div class="no-res" style="padding:2rem 0">☝️ Tick the ingredients you have above — we\'ll show every drink you can make right now.</div>';
+    if (typeof renderNextBuys === 'function') renderNextBuys();
     return;
   }
 
@@ -2343,6 +2761,7 @@ function renderBar() {
     });
     grid.appendChild(almostGrid);
   }
+  if (typeof renderNextBuys === 'function') renderNextBuys();
 }
 
 // Pre-load the user's actual bar
@@ -2456,6 +2875,11 @@ function buildCard(d, idPrefix, batchMult) {
     return `<span class="ri">${r[0]} <strong>${val}</strong></span>`;
   }).join('');
 
+  // New: flavor profile + metadata (defined in initDiscovery section, safe to call after page load)
+  const fpHtml = typeof getFlavorHtml === 'function' ? getFlavorHtml(d) : '';
+  const metaHtml = typeof getMetaGridHtml === 'function' ? getMetaGridHtml(d) : '';
+  const subsHtml2 = typeof getSubsHtml === 'function' ? getSubsHtml(d) : '';
+
   card.innerHTML = `
     <div class="card-head">
       <div class="card-left">
@@ -2463,11 +2887,13 @@ function buildCard(d, idPrefix, batchMult) {
         <div class="card-name">${d.name}${chillHtml}</div>
         <div class="card-meta">${bases||'Virgin'} &nbsp;·&nbsp; ${d.glass}</div>
         <div class="tags">${tagHtml(d)}</div>
+        ${fpHtml}
       </div>
       <span class="chevron">▾</span>
     </div>
     <div class="detail">
       <div class="d-inner">
+        ${metaHtml}
         <div class="batch-row">
           <span class="batch-lbl">Batch for:</span>
           <button class="batch-btn active" onclick="setBatch(this,1,'${idPrefix}')">1</button>
@@ -2481,6 +2907,7 @@ function buildCard(d, idPrefix, batchMult) {
         <div class="dtext">${wrapTech(d.method)}</div>
         <div class="dlabel">🌿 Garnish</div>
         <div class="dtext">${d.garnish||'None'}</div>
+        ${subsHtml2}
         ${d.note ? `<div class="dnote">💬 ${d.note}</div>` : ''}
       </div>
     </div>`;
@@ -3524,6 +3951,415 @@ function initBeerStats() {
 }
 
 /* ═══════════════════════════════════════════════════════
+   TONIGHT'S PICKS — Curated selection
+═══════════════════════════════════════════════════════ */
+const TONIGHTS_PICKS = [
+  {name:"G&T", why:"The home bar starter. Every season, every guest.", badge:"Always works"},
+  {name:"Mojito", why:"Summer staple. Fresh mint, cold rum, no wrong time.", badge:"Summer classic"},
+  {name:"Whisky Highball", why:"The most underrated drink you can make. Do the peel express.", badge:"Weekend ritual"},
+  {name:"Nimbu Pani Vodka", why:"Every Indian guest will reach for this. Salt is non-negotiable.", badge:"Indian signature"},
+  {name:"Old Fashioned", why:"When you want to show you know what you're doing.", badge:"Show it off"},
+];
+
+function renderTonightsPicks() {
+  const grid = document.getElementById('tonightGrid');
+  if (!grid) return;
+  grid.innerHTML = TONIGHTS_PICKS.map((p, i) => {
+    const d = D.find(x => x.name === p.name);
+    if (!d) return '';
+    const emoji = getEmoji(d.base);
+    const bases = d.base.filter(b=>b!=='virgin').map(b=>b.charAt(0).toUpperCase()+b.slice(1)).join(' · ');
+    return `<div class="pick-card${i===0?' pick-main':''}" onclick="jumpToRecipe('${d.name}')">
+      <span class="pick-emoji">${emoji}</span>
+      <div class="pick-name">${d.name}</div>
+      <div class="pick-meta">${bases||'Virgin'} · ${d.glass}</div>
+      <div class="pick-note">${p.why}</div>
+      <span class="pick-badge">${p.badge}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOOD DISCOVERY (Based on Mood / Weather inline)
+═══════════════════════════════════════════════════════ */
+const MOOD_DISCOVERY = {
+  chill: {
+    filter: d => d.complexity <= 2 && (d.base.includes('whisky')||d.base.includes('rum')||d.base.includes('wine')),
+    msg: "Slow, spirit-forward, no fuss."
+  },
+  bold: {
+    filter: d => d.complexity === 3 && !d.type.includes('future'),
+    msg: "Full technique, serious drinks."
+  },
+  romantic: {
+    filter: d => ['Gimlet','Vesper Martini','French 75','Southside','Litchi Gin Martini','Bramble','Spritzer','Pornstar Martini','Cardamom Gimlet'].includes(d.name),
+    msg: "Elegant, composed, worth impressing someone for."
+  },
+  party: {
+    filter: d => d.complexity === 1 && !d.type.includes('future'),
+    msg: "Easy to batch, crowd-proof, no stress."
+  },
+  summer: { filter: d => d.season.includes('summer'), msg: "Made for heat." },
+  monsoon: { filter: d => d.season.includes('monsoon'), msg: "Rain-appropriate drinks." },
+  winter: { filter: d => d.season.includes('winter'), msg: "Warming, slow, cosy." },
+};
+
+let activeMoodDisc = null;
+
+function filterMoodDisc(mood, btn) {
+  if (activeMoodDisc === mood) {
+    // toggle off
+    activeMoodDisc = null;
+    document.querySelectorAll('.mood-pill-card').forEach(b => b.classList.remove('mpc-active'));
+    document.getElementById('moodDiscResults').innerHTML = '';
+    return;
+  }
+  activeMoodDisc = mood;
+  document.querySelectorAll('.mood-pill-card').forEach(b => b.classList.remove('mpc-active'));
+  btn.classList.add('mpc-active');
+
+  const config = MOOD_DISCOVERY[mood];
+  const results = D.filter(config.filter).slice(0, 6);
+  if (!results.length) {
+    document.getElementById('moodDiscResults').innerHTML = `<div class="mood-inline-empty">Nothing matching yet — try another mood.</div>`;
+    return;
+  }
+  const html = `<div style="font-size:11px;color:var(--txt-s);font-style:italic;margin:.75rem 0 .5rem">${config.msg}</div>
+    <div class="mood-inline-results">
+    ${results.map(d => {
+      const bases = d.base.filter(b=>b!=='virgin').map(b=>b.charAt(0).toUpperCase()+b.slice(1)).join(' · ');
+      return `<div class="mood-card" onclick="jumpToRecipe('${d.name}')">
+        <div style="font-size:18px;margin-bottom:3px">${getEmoji(d.base)}</div>
+        <div class="mood-card-name">${d.name}</div>
+        <div class="mood-card-meta">${bases||'Virgin'} · ${d.glass}</div>
+        <div class="mood-card-why">${d.note ? d.note.slice(0,80)+'…' : 'Tap to see recipe'}</div>
+      </div>`;
+    }).join('')}
+    </div>`;
+  document.getElementById('moodDiscResults').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════
+   QUICK 3-INGREDIENT WINS
+═══════════════════════════════════════════════════════ */
+function renderQuickWins() {
+  const grid = document.getElementById('quickWinsGrid');
+  if (!grid) return;
+  // Get drinks with 3 or fewer ingredients, not future bar
+  const wins = D.filter(d => d.ing.length <= 3 && !d.type.includes('future'))
+    .sort((a,b) => a.complexity - b.complexity).slice(0, 8);
+  grid.innerHTML = wins.map(d => {
+    const emoji = getEmoji(d.base);
+    return `<div class="qw-card" onclick="jumpToRecipe('${d.name}')">
+      <span class="qw-emoji">${emoji}</span>
+      <div class="qw-name">${d.name}</div>
+      <div class="qw-ings">${d.ing.join(' · ')}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   GUIDED PATHS
+═══════════════════════════════════════════════════════ */
+const GUIDED_PATHS = [
+  {
+    icon: '🥃', title: 'Beginner Home Bar',
+    intro: 'Five drinks you can make with a basic bar setup. Learn these and you\'ll be ready for any guest.',
+    drinks: ['G&T','Mojito','Whisky Highball','Vodka Tonic','Old Monk & Cola'],
+    color: 'var(--amber-l)'
+  },
+  {
+    icon: '🌧️', title: 'Monsoon Drinking',
+    intro: 'Grey skies, chai weather — and these drinks. The ones that belong on a balcony with rain.',
+    drinks: ['Chai Rum','Adrak Highball','Dark & Stormy','Old Fashioned','Ginger Whisky Sour'],
+    color: 'var(--sky-l)'
+  },
+  {
+    icon: '💫', title: 'Date Night',
+    intro: 'Elegant and composed. Show that you put thought into it. These are drinks that impress.',
+    drinks: ['Vesper Martini','Gimlet','Cardamom Gimlet','French 75','Litchi Gin Martini','Southside'],
+    color: 'var(--rose-l)'
+  },
+  {
+    icon: '🌶️', title: 'Indian-Style Cocktails',
+    intro: 'Local flavours, familiar ingredients from any kirana or farm. Indian cocktails that belong in your bar.',
+    drinks: ['Nimbu Pani Vodka','Jaljeera Vodka','Aam Panna Gin Fizz','Kokum Daiquiri','Chai Old Fashioned','Sugarcane Vodka Cooler'],
+    color: 'var(--green-l)'
+  },
+  {
+    icon: '⚡', title: 'Strong & Spirit-Forward',
+    intro: 'High alcohol, short format, no compromise. Drinks where the spirit earns its keep.',
+    drinks: ['Old Fashioned','Penicillin','Negroni','Rob Roy','Trinidad Sour','Thandai Whisky'],
+    color: 'var(--rose-l)'
+  },
+  {
+    icon: '🌊', title: 'Easy 3-Ingredient Wins',
+    intro: 'Three ingredients. Five minutes. No excuses. The perfect drinks for an unplanned evening.',
+    drinks: ['Daiquiri','Whisky Sour','Vodka Gimlet','Tequila Sour','Brandy Soda','Moscow Mule'],
+    color: 'var(--teal-l)'
+  },
+];
+
+function renderGuidedPaths() {
+  const grid = document.getElementById('pathsGrid');
+  if (!grid) return;
+  grid.innerHTML = GUIDED_PATHS.map(path => {
+    const pillsHtml = path.drinks.map(n =>
+      `<button class="path-drink-pill" onclick="event.stopPropagation();jumpToRecipe('${n}')">${n}</button>`
+    ).join('');
+    return `<div class="path-card" style="--path-color:${path.color}">
+      <div class="path-header">
+        <span class="path-icon">${path.icon}</span>
+        <div class="path-title">${path.title}</div>
+      </div>
+      <div class="path-intro">${path.intro}</div>
+      <div class="path-drinks">${pillsHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   CRAFT SCHOOL — Micro Guides
+═══════════════════════════════════════════════════════ */
+const CRAFT_GUIDES = [
+  {
+    icon: '🫙', title: 'Shaking vs Stirring',
+    tagline: "It's not a preference. It's a rule.",
+    content: `<p><strong>Shake when there's citrus, juice, or egg</strong> — these need aggressive integration and aeration. The ice also chips slightly, which dilutes in a way that's desirable for fruity drinks.</p>
+    <p><strong>Stir when it's all spirits</strong> — Martinis, Old Fashioneds, Manhattans, Negronis. Stirring chills and dilutes without clouding. A shaken Martini is watery and cloudy — technically James Bond's mistake.</p>
+    <p><em>Rule: if it has juice, shake it. If it doesn't, stir it. Exceptions are rare enough that you can ignore them.</em></p>`
+  },
+  {
+    icon: '🧊', title: 'Ice — The Forgotten Ingredient',
+    tagline: "Your ice is doing 40% of the work.",
+    content: `<p><strong>Large cube for lowball sipping drinks</strong> — Old Fashioneds, Negronis, spirit on rocks. Melts slow, controls dilution.</p>
+    <p><strong>Packed ice for highballs</strong> — fill the glass completely. More surface area = faster chill but controlled dilution with cold mixer.</p>
+    <p><strong>Crushed ice</strong> for Mojitos, Juleps — melts faster, so drink quickly. The fast dilution is part of the design.</p>
+    <p><em>Freezer ice is fine for everything. Just make it fresh — old ice absorbs freezer smells and your drink will taste off.</em></p>`
+  },
+  {
+    icon: '⚖️', title: 'Balancing a Cocktail',
+    tagline: "Sweet vs sour vs strong — the holy trinity.",
+    content: `<p>Most cocktails are built on three elements: <strong>base spirit</strong> (strong), <strong>citrus</strong> (sour), and <strong>sugar/syrup</strong> (sweet). The classic Daiquiri is the purest example: rum, lime, sugar.</p>
+    <p>If something tastes <em>too sour</em>, add a splash of syrup. <em>Too sweet</em>, add a drop of citrus. <em>Too boozy</em>, dilute or add more mixer. Taste as you go — this is cooking.</p>
+    <p><em>The 2:1:1 ratio (spirit:citrus:syrup) is a useful starting point for almost any sour-style drink.</em></p>`
+  },
+  {
+    icon: '🫧', title: 'Carbonation Basics',
+    tagline: "Why your highball goes flat — and how to fix it.",
+    content: `<p>Carbonation dies the moment soda meets air, heat, or agitation. <strong>Pour soda down the side of a tilted glass</strong> — never directly onto ice. It's the difference between a vibrant highball and a flat one.</p>
+    <p>Open the soda immediately before pouring — don't let it sit. Pre-mix the base (spirit, citrus, syrup) before adding soda, so you only need one gentle stir at the end.</p>
+    <p><em>Cold glass + cold soda + tilt pour + one stir. That's the entire technique.</em></p>`
+  },
+  {
+    icon: '🔬', title: 'Dilution — Why It Matters',
+    tagline: "Every drink you make is deliberately diluted.",
+    content: `<p>Dilution is not a mistake — it's part of the recipe. Shaking or stirring over ice adds water to the drink. A properly shaken cocktail gains ~20-25% dilution, which opens up flavour and drops alcohol burn.</p>
+    <p>Too little dilution (under-shake): harsh, spirit-forward, unintegrated. Too much (shake too long with warm ice): watery and flat.</p>
+    <p><em>12-15 seconds hard shake, 20-25 rotations slow stir. These numbers exist for a reason — they deliver the right dilution consistently.</em></p>`
+  },
+];
+
+function renderCraftGuides() {
+  const grid = document.getElementById('craftGuidesGrid');
+  if (!grid) return;
+  grid.innerHTML = CRAFT_GUIDES.map(g => `
+    <div class="guide-card" onclick="this.classList.toggle('open')">
+      <div class="guide-head">
+        <div class="guide-head-left">
+          <span class="guide-icon">${g.icon}</span>
+          <div>
+            <div class="guide-title">${g.title}</div>
+            <div class="guide-tagline">${g.tagline}</div>
+          </div>
+        </div>
+        <span class="chevron" style="flex-shrink:0">▾</span>
+      </div>
+      <div class="guide-body">${g.content}</div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   BEER STYLE GUIDE
+═══════════════════════════════════════════════════════ */
+const BEER_STYLES = [
+  { name:'Lager', range:40, desc:'Crisp, clean, cold. The default Indian beer. Light bitterness, mild malt. Good for: everything casual.', ifLike:'If you like Kingfisher, try Bira 91 Blonde for a slightly more interesting version.', light:'Light', heavy:'Medium' },
+  { name:'Pilsner', range:55, desc:'More refined than a lager — crisper, slightly more bitter, European character. Stella Artois is the example in India.', ifLike:'If you like Stella, try Carlsberg Elephant when you want something stronger with the same crispness.', light:'Crisp', heavy:'Bitter' },
+  { name:'Wheat / Witbier', range:45, desc:'Hazy, soft, slightly tart. Notes of orange peel and spice. Refreshing and less bitter than a lager. Hoegaarden is the gold standard.', ifLike:'If you like Hoegaarden, try Bira 91 White — more accessible and widely available.', light:'Light', heavy:'Fruity' },
+  { name:'IPA', range:70, desc:'Hop-forward, bitter, often citrus or pine notes. The craft drinker\'s starting point. Not for everyone — an acquired taste worth acquiring.', ifLike:'If you like IPAs, White Owl Spark is a session version. Try White Owl Torpedo for full bitterness.', light:'Citrusy', heavy:'Bitter' },
+  { name:'Stout / Porter', range:65, desc:'Dark, roasty, notes of coffee and chocolate. Heavier body. Simba Stout is the approachable Indian entry point.', ifLike:'If you like Simba Stout, White Owl Ace (Imperial Stout) is the deep end. Treat it like a whisky.', light:'Smooth', heavy:'Roasty' },
+  { name:'Strong / High-ABV', range:75, desc:'Same styles, more alcohol. Kingfisher Strong (8%), Carlsberg Elephant (7.2%), Godfather (9%). Drink slower, not faster.', ifLike:'If you like Kingfisher Strong for power, try Carlsberg Elephant for a more refined strong beer experience.', light:'Malt', heavy:'Alcohol' },
+];
+
+function renderBeerStyleGuide() {
+  const grid = document.getElementById('bsgGrid');
+  if (!grid) return;
+  grid.innerHTML = BEER_STYLES.map(s => `
+    <div class="bsg-card">
+      <div class="bsg-name">${s.name}</div>
+      <div class="bsg-spectrum">
+        <span class="bsg-spec-label">${s.light}</span>
+        <div class="bsg-spec-track"><div class="bsg-spec-fill" style="width:${s.range}%"></div></div>
+        <span class="bsg-spec-label">${s.heavy}</span>
+      </div>
+      <div class="bsg-desc">${s.desc}</div>
+      <div class="bsg-if">${s.ifLike}</div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   ENHANCED MY BAR — Next Buys
+═══════════════════════════════════════════════════════ */
+const BOTTLE_UNLOCKS = {
+  'triple sec': { name:'Triple Sec / Cointreau', note:'Unlocks Margaritas, Cosmopolitans, Sidecars, Paper Planes and 12+ more.' },
+  'bitters': { name:'Angostura Bitters', note:'Unlocks Old Fashioneds, Rob Roys, Penicillin, Trinidad Sour. A tiny bottle does a lot.' },
+  'vermouth': { name:'Dry Vermouth', note:'Unlocks Martinis, Gibsons, Bamboo, Corpse Reviver #2. Refrigerate after opening.' },
+  'ginger beer': { name:'Ginger Beer', note:'Unlocks Moscow Mule, Dark & Stormy, Adrak Highball. One bottle, multiple drinks.' },
+  'kokum syrup': { name:'Kokum Syrup', note:'Unlocks Kokum Daiquiri, Kokum Cooler. India-specific and genuinely excellent.' },
+  'aperol': { name:'Aperol', note:'Unlocks Aperol Spritz, Paper Plane, Jungle Bird. The house party bottle.' },
+};
+
+function renderNextBuys() {
+  const el = document.getElementById('nextBuysSection');
+  if (!el || selectedIngs.size === 0) { if(el) el.innerHTML=''; return; }
+
+  function ingMatched(drinkIng) {
+    const d = drinkIng.toLowerCase();
+    for (const sel of selectedIngs) { const s=sel.toLowerCase(); if(d.includes(s)||s.includes(d)) return true; }
+    return false;
+  }
+
+  // Count how many drinks each missing ingredient would unlock
+  const unlockCounts = {};
+  D.forEach(d => {
+    const missing = d.ing.filter(i => !ingMatched(i));
+    if (missing.length === 1) {
+      const m = missing[0].toLowerCase();
+      for (const [key, val] of Object.entries(BOTTLE_UNLOCKS)) {
+        if (m.includes(key) || key.includes(m)) {
+          unlockCounts[key] = (unlockCounts[key]||0) + 1;
+          break;
+        }
+      }
+    }
+  });
+
+  const top3 = Object.entries(unlockCounts).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  if (!top3.length) { el.innerHTML=''; return; }
+
+  el.innerHTML = `<div class="next-buys-section">
+    <div class="next-buys-title">🛒 Top 3 Bottles to Buy Next</div>
+    <div class="next-buy-row">
+      ${top3.map(([key, count]) => {
+        const info = BOTTLE_UNLOCKS[key];
+        return `<div class="next-buy-card">
+          <div class="nbc-name">${info.name}</div>
+          <div class="nbc-unlocks">Unlocks ~${count} more drink${count!==1?'s':''}</div>
+          <div class="nbc-note">${info.note}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ENHANCED BUILD CARD — Add flavor profile + metadata
+═══════════════════════════════════════════════════════ */
+
+// Flavor profiles for drinks (sweet/sour/bitter/strong 0-100)
+const FLAVOR_PROFILES = {
+  'G&T':             {sweet:20,sour:25,bitter:55,strong:30},
+  'Negroni':         {sweet:25,sour:10,bitter:80,strong:70},
+  'Old Fashioned':   {sweet:20,sour:5, bitter:30,strong:85},
+  'Mojito':          {sweet:40,sour:55,bitter:10,strong:35},
+  'Daiquiri':        {sweet:35,sour:65,bitter:5, strong:50},
+  'Margarita':       {sweet:30,sour:60,bitter:15,strong:55},
+  'Whisky Highball': {sweet:10,sour:10,bitter:20,strong:40},
+  'Cosmopolitan':    {sweet:45,sour:50,bitter:10,strong:45},
+  'Moscow Mule':     {sweet:30,sour:45,bitter:20,strong:35},
+  'Aperol Spritz':   {sweet:50,sour:20,bitter:40,strong:20},
+  'Gimlet':          {sweet:35,sour:65,bitter:5, strong:55},
+  'Vesper Martini':  {sweet:10,sour:10,bitter:30,strong:85},
+  'French 75':       {sweet:35,sour:40,bitter:15,strong:60},
+  'Whisky Sour':     {sweet:40,sour:55,bitter:10,strong:55},
+  'Penicillin':      {sweet:40,sour:35,bitter:25,strong:65},
+  'Nimbu Pani Vodka':{sweet:35,sour:60,bitter:5, strong:35},
+  'Chai Rum':        {sweet:45,sour:5, bitter:25,strong:55},
+  'Trinidad Sour':   {sweet:35,sour:30,bitter:75,strong:60},
+};
+
+// Editorial occasion tags
+const OCCASION_MAP = {
+  complexity: {1:'Easy',2:'Medium',3:'Advanced'},
+  occasion: {
+    'G&T':'Any occasion','Mojito':'House party','Old Fashioned':'Solo unwind','Daiquiri':'Dinner party',
+    'Negroni':'Pre-dinner aperitif','Vesper Martini':'Date night','Nimbu Pani Vodka':'Indian gathering',
+    'Chai Rum':'Monsoon evening','Whisky Highball':'Everyday ritual','Aperol Spritz':'Casual hosting',
+    'Adrak Highball':'Winter evenings','Thandai Whisky':'Festive occasion',
+  }
+};
+
+const SUBS_MAP = {
+  'triple sec': 'Triple sec → use any orange liqueur; fresh orange juice + sugar works in a pinch',
+  'dry vermouth': 'Dry vermouth → skip or sub a small amount of dry white wine (store in fridge)',
+  'aperol': 'Aperol → Campari (more bitter) or skip it',
+  'grapefruit soda': 'Grapefruit soda → Sting grapefruit works; sprite + grapefruit juice',
+  'cranberry': 'Cranberry → pomegranate juice (better actually), or skip',
+  'peach schnapps': 'Peach schnapps → peach juice + a splash of vodka',
+  'bitters': 'Angostura bitters → difficult to substitute, get a small bottle (cheap, lasts forever)',
+  'kokum syrup': 'Kokum syrup → available at any South Indian grocery or online',
+  'aam panna': 'Aam Panna → available bottled at kirana shops; or blend raw mango with sugar and salt',
+  'simple syrup': 'Simple syrup → dissolve 2:1 sugar in warm water; 5 minutes to make',
+};
+
+function getFlavorHtml(d) {
+  const fp = FLAVOR_PROFILES[d.name];
+  if (!fp) return '';
+  return `<div class="flavor-row">
+    <div class="flavor-bar"><span class="fb-label">Sweet</span><div class="fb-track"><div class="fb-fill sweet" style="width:${fp.sweet}%"></div></div></div>
+    <div class="flavor-bar"><span class="fb-label">Sour</span><div class="fb-track"><div class="fb-fill sour" style="width:${fp.sour}%"></div></div></div>
+    <div class="flavor-bar"><span class="fb-label">Bitter</span><div class="fb-track"><div class="fb-fill bitter" style="width:${fp.bitter}%"></div></div></div>
+    <div class="flavor-bar"><span class="fb-label">Strong</span><div class="fb-track"><div class="fb-fill strong" style="width:${fp.strong}%"></div></div></div>
+  </div>`;
+}
+
+function getMetaGridHtml(d) {
+  const difficulty = ['','Easy','Medium','Advanced'][d.complexity] || 'Medium';
+  const prepTime = d.complexity === 1 ? '2–3 min' : d.complexity === 2 ? '5 min' : '8–12 min';
+  const cost = d.type.includes('signature') && d.complexity === 3 ? '₹₹₹' : (d.type.includes('classic') && d.complexity >= 2 ? '₹₹' : '₹');
+  const occasion = OCCASION_MAP.occasion[d.name] || (d.type.includes('indian') ? 'Indian gathering' : d.season.includes('monsoon') ? 'Monsoon evening' : 'Any occasion');
+  return `<div class="card-meta-grid">
+    <div class="cmg-item"><div class="cmg-key">Difficulty</div><div class="cmg-val">${difficulty}</div></div>
+    <div class="cmg-item"><div class="cmg-key">Prep time</div><div class="cmg-val">${prepTime}</div></div>
+    <div class="cmg-item"><div class="cmg-key">Glassware</div><div class="cmg-val">${d.glass}</div></div>
+    <div class="cmg-item"><div class="cmg-key">Best for</div><div class="cmg-val">${occasion}</div></div>
+    <div class="cmg-item"><div class="cmg-key">Cost</div><div class="cmg-val">${cost}</div></div>
+    <div class="cmg-item"><div class="cmg-key">Chill glass</div><div class="cmg-val">${d.chill ? 'Yes ❄' : 'No'}</div></div>
+  </div>`;
+}
+
+function getSubsHtml(d) {
+  const subs = d.ing.map(i => {
+    const key = Object.keys(SUBS_MAP).find(k => i.toLowerCase().includes(k) || k.includes(i.toLowerCase()));
+    return key ? SUBS_MAP[key] : null;
+  }).filter(Boolean);
+  if (!subs.length) return '';
+  return `<div class="dlabel">🔄 Substitutions</div>
+    <div class="card-subs">${subs.map(s => `<div>• ${s}</div>`).join('')}</div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT NEW SECTIONS
+═══════════════════════════════════════════════════════ */
+function initDiscovery() {
+  renderTonightsPicks();
+  renderQuickWins();
+  renderGuidedPaths();
+  renderCraftGuides();
+  renderBeerStyleGuide();
+}
+
+/* ═══════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════ */
 buildIngGrid();
@@ -3531,6 +4367,7 @@ render();
 initQD();
 initBeerStats();
 renderBeerGrid();
+initDiscovery();
 </script>
 </body>
 </html>
