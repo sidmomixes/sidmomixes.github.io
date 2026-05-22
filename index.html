@@ -573,17 +573,20 @@ body::after {
 
 /* Mood result card */
 .mood-card {
-  background:var(--bg-card); backdrop-filter:blur(12px);
-  border:1px solid var(--border); border-radius:var(--r-xl);
+  background: linear-gradient(145deg, rgba(168,78,98,0.07) 0%, rgba(10,8,5,0.72) 100%);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(208,120,136,0.2); border-radius:var(--r-xl);
   padding:1rem 1.1rem; cursor:pointer;
   transition:all .25s cubic-bezier(.34,1.2,.64,1);
   animation:cardIn .4s ease both; position:relative; overflow:hidden;
+  box-shadow: inset 0 1px 0 rgba(208,120,136,0.06);
 }
 .mood-card::before {
   content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
-  background:linear-gradient(90deg, transparent, var(--card-accent, var(--amber-l)), transparent);
+  background:linear-gradient(90deg, transparent, rgba(208,120,136,0.5), transparent);
+  opacity: 0.5;
 }
-.mood-card:hover { border-color:var(--border-mid); transform:translateY(-2px); box-shadow:var(--shadow); }
+.mood-card:hover { border-color:rgba(208,120,136,0.4); transform:translateY(-2px); box-shadow:var(--shadow), 0 0 20px rgba(168,78,98,0.08); }
 .mood-card-name { font-family:var(--ff-disp); font-size:16px; font-weight:600; color:var(--txt-h); margin-bottom:2px; }
 .mood-card-meta { font-size:11px; color:var(--txt-s); margin-bottom:8px; }
 .mood-card-why {
@@ -1035,26 +1038,29 @@ body::after {
 }
 
 .pick-card {
-  background: var(--bg-card); backdrop-filter: blur(14px);
-  border: 1px solid var(--border); border-radius: var(--r-xl);
+  background: linear-gradient(145deg, rgba(200,148,58,0.06) 0%, rgba(14,12,9,0.7) 100%);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(200,148,58,0.18); border-radius: var(--r-xl);
   padding: 1.1rem 1.15rem; cursor: pointer;
   transition: all .3s cubic-bezier(.34,1.2,.64,1);
-  box-shadow: var(--shadow-sm); overflow: hidden; position: relative;
+  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(200,148,58,0.06);
+  overflow: hidden; position: relative;
 }
 .pick-card::before {
   content:''; position: absolute; top:0; left:10%; right:10%; height:1px;
-  background: linear-gradient(90deg, transparent, var(--card-accent,var(--amber-l)), transparent);
-  opacity:0; transition: opacity .3s;
+  background: linear-gradient(90deg, transparent, rgba(200,148,58,0.55), transparent);
+  opacity: 0.4; transition: opacity .3s;
 }
-.pick-card:hover { border-color: var(--border-hi); transform: translateY(-3px); box-shadow: var(--shadow); }
-.pick-card:hover::before { opacity:1; }
+.pick-card:hover { border-color: rgba(200,148,58,0.4); transform: translateY(-3px); box-shadow: var(--shadow), 0 0 30px rgba(200,148,58,0.08); }
+.pick-card:hover::before { opacity: 0.8; }
 
 .pick-card.pick-main {
-  background: linear-gradient(145deg, rgba(200,148,58,0.08), var(--bg-card));
-  border-color: rgba(200,148,58,.25);
+  background: linear-gradient(145deg, rgba(200,148,58,0.12) 0%, rgba(14,12,9,0.75) 60%, rgba(200,148,58,0.04) 100%);
+  border-color: rgba(200,148,58,.35);
   padding: 1.4rem;
+  box-shadow: var(--shadow), 0 0 40px rgba(200,148,58,0.1);
 }
-.pick-card.pick-main::before { opacity: .5; }
+.pick-card.pick-main::before { opacity: 0.7; }
 
 .pick-emoji { font-size: 24px; margin-bottom: 6px; display:block; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); }
 .pick-card.pick-main .pick-emoji { font-size: 36px; margin-bottom: 10px; }
@@ -1087,13 +1093,15 @@ body::after {
 
 .mood-pill-card {
   flex-shrink: 0; min-width: 140px;
-  background: var(--bg-card); border: 1px solid var(--border);
+  background: linear-gradient(145deg, rgba(82,96,160,0.1) 0%, rgba(10,8,5,0.7) 100%);
+  border: 1px solid rgba(130,150,200,0.2);
   border-radius: var(--r-xl); padding: .9rem 1rem; cursor: pointer;
   transition: all .25s cubic-bezier(.34,1.2,.64,1);
   text-align: center;
+  box-shadow: inset 0 1px 0 rgba(130,150,200,0.06);
 }
-.mood-pill-card:hover { border-color: var(--border-hi); transform: translateY(-2px); background: var(--bg-hover); }
-.mood-pill-card.mpc-active { border-color: var(--border-hi); background: var(--amber-dim); }
+.mood-pill-card:hover { border-color: rgba(130,150,200,0.4); transform: translateY(-2px); background: linear-gradient(145deg, rgba(82,96,160,0.18) 0%, rgba(10,8,5,0.75) 100%); }
+.mood-pill-card.mpc-active { border-color: var(--border-hi); background: linear-gradient(145deg, rgba(200,148,58,0.16) 0%, rgba(10,8,5,0.75) 100%); }
 .mpc-emoji { font-size: 26px; display:block; margin-bottom: 5px; }
 .mpc-label { font-size: 12px; font-weight: 600; color: var(--txt-h); display:block; margin-bottom: 2px; }
 .mpc-desc { font-size: 10px; color: var(--txt-s); display:block; line-height: 1.4; }
@@ -1115,17 +1123,19 @@ body::after {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px;
 }
 .qw-card {
-  background: var(--bg-card); border: 1px solid var(--border);
+  background: linear-gradient(145deg, rgba(46,126,126,0.08) 0%, rgba(10,8,5,0.7) 100%);
+  border: 1px solid rgba(90,172,172,0.18);
   border-radius: var(--r-xl); padding: .9rem 1rem; cursor: pointer;
   transition: all .25s cubic-bezier(.34,1.2,.64,1); overflow: hidden; position: relative;
+  box-shadow: inset 0 1px 0 rgba(90,172,172,0.06);
 }
 .qw-card::before {
   content:''; position: absolute; top:0; left:10%; right:10%; height:1px;
-  background: linear-gradient(90deg, transparent, var(--card-accent,var(--amber-l)), transparent);
-  opacity: 0; transition: opacity .3s;
+  background: linear-gradient(90deg, transparent, rgba(90,172,172,0.6), transparent);
+  opacity: 0.35; transition: opacity .3s;
 }
-.qw-card:hover { border-color: var(--border-hi); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-.qw-card:hover::before { opacity: 1; }
+.qw-card:hover { border-color: rgba(90,172,172,0.4); transform: translateY(-2px); box-shadow: var(--shadow-sm), 0 0 20px rgba(46,126,126,0.08); }
+.qw-card:hover::before { opacity: 0.75; }
 .qw-emoji { font-size: 20px; margin-bottom: 4px; display:block; }
 .qw-name { font-family: var(--ff-disp); font-size: 15px; font-weight: 600; color: var(--txt-h); margin-bottom: 3px; line-height:1.2; }
 .qw-ings { font-size: 10px; color: var(--txt-s); line-height: 1.6; }
@@ -1137,15 +1147,18 @@ body::after {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 12px;
 }
 .path-card {
-  background: var(--bg-card); border: 1px solid var(--border);
+  background: linear-gradient(145deg, rgba(82,96,160,0.08) 0%, rgba(10,8,5,0.72) 100%);
+  border: 1px solid rgba(136,152,204,0.2);
   border-radius: var(--r-xl); padding: 1.25rem 1.3rem; overflow: hidden; position: relative;
   transition: all .3s cubic-bezier(.34,1.2,.64,1);
+  box-shadow: inset 0 1px 0 rgba(136,152,204,0.05);
 }
 .path-card::before {
   content:''; position: absolute; top:0; left:0; right:0; height:2px;
-  background: linear-gradient(90deg, transparent, var(--path-color,var(--amber-l)), transparent);
+  background: linear-gradient(90deg, transparent, var(--path-color,var(--indigo-l)), transparent);
+  opacity: 0.6;
 }
-.path-card:hover { border-color: var(--border-hi); transform: translateY(-2px); box-shadow: var(--shadow); }
+.path-card:hover { border-color: rgba(136,152,204,0.4); transform: translateY(-2px); box-shadow: var(--shadow), 0 0 30px rgba(82,96,160,0.1); }
 
 .path-header { display: flex; align-items: center; gap: 10px; margin-bottom: .75rem; }
 .path-icon { font-size: 28px; flex-shrink: 0; }
@@ -1464,7 +1477,7 @@ body::after {
 
   <div class="srch-wrap">
     <svg class="srch-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input class="srch" type="text" placeholder="Search spirits, ingredients, names…" id="srch" oninput="onSearch()" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search recipes">
+    <input class="srch" type="text" placeholder="Search by name, spirit, ingredient, glass…" id="srch" oninput="onSearch()" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search recipes">
     <button class="srch-clear" id="srchClear" onclick="clearSearch()" aria-label="Clear search">✕</button>
   </div>
 
@@ -2818,15 +2831,18 @@ function clearSearch() {
 }
 
 function matches(d) {
-  const s = document.getElementById('srch').value.toLowerCase();
+  const s = document.getElementById('srch').value.toLowerCase().trim();
   const bm = fBase==='all' || d.base.includes(fBase);
   const tm = fType==='all' || d.type.includes(fType);
   const sm = fSeason==='all' || d.season.includes(fSeason);
-  const srm = !s || d.name.toLowerCase().includes(s)
+  const srm = !s
+    || d.name.toLowerCase().includes(s)
     || d.base.some(b => b.includes(s))
     || d.type.some(t => t.includes(s))
     || d.ratio.some(r => r[0].toLowerCase().includes(s))
-    || (d.note && d.note.toLowerCase().includes(s));
+    || d.ing.some(i => i.toLowerCase().includes(s))          // ← ingredient search
+    || (d.note && d.note.toLowerCase().includes(s))
+    || (d.glass && d.glass.toLowerCase().includes(s));
   return bm && tm && sm && srm;
 }
 
@@ -3123,19 +3139,25 @@ function renderMoodResults() {
 }
 
 function jumpToRecipe(name) {
-  // Switch to recipes tab, search the drink
+  // Switch to recipes tab
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('panel-recipes').classList.add('active');
   document.querySelectorAll('.tab')[0].classList.add('active');
+  // Set search value and render
   document.getElementById('srch').value = name;
   document.getElementById('srchClear').classList.add('show');
   render();
-  // Open the card
+  // Open the card and scroll to it
   setTimeout(() => {
     const cards = document.querySelectorAll('#grid .card');
-    if (cards.length === 1) cards[0].click();
-  }, 100);
+    if (cards.length >= 1) {
+      cards[0].click();
+      // Scroll: account for sticky tab bar height (~60px) + a bit of breathing room
+      const cardTop = cards[0].getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top: cardTop, behavior: 'smooth' });
+    }
+  }, 120);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -3814,6 +3836,117 @@ const BEERS = [
  serve:"Cold in a wide glass. The American wheat style is less challenging than Hefeweizen — a good introduction to wheat beers.",
  pair:["Light food","Salads","Fruit","Mild snacks"],
  note:"Hik's Wheat is the accessible wheat beer option — less banana-clove intensity than a proper Hefeweizen, which makes it an easier transition for lager drinkers."},
+
+/* ── BRO CODE ── */
+{name:"Bro Code",brand:"Bro Code Beverages",cat:"strong",abv:15.0,abvPct:100,
+ tags:["strong","high"],avail:"wide",emoji:"💪",craft:false,
+ profile:"The nuclear option in Indian beer. More malt liquor than beer — extremely high ABV at 15%, syrupy malt sweetness, obvious alcohol presence. Not designed for tasting notes.",
+ serve:"Very cold. Respect what this is doing. One can is often enough.",
+ pair:["Anything — or nothing","Late night snacks","Street food"],
+ note:"Bro Code is the most potent commercially available beer-category product in India. At 15% it's closer to a fortified wine than a beer. It exists; it's popular; drink it knowing exactly what you're doing."},
+
+/* ── KINGFISHER ULTRA & ULTRA MAX ── */
+{name:"Kingfisher Ultra",brand:"United Breweries",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Kingfisher's premium offering — cleaner and crisper than the standard Premium, with less residual sweetness and a smoother finish. The 'upgrade' version.",
+ serve:"Well chilled. The cleanness shows best when cold.",
+ pair:["Light snacks","Mild food","Any casual occasion"],
+ note:"Ultra is what Kingfisher Premium wants to be — and mostly succeeds. It's smoother, less cloying, and works better in a glass. Worth the marginal price difference at a restaurant."},
+
+{name:"Kingfisher Ultra Max",brand:"United Breweries",cat:"strong",abv:7.5,abvPct:60,
+ tags:["strong","lager"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Strong version of the Ultra line — cleaner than Kingfisher Strong, less aggressively sweet. Smoother alcohol integration for its ABV.",
+ serve:"Chilled. The 'premium strong' category in one can.",
+ pair:["Heavy food","Spicy food","Evening snacks"],
+ note:"If you want Kingfisher Strong but with more refinement, this is it. The Ultra branding makes a real difference — less harshness, better balance for the ABV."},
+
+/* ── ROYAL CHALLENGE ── */
+{name:"Royal Challenge Premium",brand:"United Spirits / Diageo",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"wide",emoji:"👑",craft:false,
+ profile:"Light premium lager — mild hop bitterness, clean malt profile, crisp finish. The Diageo-backed competitor to Kingfisher in the premium lager space.",
+ serve:"Chilled. Holds temperature well in a can.",
+ pair:["Chicken snacks","Light food","Bar nuts"],
+ note:"Royal Challenge punches above its commercial positioning — it's genuinely cleaner than standard Kingfisher and often underpriced. A reliable option when you want premium without paying craft prices."},
+
+/* ── MILLER HIGH LIFE ── */
+{name:"Miller High Life",brand:"AB InBev India",cat:"lager",abv:4.7,abvPct:38,
+ tags:["lager","mild"],avail:"select",emoji:"🍺",craft:false,
+ profile:"American adjunct lager — very light body, slightly sweet corn note, mild hop bitterness, crisp finish. The 'champagne of beers' moniker is very generous but the drinkability is real.",
+ serve:"Ice cold, from the iconic clear bottle. The bottle is the experience.",
+ pair:["Pizza","Burgers","Fried food","Anything casual"],
+ note:"Miller's clean, light profile is what makes it so approachable. If you prefer Budweiser's lightness, this is the same territory. The clear bottle is actually a disadvantage for freshness — drink fresh."},
+
+/* ── AMSTEL ── */
+{name:"Amstel",brand:"Heineken India",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"select",emoji:"🍺",craft:false,
+ profile:"Dutch pale lager — clean malt body, mild bitterness, slightly fuller than Heineken but in the same family. Balanced and reliable.",
+ serve:"Chilled in a glass. Works especially well on draft where available.",
+ pair:["Cheese","Light food","Seafood","Salads"],
+ note:"Amstel tends to fly under the radar compared to its Heineken sibling. It's the more food-friendly option — a touch more body, slightly less assertive hop profile. Excellent with food."},
+
+/* ── HAYWARDS 2000 ── */
+{name:"Haywards 2000",brand:"SABMiller India",cat:"lager",abv:5.0,abvPct:40,
+ tags:["lager","mild"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Standard Indian lager — moderate malt sweetness, light hop character, approachable and easy-drinking. The affordable everyday option from the Haywards family.",
+ serve:"Cold. Bottle or glass — no preference.",
+ pair:["Street food","Casual snacks","Any occasion"],
+ note:"Haywards 2000 is the working-class lager of India — honest, cheap, and does exactly what you expect. No surprises, no pretension. There's value in that."},
+
+/* ── 8PM PREMIUM BLACK ── */
+{name:"8PM Premium Black",brand:"Radico Khaitan",cat:"strong",abv:7.9,abvPct:63,
+ tags:["strong","lager"],avail:"wide",emoji:"🖤",craft:false,
+ profile:"Strong premium lager — dark golden, moderately sweet malt, noticeable alcohol warmth, light hop bitterness. Positioned as a premium strong beer alternative.",
+ serve:"Cold. The 'black' branding is marketing — it's a golden strong lager.",
+ pair:["Spicy food","Evening snacks","Rich food"],
+ note:"8PM Premium Black carved out a niche between standard strong beers and craft. It's smoother than Kingfisher Strong and more affordable than imported options. A sensible choice in the strong beer segment."},
+
+/* ── BLACK FORT ── */
+{name:"Black Fort Strong",brand:"SOM Distilleries",cat:"strong",abv:8.0,abvPct:64,
+ tags:["strong","lager"],avail:"wide",emoji:"🏰",craft:false,
+ profile:"Strong lager — full malt body, sweetish with a pronounced alcohol presence, low hop bitterness. Standard Indian strong beer profile.",
+ serve:"Cold.",
+ pair:["Heavy food","Spicy food"],
+ note:"Black Fort is the south and central India strong beer staple. Wide availability, strong ABV, familiar profile. Does the job."},
+
+/* ── SIMBA LAGER (non-dark) ── */
+{name:"Simba Lager",brand:"Simba Beer",cat:"lager",abv:5.0,abvPct:40,
+ tags:["craft","lager","mild"],avail:"select",emoji:"🦁",craft:true,
+ profile:"Craft lager — clean, crisp, mild hop character, very refreshing. Simba's flagship. Brewed in Chhattisgarh with an attention to quality that sets it apart from commercial lagers.",
+ serve:"Cold. In a pint glass if possible — the pour is part of the experience.",
+ pair:["Chicken","Light food","Snacks","Anything casual"],
+ note:"Simba is the most widely distributed Indian craft brand that doesn't compromise quality for reach. The Lager is their gateway drink — unpretentious, well-made, and noticeably better than commercial alternatives at the same price point."},
+
+/* ── BIRA 91 STRONG ── */
+{name:"Bira 91 Strong",brand:"B9 Beverages",cat:"strong",abv:7.0,abvPct:56,
+ tags:["craft","strong"],avail:"wide",emoji:"🍂",craft:true,
+ profile:"Craft strong beer — malt-forward with a slightly fruity character from the craft yeast. Better integrated alcohol than commercial strong beers. The craft version of the strong beer experience.",
+ serve:"Cold but not ice-cold — some warmth lets the craft character show.",
+ pair:["Spiced food","Rich curries","Evening snacks"],
+ note:"Bira brought craft positioning to the strong beer category. At 7% with actual craft brewing behind it, this is a significantly better drinking experience than Kingfisher Strong or Haywards 5000 — and usually similarly priced."},
+
+/* ── TUBORG STRONG ── */
+{name:"Tuborg Strong",brand:"Carlsberg India",cat:"strong",abv:7.2,abvPct:58,
+ tags:["strong","lager"],avail:"wide",emoji:"🍺",craft:false,
+ profile:"Strong lager — malt-forward sweetness, pronounced alcohol warmth, low hop bitterness. Tuborg's strong offering in the competitive Indian market.",
+ serve:"Chilled. The green can is deceptive — this is serious ABV.",
+ pair:["Spicy food","Late night snacks","Anything hearty"],
+ note:"Tuborg Strong rarely gets mentioned alongside Kingfisher Strong or Haywards 5000 but it competes directly with both. Slightly more balanced sweetness than Kingfisher Strong. A reliable choice."},
+
+/* ── ESTRELLA DAMM ── */
+{name:"Estrella Damm",brand:"S.A. Damm (imported)",cat:"lager",abv:5.4,abvPct:43,
+ tags:["lager","mild"],avail:"rare",emoji:"⭐",craft:false,
+ profile:"Barcelona lager — crisp, slightly hoppy, mild malt backbone, clean finish. One of Spain's finest commercial lagers. Medium body, refreshing character.",
+ serve:"Well chilled. In a proper pilsner glass. The Mediterranean lager experience.",
+ pair:["Seafood","Paella","Tapas","Light food"],
+ note:"When you spot Estrella Damm at a premium bar or import store, get it. It's a properly made European lager with character — hop-forward enough to be interesting, clean enough to be sessionable. A significant step up from the usual Indian commercial options."},
+
+/* ── PERONI NASTRO AZZURRO ── */
+{name:"Peroni Nastro Azzurro",brand:"Asahi (imported)",cat:"lager",abv:5.1,abvPct:41,
+ tags:["lager","mild"],avail:"rare",emoji:"🇮🇹",craft:false,
+ profile:"Italian premium lager — light-bodied, very clean, slightly bitter finish, elegant character. The quintessential aperitivo beer.",
+ serve:"Well chilled. In a tall glass. The bottle is also beautiful — it matters.",
+ pair:["Italian food","Antipasti","Pizza","Seafood","Cheese"],
+ note:"Peroni's pale blue label is a design classic and the beer matches the aesthetic — refined, clean, understated. Mostly found at premium restaurants. Worth ordering when you see it."},
 
 ];
 
