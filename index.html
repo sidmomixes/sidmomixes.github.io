@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kwarki Naari — Handmade Wearable Art</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+/* ─────────────────────────────────────
+   TOKENS
+───────────────────────────────────── */
+:root {
+  --bg:      #fdfaf5;
+  --ink:     #1c1510;
+  --ink2:    #3d2f24;
+  --cream:   #f7f2e8;
+  --poppy:   #e8422a;
+  --tangy:   #f2861a;
+  --lemon:   #f0d44a;
+  --teal:    #2abfa3;
+  --violet:  #8b5cf6;
+  --clay:    #d4784a;
+  --pink:    #f0738a;
+  --sage:    #74b49b;
+  --resin:   rgba(255,255,255,0.55);
+  --gold:    #c8973e;
+  --muted:   #7a6a5a;
+  --border:  rgba(28,21,16,0.1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;cursor:none}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;min-height:100vh}
+
+/* ─── CUSTOM CURSOR ─── */
+#cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--poppy);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,background 0.2s,width 0.25s,height 0.25s;mix-blend-mode:multiply}
+#cursor-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--clay);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.18s ease,width 0.3s,height 0.3s,border-color 0.2s;mix-blend-mode:multiply}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:20px;height:20px;background:var(--teal)}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:52px;height:52px;border-color:var(--teal)}
+body:has(.product-card:hover) #cursor{width:60px;height:60px;background:var(--lemon);opacity:0.7}
+body:has(.product-card:hover) #cursor-ring{width:0;height:0;opacity:0}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.1rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:background 0.4s,backdrop-filter 0.4s}
+nav.scrolled{background:rgba(253,250,245,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:900;color:var(--ink);text-decoration:none;letter-spacing:-0.01em;display:flex;align-items:center;gap:0.2rem}
+.logo-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--poppy);margin-left:2px;margin-bottom:8px;animation:bop 2s ease-in-out infinite}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--poppy);transition:width 0.25s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:1.4rem}
+.nav-bag{position:relative;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.2rem;border:1.5px solid var(--ink);transition:all 0.25s}
+.nav-bag:hover{background:var(--ink);color:var(--bg)}
+.bag-count{background:var(--poppy);color:white;font-size:0.62rem;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform 0.3s}
+.bag-count.bump{animation:bump 0.4s ease}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 3.5rem 4rem;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.35;animation:drift 12s ease-in-out infinite alternate}
+.blob-1{width:500px;height:500px;background:var(--lemon);top:-100px;right:-80px;animation-delay:0s}
+.blob-2{width:350px;height:350px;background:var(--pink);bottom:-50px;left:5%;animation-delay:-3s}
+.blob-3{width:300px;height:300px;background:var(--teal);top:30%;right:20%;animation-delay:-6s;opacity:0.2}
+.hero-content{position:relative;z-index:2;max-width:800px}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--ink);color:var(--lemon);font-size:0.68rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:0.4rem 0.9rem;margin-bottom:1.6rem;opacity:0;animation:slideIn 0.7s 0.3s forwards}
+.badge-pip{width:6px;height:6px;border-radius:50%;background:var(--lemon);animation:blink 1.4s infinite}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.8rem,7vw,7rem);font-weight:900;line-height:0.95;color:var(--ink);margin-bottom:1.8rem;opacity:0;animation:slideIn 0.8s 0.5s forwards}
+.hero-title .line-2{display:block;font-style:italic;color:var(--poppy);-webkit-text-stroke:2px var(--poppy);color:transparent}
+.hero-title .line-3{display:block;font-style:normal}
+.hero-sub{font-size:1.05rem;font-weight:300;color:var(--ink2);max-width:460px;line-height:1.8;margin-bottom:2.5rem;opacity:0;animation:slideIn 0.8s 0.7s forwards}
+.hero-sub strong{font-weight:600;color:var(--clay)}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;opacity:0;animation:slideIn 0.8s 0.9s forwards}
+.btn-pop{background:var(--poppy);color:white;padding:0.95rem 2.2rem;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:none;transition:all 0.22s;text-decoration:none;display:inline-block;position:relative;overflow:hidden}
+.btn-pop::after{content:'';position:absolute;inset:0;background:var(--tangy);transform:translateX(-100%);transition:transform 0.3s ease;z-index:0}
+.btn-pop:hover::after{transform:translateX(0)}
+.btn-pop span{position:relative;z-index:1}
+.btn-outline{background:transparent;color:var(--ink);padding:0.95rem 2.2rem;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:2px solid var(--ink);cursor:none;transition:all 0.22s;text-decoration:none;display:inline-block}
+.btn-outline:hover{background:var(--ink);color:var(--bg)}
+.hero-pills{display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:2.5rem;opacity:0;animation:slideIn 0.8s 1.1s forwards}
+.pill{padding:0.35rem 0.85rem;border-radius:999px;font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;border:1.5px solid;cursor:none}
+.pill-1{color:var(--poppy);border-color:var(--poppy);background:rgba(232,66,42,0.07)}
+.pill-2{color:var(--teal);border-color:var(--teal);background:rgba(42,191,163,0.07)}
+.pill-3{color:var(--violet);border-color:var(--violet);background:rgba(139,92,246,0.07)}
+.pill-4{color:var(--clay);border-color:var(--clay);background:rgba(212,120,74,0.07)}
+.hero-float-cards{position:absolute;right:3rem;top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column;gap:1.2rem;opacity:0;animation:slideInRight 1s 1.3s forwards}
+.float-card{background:white;border:1px solid var(--border);padding:1rem 1.2rem;box-shadow:0 8px 32px rgba(28,21,16,0.1);width:180px;position:relative;transform:rotate(-2deg);transition:transform 0.3s}
+.float-card:nth-child(2){transform:rotate(1.5deg)}
+.float-card:nth-child(3){transform:rotate(-1deg)}
+.float-card:hover{transform:rotate(0) scale(1.04)!important}
+.float-card-color{height:80px;margin:-1rem -1.2rem 0.8rem;border-radius:0;position:relative;overflow:hidden}
+.float-card-color svg{width:100%;height:100%}
+.float-label{font-family:'Syne',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink2)}
+.float-price{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-top:0.2rem}
+
+/* ─── TICKER ─── */
+.ticker{background:var(--ink);overflow:hidden;padding:0.8rem 0;white-space:nowrap;border-top:3px solid var(--poppy);border-bottom:3px solid var(--lemon)}
+.ticker-track{display:inline-flex;animation:ticker 22s linear infinite}
+.ticker-item{font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--lemon);padding:0 2.4rem}
+.ticker-sep{color:var(--poppy);font-size:1rem}
+
+/* ─── SHARED SECTION ─── */
+.section{padding:6rem 3.5rem}
+.section-eyebrow{font-family:'Syne',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.6rem}
+.ew-dot{width:5px;height:5px;border-radius:50%}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3.2rem);font-weight:900;line-height:1.1;color:var(--ink);margin-bottom:0.6rem}
+.section-title em{font-style:italic;color:var(--poppy)}
+
+/* ─── MATERIALS STRIP ─── */
+.materials{background:var(--cream);padding:4rem 3.5rem}
+.materials-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.mat-card{padding:2.5rem 2rem;position:relative;overflow:hidden;transition:transform 0.3s}
+.mat-card:hover{transform:scale(1.02);z-index:2}
+.mat-card-1{background:var(--poppy)}
+.mat-card-2{background:var(--teal)}
+.mat-card-3{background:var(--lemon)}
+.mat-icon{font-size:2.8rem;margin-bottom:1.2rem;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.2))}
+.mat-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:0.6rem}
+.mat-card-1 .mat-title,.mat-card-1 .mat-text{color:white}
+.mat-card-2 .mat-title,.mat-card-2 .mat-text{color:var(--ink)}
+.mat-card-3 .mat-title,.mat-card-3 .mat-text{color:var(--ink)}
+.mat-text{font-size:0.85rem;line-height:1.7;font-weight:300;opacity:0.85}
+.mat-card::after{content:'';position:absolute;bottom:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.12)}
+
+/* ─── PRODUCTS ─── */
+.products{background:var(--bg)}
+.products-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem}
+.filter-row{display:flex;gap:0.4rem;flex-wrap:wrap}
+.ftab{padding:0.5rem 1.1rem;font-family:'Syne',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:transparent;border:1.5px solid var(--border);color:var(--muted);cursor:none;transition:all 0.2s;border-radius:2px}
+.ftab:hover,.ftab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ftab[data-f="earrings"].on{background:var(--poppy);border-color:var(--poppy)}
+.ftab[data-f="pendants"].on{background:var(--teal);border-color:var(--teal)}
+.ftab[data-f="necklaces"].on{background:var(--violet);border-color:var(--violet)}
+.ftab[data-f="home"].on{background:var(--sage);border-color:var(--sage)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+
+.pcard{background:white;position:relative;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);cursor:none}
+.pcard:hover{transform:translateY(-8px);z-index:10;box-shadow:0 24px 60px rgba(28,21,16,0.15)}
+.pcard-img{aspect-ratio:4/5;position:relative;overflow:hidden}
+.pcard-img svg{width:100%;height:100%;display:block;transition:transform 0.5s ease}
+.pcard:hover .pcard-img svg{transform:scale(1.05)}
+.pcard-badge{position:absolute;top:0.9rem;left:0.9rem;z-index:3;font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.28rem 0.65rem}
+.badge-new{background:var(--lemon);color:var(--ink)}
+.badge-fav{background:var(--teal);color:white}
+.badge-last{background:var(--poppy);color:white}
+.pcard-quick{position:absolute;bottom:0;left:0;right:0;background:var(--ink);color:var(--bg);padding:0.9rem;font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:none;transform:translateY(100%);transition:transform 0.3s ease;text-align:center}
+.pcard:hover .pcard-quick{transform:translateY(0)}
+.pcard-quick:hover{background:var(--poppy)!important}
+.pcard-info{padding:1.1rem 1.3rem 1.5rem}
+.pcard-cat{font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:0.35rem}
+.pcard-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem}
+.pcard-desc{font-size:0.78rem;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:1rem}
+.pcard-row{display:flex;align-items:center;justify-content:space-between}
+.pcard-price{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink)}
+.pcard-add{width:36px;height:36px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:all 0.2s;font-weight:300;border-radius:50%}
+.pcard-add:hover{background:var(--poppy);border-color:var(--poppy);color:white;transform:rotate(90deg)}
+
+/* ─── COLOR SWATCH ROW ─── */
+.pcard-swatches{display:flex;gap:0.4rem;margin-bottom:0.75rem}
+.swatch{width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 1px rgba(0,0,0,0.15);cursor:none;transition:transform 0.2s}
+.swatch:hover{transform:scale(1.35)}
+
+/* ─── WIDE FEATURE CARD ─── */
+.pcard.wide{grid-column:span 2}
+.pcard.wide .pcard-img{aspect-ratio:8/5}
+
+/* ─── PROCESS ─── */
+.process{background:var(--ink);padding:6rem 3.5rem;position:relative;overflow:hidden}
+.process::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(232,66,42,0.12) 0%,transparent 65%)}
+.process-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem}
+.process-header .section-eyebrow{color:rgba(253,250,245,0.45)}
+.process-header .section-title{color:var(--bg)}
+.process-header .section-title em{color:var(--lemon)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(253,250,245,0.08)}
+.pstep{background:var(--ink);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background 0.3s}
+.pstep:hover{background:rgba(253,250,245,0.04)}
+.pstep-num{font-family:'Playfair Display',serif;font-size:5rem;font-weight:900;line-height:1;color:rgba(253,250,245,0.06);position:absolute;top:0.5rem;right:1rem;transition:color 0.3s}
+.pstep:hover .pstep-num{color:rgba(253,250,245,0.12)}
+.pstep-icon{font-size:2rem;margin-bottom:1.2rem}
+.pstep-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--lemon);margin-bottom:0.7rem}
+.pstep-text{font-size:0.82rem;color:rgba(253,250,245,0.6);line-height:1.75;font-weight:300}
+.pstep-line{width:32px;height:2px;margin-bottom:1.2rem;border-radius:1px}
+
+/* ─── MARQUEE CARDS (horizontal scroll showcase) ─── */
+.showcase{padding:4rem 0;background:var(--cream);overflow:hidden}
+.showcase-label{padding:0 3.5rem;margin-bottom:2rem}
+.showcase-track{display:flex;gap:1.2rem;animation:scroll-x 28s linear infinite;width:max-content;padding:0 3.5rem}
+.showcase:hover .showcase-track{animation-play-state:paused}
+.sc-card{flex:0 0 220px;background:white;border:1px solid var(--border);padding:1.2rem;position:relative;transition:transform 0.3s}
+.sc-card:hover{transform:scale(1.04) rotate(-1deg)}
+.sc-card-img{height:160px;margin:-1.2rem -1.2rem 1rem;overflow:hidden}
+.sc-card-img svg{width:100%;height:100%}
+.sc-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;margin-bottom:0.2rem}
+.sc-price{font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;color:var(--poppy)}
+
+/* ─── STORY / ABOUT ─── */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.story-visual{background:var(--poppy);min-height:560px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.story-bg-text{position:absolute;font-family:'Playfair Display',serif;font-size:9rem;font-weight:900;color:rgba(255,255,255,0.08);white-space:nowrap;top:50%;transform:translateY(-50%) rotate(-10deg);letter-spacing:-0.04em;pointer-events:none}
+.story-img-frame{width:280px;height:380px;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;transition:transform 0.4s}
+.story-img-frame:hover{transform:rotate(2deg) scale(1.03)}
+.story-img-frame svg{width:100%;height:100%}
+.story-text-block{background:var(--cream);padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center}
+.story-text-block .section-eyebrow{color:var(--muted)}
+.story-text-block .section-title{margin-bottom:1.5rem}
+.story-body{font-size:0.97rem;line-height:1.9;color:var(--ink2);font-weight:300;margin-bottom:1.5rem}
+.story-body strong{font-weight:600;color:var(--ink)}
+.story-chips{display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem;margin-bottom:2rem}
+.chip{padding:0.3rem 0.8rem;border-radius:999px;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
+.chip-pop{background:rgba(232,66,42,0.1);color:var(--poppy)}
+.chip-teal{background:rgba(42,191,163,0.1);color:var(--teal)}
+.chip-lemon{background:rgba(240,212,74,0.15);color:#a08a00}
+.chip-violet{background:rgba(139,92,246,0.1);color:var(--violet)}
+.chip-clay{background:rgba(212,120,74,0.1);color:var(--clay)}
+.story-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--border)}
+.s-stat{padding:1.4rem 1.2rem 0;text-align:center}
+.s-stat-n{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;line-height:1;margin-bottom:0.3rem}
+.s-stat-l{font-size:0.65rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)}
+
+/* ─── TESTIMONIALS ─── */
+.testimonials{background:var(--bg);padding:6rem 3.5rem}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.tcard{padding:2.2rem;border:1.5px solid var(--border);position:relative;transition:border-color 0.3s,transform 0.3s}
+.tcard:hover{border-color:var(--poppy);transform:translateY(-4px)}
+.tcard-quote{font-family:'Playfair Display',serif;font-size:3.5rem;line-height:0.6;color:var(--lemon);margin-bottom:0.8rem;display:block}
+.tcard-text{font-family:'DM Sans',sans-serif;font-style:italic;font-size:0.93rem;line-height:1.8;color:var(--ink2);margin-bottom:1.5rem;font-weight:300}
+.tcard-foot{display:flex;align-items:center;gap:0.8rem}
+.tavatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:0.7rem;font-weight:800;color:white}
+.tname{font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.06em}
+.tloc{font-size:0.65rem;color:var(--muted);margin-top:0.1rem}
+.tstars{color:var(--tangy);font-size:0.68rem;letter-spacing:0.1em}
+
+/* ─── CUSTOM ORDER CTA ─── */
+.custom-cta{background:var(--lemon);padding:5rem 3.5rem;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--ink);line-height:1.1}
+.cta-title em{font-style:italic;color:var(--poppy)}
+.cta-sub{font-size:0.95rem;color:var(--ink2);margin-top:1rem;font-weight:300;max-width:480px;line-height:1.7}
+.cta-right{flex-shrink:0}
+
+/* ─── NEWSLETTER ─── */
+.newsletter{background:var(--ink);padding:5.5rem 3.5rem;text-align:center;position:relative;overflow:hidden}
+.nl-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(42,191,163,0.1),transparent 50%),radial-gradient(ellipse at 70% 30%,rgba(240,212,74,0.08),transparent 50%)}
+.nl-content{position:relative;z-index:2}
+.newsletter .section-eyebrow{color:rgba(253,250,245,0.45);justify-content:center}
+.newsletter .section-title{color:var(--bg);text-align:center;margin:0 auto 0.8rem}
+.newsletter .section-title em{color:var(--lemon)}
+.nl-sub{font-size:0.95rem;color:rgba(253,250,245,0.6);margin-bottom:2.5rem;font-weight:300}
+.nl-form{display:flex;max-width:440px;margin:0 auto}
+.nl-input{flex:1;padding:1rem 1.4rem;background:rgba(253,250,245,0.08);border:1.5px solid rgba(253,250,245,0.2);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s}
+.nl-input::placeholder{color:rgba(253,250,245,0.35)}
+.nl-input:focus{border-color:var(--lemon)}
+.nl-btn{padding:1rem 1.8rem;background:var(--poppy);color:white;border:none;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;cursor:none;transition:background 0.2s}
+.nl-btn:hover{background:var(--tangy)}
+.nl-ok{margin-top:1rem;font-size:0.82rem;color:var(--teal);display:none;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:0.08em}
+
+/* ─── FOOTER ─── */
+footer{background:#111008;color:rgba(253,250,245,0.55);padding:5rem 3.5rem 2rem}
+.footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3.5rem;border-bottom:1px solid rgba(253,250,245,0.08);margin-bottom:2rem}
+.footer-brand-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--bg);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.2rem}
+.footer-brand-desc{font-size:0.82rem;line-height:1.8;max-width:250px;font-weight:300}
+.footer-col-title{font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:rgba(253,250,245,0.35);margin-bottom:1.2rem}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:0.55rem}
+.footer-col a{font-size:0.82rem;color:rgba(253,250,245,0.55);text-decoration:none;transition:color 0.2s}
+.footer-col a:hover{color:var(--lemon)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:0.5rem}
+.footer-social{display:flex;gap:1.4rem}
+.footer-social a{color:rgba(253,250,245,0.3);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s}
+.footer-social a:hover{color:var(--poppy)}
+
+/* ─── CART DRAWER ─── */
+.cart-drawer{position:fixed;top:0;right:0;bottom:0;width:380px;background:var(--bg);z-index:800;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);box-shadow:-8px 0 40px rgba(0,0,0,0.15);display:flex;flex-direction:column}
+.cart-drawer.open{transform:translateX(0)}
+.cart-overlay{position:fixed;inset:0;background:rgba(28,21,16,0.45);z-index:799;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-head{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cart-head-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900}
+.cart-close{background:none;border:none;font-size:1.5rem;cursor:none;color:var(--muted);line-height:1;transition:color 0.2s}
+.cart-close:hover{color:var(--poppy)}
+.cart-body{flex:1;overflow-y:auto;padding:1.5rem}
+.cart-empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.cart-empty-icon{font-size:3rem;margin-bottom:1rem}
+.cart-empty p{font-size:0.9rem;font-weight:300}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.cart-item-swatch{width:52px;height:52px;flex-shrink:0;border:1px solid var(--border)}
+.cart-item-info{flex:1}
+.cart-item-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700}
+.cart-item-price{font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;color:var(--poppy);margin-top:0.25rem}
+.cart-item-remove{background:none;border:none;font-size:0.68rem;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);cursor:none;margin-top:0.4rem;padding:0;transition:color 0.2s}
+.cart-item-remove:hover{color:var(--poppy)}
+.cart-foot{padding:1.5rem;border-top:1px solid var(--border)}
+.cart-total-row{display:flex;justify-content:space-between;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.2rem}
+.cart-total-row span:last-child{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900}
+.btn-checkout{width:100%;padding:1.1rem;background:var(--ink);color:var(--bg);border:none;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;cursor:none;transition:background 0.2s}
+.btn-checkout:hover{background:var(--poppy)}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(90px);background:var(--ink);color:var(--bg);padding:0.85rem 1.8rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;z-index:900;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;display:flex;align-items:center;gap:0.6rem;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-pip{width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0}
+
+/* ─── REVEAL ─── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv-left{opacity:0;transform:translateX(-28px);transition:opacity 0.65s ease,transform 0.65s ease}
+.rv-left.in{opacity:1;transform:translateX(0)}
+.rv-right{opacity:0;transform:translateX(28px);transition:opacity 0.65s ease,transform 0.65s ease}
+.rv-right.in{opacity:1;transform:translateX(0)}
+
+/* ─── KEYFRAMES ─── */
+@keyframes slideIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes drift{0%{transform:translate(0,0)}100%{transform:translate(30px,20px)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scroll-x{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes bop{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.5)}100%{transform:scale(1)}}
+@keyframes spin-slow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes float-ud{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* ─── STAGGER DELAYS ─── */
+.rv:nth-child(2){transition-delay:0.1s}
+.rv:nth-child(3){transition-delay:0.2s}
+.rv:nth-child(4){transition-delay:0.3s}
+.pstep:nth-child(2){transition-delay:0.12s}
+.pstep:nth-child(3){transition-delay:0.24s}
+.pstep:nth-child(4){transition-delay:0.36s}
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-head">
+    <span class="cart-head-title">Your Bag</span>
+    <button class="cart-close" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-body" id="cart-body">
+    <div class="cart-empty" id="cart-empty">
+      <div class="cart-empty-icon">🧺</div>
+      <p>Your bag is empty.<br/>Find something you love.</p>
+    </div>
+  </div>
+  <div class="cart-foot" id="cart-foot" style="display:none">
+    <div class="cart-total-row"><span>Total</span><span id="cart-total">₹0</span></div>
+    <button class="btn-checkout">Checkout →</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a class="nav-logo" href="#">Kwarki Naari<span class="logo-dot"></span></a>
+  <ul class="nav-links">
+    <li><a href="#collections">Shop</a></li>
+    <li><a href="#story">About</a></li>
+    <li><a href="#process">Craft</a></li>
+    <li><a href="#custom">Custom</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-bag" onclick="toggleCart()" style="cursor:none;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;font-size:0.78rem">
+      Bag <span class="bag-count" id="bag-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-pip"></span>100% Handmade · Colorful Clay & Resin</div>
+    <h1 class="hero-title">
+      <span>Made by</span>
+      <span class="line-2">hand,</span>
+      <span class="line-3">worn with soul.</span>
+    </h1>
+    <p class="hero-sub">
+      Earrings, pendants, necklaces & home pieces — each one <strong>sculpted, painted, and resin-coated</strong> by hand. No templates. No duplicates. Just art you wear.
+    </p>
+    <div class="hero-actions">
+      <a href="#collections" class="btn-pop"><span>Shop the Collection</span></a>
+      <a href="#story" class="btn-outline">Our Story</a>
+    </div>
+    <div class="hero-pills">
+      <span class="pill pill-1">✦ Polymer Clay</span>
+      <span class="pill pill-2">✦ Resin Coated</span>
+      <span class="pill pill-3">✦ Hand Painted</span>
+      <span class="pill pill-4">✦ One of a Kind</span>
+    </div>
+  </div>
+
+  <!-- Floating product cards -->
+  <div class="hero-float-cards">
+    <div class="float-card">
+      <div class="float-card-color">
+        <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="180" height="80" fill="#fde8d8"/>
+          <circle cx="70" cy="40" r="24" fill="#e8422a" opacity="0.85"/>
+          <circle cx="70" cy="40" r="12" fill="#f0d44a"/>
+          <line x1="70" y1="16" x2="70" y2="6" stroke="#3d2f24" stroke-width="1.5"/>
+          <circle cx="70" cy="5" r="4" fill="#3d2f24"/>
+          <circle cx="110" cy="40" r="24" fill="#e8422a" opacity="0.85"/>
+          <circle cx="110" cy="40" r="12" fill="#f0d44a"/>
+          <line x1="110" y1="16" x2="110" y2="6" stroke="#3d2f24" stroke-width="1.5"/>
+          <circle cx="110" cy="5" r="4" fill="#3d2f24"/>
+        </svg>
+      </div>
+      <div class="float-label">Poppy Disk Earrings</div>
+      <div class="float-price">₹680</div>
+    </div>
+    <div class="float-card">
+      <div class="float-card-color">
+        <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="180" height="80" fill="#d4f4ee"/>
+          <circle cx="90" cy="48" r="26" fill="#2abfa3" opacity="0.8"/>
+          <circle cx="90" cy="48" r="14" fill="white" opacity="0.5"/>
+          <circle cx="90" cy="48" r="6" fill="#2abfa3"/>
+          <line x1="90" y1="22" x2="90" y2="10" stroke="#1c1510" stroke-width="1.5"/>
+          <circle cx="90" cy="8" r="5" fill="none" stroke="#1c1510" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="float-label">Teal Sun Pendant</div>
+      <div class="float-price">₹850</div>
+    </div>
+    <div class="float-card">
+      <div class="float-card-color">
+        <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="180" height="80" fill="#fef9db"/>
+          <circle cx="90" cy="42" r="30" fill="none" stroke="#f2861a" stroke-width="3"/>
+          <circle cx="90" cy="42" r="20" fill="#f0d44a" opacity="0.7"/>
+          <circle cx="90" cy="42" r="10" fill="#f2861a" opacity="0.6"/>
+          <circle cx="90" cy="42" r="4" fill="white"/>
+        </svg>
+      </div>
+      <div class="float-label">Mandala Coaster</div>
+      <div class="float-price">₹1,200</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Polymer Clay</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Bright Acrylic Paint</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Crystal Resin Coat</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">100% Handmade</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Zero Duplicates</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Unisex Wearables</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Ships from Mumbai</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Custom Orders Open</span><span class="ticker-sep">✦</span>
+    <!-- dupe for loop -->
+    <span class="ticker-item">Polymer Clay</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Bright Acrylic Paint</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Crystal Resin Coat</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">100% Handmade</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Zero Duplicates</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Unisex Wearables</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Ships from Mumbai</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Custom Orders Open</span><span class="ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- MATERIALS -->
+<div class="materials rv">
+  <div class="materials-inner">
+    <div class="mat-card mat-card-1 rv">
+      <div class="mat-icon">🧱</div>
+      <div class="mat-title">Mouldable Clay</div>
+      <p class="mat-text">Every shape begins as raw polymer clay — hand-conditioned, sculpted without moulds, and baked to a perfect, lightweight finish.</p>
+    </div>
+    <div class="mat-card mat-card-2 rv">
+      <div class="mat-icon">🎨</div>
+      <div class="mat-title">Bright Paint</div>
+      <p class="mat-text">Vivid acrylics applied by brush in multiple layers. Bold gradients, patterns and colour combinations — never the same twice.</p>
+    </div>
+    <div class="mat-card mat-card-3 rv">
+      <div class="mat-icon">✨</div>
+      <div class="mat-title">Resin Coat</div>
+      <p class="mat-text">A crystal-clear epoxy resin seal gives each piece its signature glassy, jewel-like shine — protecting colours for years.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products section" id="collections">
+  <div class="products-top rv">
+    <div>
+      <p class="section-eyebrow"><span class="ew-dot" style="background:var(--poppy)"></span>The Collection</p>
+      <h2 class="section-title">Pieces that belong <em>on you</em></h2>
+    </div>
+    <div class="filter-row" id="filter-row">
+      <button class="ftab on" data-f="all" onclick="filter('all',this)">All</button>
+      <button class="ftab" data-f="earrings" onclick="filter('earrings',this)">Earrings</button>
+      <button class="ftab" data-f="pendants" onclick="filter('pendants',this)">Pendants</button>
+      <button class="ftab" data-f="necklaces" onclick="filter('necklaces',this)">Necklaces</button>
+      <button class="ftab" data-f="home" onclick="filter('home',this)">Home</button>
+    </div>
+  </div>
+
+  <div class="grid" id="pgrid">
+
+    <!-- P1 - Wide feature -->
+    <div class="pcard wide rv" data-cat="earrings">
+      <div class="pcard-img">
+        <span class="pcard-badge badge-new">New Drop</span>
+        <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="g1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fef9e0"/>
+              <stop offset="100%" stop-color="#fde8c8"/>
+            </radialGradient>
+          </defs>
+          <rect width="640" height="400" fill="url(#g1)"/>
+          <!-- Left earring -->
+          <circle cx="210" cy="70" r="14" fill="#1c1510"/>
+          <line x1="210" y1="84" x2="210" y2="130" stroke="#1c1510" stroke-width="2"/>
+          <circle cx="210" cy="195" r="60" fill="#e8422a"/>
+          <circle cx="210" cy="195" r="42" fill="#f0d44a"/>
+          <circle cx="210" cy="195" r="24" fill="#e8422a"/>
+          <circle cx="210" cy="195" r="10" fill="#f0d44a"/>
+          <!-- resin shine -->
+          <ellipse cx="196" cy="172" rx="14" ry="9" fill="white" opacity="0.25" transform="rotate(-20,196,172)"/>
+          <!-- Right earring -->
+          <circle cx="430" cy="70" r="14" fill="#1c1510"/>
+          <line x1="430" y1="84" x2="430" y2="130" stroke="#1c1510" stroke-width="2"/>
+          <circle cx="430" cy="195" r="60" fill="#2abfa3"/>
+          <circle cx="430" cy="195" r="42" fill="#8b5cf6"/>
+          <circle cx="430" cy="195" r="24" fill="#2abfa3"/>
+          <circle cx="430" cy="195" r="10" fill="#8b5cf6"/>
+          <ellipse cx="416" cy="172" rx="14" ry="9" fill="white" opacity="0.25" transform="rotate(-20,416,172)"/>
+          <text x="320" y="330" font-family="Georgia" font-style="italic" font-size="13" fill="rgba(60,40,20,0.4)" text-anchor="middle">mismatched · resin-sealed · hand-painted</text>
+          <!-- bg blobs -->
+          <circle cx="60" cy="320" r="60" fill="#f2861a" opacity="0.08"/>
+          <circle cx="590" cy="50" r="50" fill="#8b5cf6" opacity="0.08"/>
+        </svg>
+        <button class="pcard-quick" onclick="addItem('Cosmic Mismatch Earrings','₹780','#e8422a')">Add to Bag +</button>
+      </div>
+      <div class="pcard-info">
+        <p class="pcard-cat" style="color:var(--poppy)">Earrings — Mismatched Pair</p>
+        <h3 class="pcard-name">Cosmic Mismatch Earrings</h3>
+        <p class="pcard-desc">Concentric circle earrings in contrasting colourways — resin-glossed and feather-light. Designed to be worn as a pair or mixed with others.</p>
+        <div class="pcard-swatches">
+          <div class="swatch" style="background:#e8422a" title="Poppy/Lemon"></div>
+          <div class="swatch" style="background:#2abfa3" title="Teal/Violet"></div>
+          <div class="swatch" style="background:#f2861a" title="Tangy/Pink"></div>
+        </div>
+        <div class="pcard-row">
+          <span class="pcard-price">₹780</span>
+          <button class="pcard-add" onclick="addItem('Cosmic Mismatch Earrings','₹780','#e8422a')">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="pcard rv" data-cat="pendants">
+      <div class="pcard-img">
+        <span class="pcard-badge badge-fav">★ Fav</span>
+        <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="400" fill="#1c1510"/>
+          <!-- stars bg -->
+          <circle cx="40" cy="60" r="1.5" fill="#f0d44a" opacity="0.5"/>
+          <circle cx="280" cy="90" r="2" fill="#f0d44a" opacity="0.4"/>
+          <circle cx="60" cy="200" r="1" fill="#f0d44a" opacity="0.35"/>
+          <circle cx="295" cy="260" r="1.5" fill="#f0d44a" opacity="0.4"/>
+          <circle cx="20" cy="330" r="1" fill="#f0d44a" opacity="0.3"/>
+          <!-- chain -->
+          <path d="M80 40 Q160 100 240 40" fill="none" stroke="#c8973e" stroke-width="1.5" opacity="0.6"/>
+          <line x1="160" y1="100" x2="160" y2="145" stroke="#c8973e" stroke-width="2"/>
+          <!-- pendant body -->
+          <circle cx="160" cy="215" r="70" fill="#2abfa3" opacity="0.9"/>
+          <circle cx="160" cy="215" r="52" fill="#f0d44a" opacity="0.85"/>
+          <circle cx="160" cy="215" r="35" fill="#e8422a" opacity="0.9"/>
+          <circle cx="160" cy="215" r="18" fill="#f0d44a"/>
+          <circle cx="160" cy="215" r="7" fill="#2abfa3"/>
+          <!-- resin shine -->
+          <ellipse cx="142" cy="190" rx="18" ry="12" fill="white" opacity="0.2" transform="rotate(-25,142,190)"/>
+          <text x="160" y="345" font-family="Georgia" font-style="italic" font-size="9" fill="rgba(200,180,120,0.6)" text-anchor="middle">resin coated · brass chain</text>
+        </svg>
+        <button class="pcard-quick" onclick="addItem('Target Pendant','₹920','#2abfa3')">Add to Bag +</button>
+      </div>
+      <div class="pcard-info">
+        <p class="pcard-cat" style="color:var(--teal)">Pendant</p>
+        <h3 class="pcard-name">Target Pendant</h3>
+        <p class="pcard-desc">Bold concentric rings in teal, lemon & poppy. Resin-coated to a high gloss. 16" brass chain included.</p>
+        <div class="pcard-swatches">
+          <div class="swatch" style="background:#2abfa3"></div>
+          <div class="swatch" style="background:#e8422a"></div>
+          <div class="swatch" style="background:#8b5cf6"></div>
+        </div>
+        <div class="pcard-row">
+          <span class="pcard-price">₹920</span>
+          <button class="pcard-add" onclick="addItem('Target Pendant','₹920','#2abfa3')">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="pcard rv" data-cat="home">
+      <div class="pcard-img">
+        <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="400" fill="#f7f5ee"/>
+          <!-- Coaster -->
+          <circle cx="160" cy="185" r="105" fill="#fde8c8"/>
+          <circle cx="160" cy="185" r="90" fill="none" stroke="#f2861a" stroke-width="2" stroke-dasharray="6 4" opacity="0.5"/>
+          <g transform="translate(160,185)">
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#e8422a" opacity="0.75" transform="rotate(0)"/>
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#f0d44a" opacity="0.75" transform="rotate(45)"/>
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#2abfa3" opacity="0.75" transform="rotate(90)"/>
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#f2861a" opacity="0.75" transform="rotate(135)"/>
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#e8422a" opacity="0.75" transform="rotate(180)"/>
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#f0d44a" opacity="0.75" transform="rotate(225)"/>
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#2abfa3" opacity="0.75" transform="rotate(270)"/>
+            <ellipse cx="0" cy="-58" rx="11" ry="26" fill="#f2861a" opacity="0.75" transform="rotate(315)"/>
+            <circle cx="0" cy="0" r="30" fill="#8b5cf6" opacity="0.7"/>
+            <circle cx="0" cy="0" r="18" fill="#f0d44a"/>
+            <circle cx="0" cy="0" r="8" fill="#8b5cf6"/>
+          </g>
+          <!-- resin shine on coaster -->
+          <ellipse cx="135" cy="150" rx="25" ry="15" fill="white" opacity="0.2" transform="rotate(-20,135,150)"/>
+          <text x="160" y="330" font-family="Georgia" font-style="italic" font-size="9" fill="rgba(60,40,20,0.4)" text-anchor="middle">set of 4 · each unique</text>
+        </svg>
+        <button class="pcard-quick" onclick="addItem('Fiesta Mandala Coasters (Set of 4)','₹1,400','#8b5cf6')">Add to Bag +</button>
+      </div>
+      <div class="pcard-info">
+        <p class="pcard-cat" style="color:var(--violet)">Home · Set of 4</p>
+        <h3 class="pcard-name">Fiesta Mandala Coasters</h3>
+        <p class="pcard-desc">Hand-painted mandala coasters in a riot of colour. Resin-glazed for water resistance. Each one uniquely painted.</p>
+        <div class="pcard-swatches">
+          <div class="swatch" style="background:#e8422a"></div>
+          <div class="swatch" style="background:#f0d44a"></div>
+          <div class="swatch" style="background:#2abfa3"></div>
+          <div class="swatch" style="background:#8b5cf6"></div>
+        </div>
+        <div class="pcard-row">
+          <span class="pcard-price">₹1,400</span>
+          <button class="pcard-add" onclick="addItem('Fiesta Mandala Coasters (Set of 4)','₹1,400','#8b5cf6')">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- P4 -->
+    <div class="pcard rv" data-cat="earrings">
+      <div class="pcard-img">
+        <span class="pcard-badge badge-last">Last Pair</span>
+        <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="400" fill="#e8f8f5"/>
+          <!-- Left squiggle earring -->
+          <circle cx="105" cy="65" r="12" fill="#1c1510"/>
+          <line x1="105" y1="77" x2="105" y2="108" stroke="#1c1510" stroke-width="2"/>
+          <path d="M85 108 Q65 140 85 165 Q105 190 85 215 Q65 240 90 255" fill="none" stroke="#2abfa3" stroke-width="8" stroke-linecap="round"/>
+          <path d="M85 108 Q65 140 85 165 Q105 190 85 215 Q65 240 90 255" fill="none" stroke="#f0d44a" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 6"/>
+          <circle cx="90" cy="258" r="14" fill="#e8422a"/>
+          <circle cx="90" cy="258" r="6" fill="white" opacity="0.6"/>
+          <!-- Right -->
+          <circle cx="215" cy="65" r="12" fill="#1c1510"/>
+          <line x1="215" y1="77" x2="215" y2="108" stroke="#1c1510" stroke-width="2"/>
+          <path d="M235 108 Q255 140 235 165 Q215 190 235 215 Q255 240 230 255" fill="none" stroke="#f0738a" stroke-width="8" stroke-linecap="round"/>
+          <path d="M235 108 Q255 140 235 165 Q215 190 235 215 Q255 240 230 255" fill="none" stroke="#f0d44a" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 6"/>
+          <circle cx="230" cy="258" r="14" fill="#8b5cf6"/>
+          <circle cx="230" cy="258" r="6" fill="white" opacity="0.6"/>
+          <text x="160" y="330" font-family="Georgia" font-style="italic" font-size="9" fill="rgba(42,191,163,0.6)" text-anchor="middle">squiggle clay · resin tip</text>
+        </svg>
+        <button class="pcard-quick" onclick="addItem('Squiggle Drop Earrings','₹740','#2abfa3')">Add to Bag +</button>
+      </div>
+      <div class="pcard-info">
+        <p class="pcard-cat" style="color:var(--teal)">Earrings</p>
+        <h3 class="pcard-name">Squiggle Drop Earrings</h3>
+        <p class="pcard-desc">Wavy clay drops in contrasting colours with a resin-finished tip. Fun, light & conversation-starting.</p>
+        <div class="pcard-swatches">
+          <div class="swatch" style="background:#2abfa3"></div>
+          <div class="swatch" style="background:#f0738a"></div>
+          <div class="swatch" style="background:#f2861a"></div>
+        </div>
+        <div class="pcard-row">
+          <span class="pcard-price">₹740</span>
+          <button class="pcard-add" onclick="addItem('Squiggle Drop Earrings','₹740','#2abfa3')">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- P5 -->
+    <div class="pcard rv" data-cat="necklaces">
+      <div class="pcard-img">
+        <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="400" fill="#1c1510"/>
+          <path d="M50 60 Q160 170 270 60" fill="none" stroke="#c8973e" stroke-width="1.5" opacity="0.5"/>
+          <!-- colourful beads -->
+          <circle cx="65" cy="78" r="7" fill="#e8422a"/>
+          <circle cx="85" cy="104" r="7" fill="#f0d44a"/>
+          <circle cx="108" cy="128" r="7" fill="#2abfa3"/>
+          <circle cx="133" cy="146" r="7" fill="#f0738a"/>
+          <circle cx="160" cy="155" r="10" fill="#8b5cf6"/>
+          <circle cx="187" cy="146" r="7" fill="#f2861a"/>
+          <circle cx="212" cy="128" r="7" fill="#2abfa3"/>
+          <circle cx="235" cy="104" r="7" fill="#f0d44a"/>
+          <circle cx="255" cy="78" r="7" fill="#e8422a"/>
+          <!-- resin shines on beads -->
+          <circle cx="62" cy="75" r="2.5" fill="white" opacity="0.4"/>
+          <circle cx="82" cy="101" r="2.5" fill="white" opacity="0.4"/>
+          <circle cx="105" cy="125" r="2.5" fill="white" opacity="0.4"/>
+          <circle cx="157" cy="151" r="3" fill="white" opacity="0.35"/>
+          <!-- pendant drop -->
+          <line x1="160" y1="165" x2="160" y2="200" stroke="#c8973e" stroke-width="1.5"/>
+          <path d="M138 200 L160 255 L182 200 Z" fill="#f0d44a"/>
+          <path d="M148 220 L160 248 L172 220 Z" fill="#e8422a"/>
+          <circle cx="160" cy="262" r="14" fill="#2abfa3"/>
+          <ellipse cx="154" cy="256" rx="5" ry="3" fill="white" opacity="0.3"/>
+          <text x="160" y="340" font-family="Georgia" font-style="italic" font-size="9" fill="rgba(200,155,62,0.5)" text-anchor="middle">hand-strung · resin bead tips</text>
+          <!-- bg sparkles -->
+          <circle cx="30" cy="300" r="1.5" fill="#f0d44a" opacity="0.35"/>
+          <circle cx="290" cy="200" r="2" fill="#2abfa3" opacity="0.3"/>
+        </svg>
+        <button class="pcard-quick" onclick="addItem('Rainbow Bead Necklace','₹1,100','#8b5cf6')">Add to Bag +</button>
+      </div>
+      <div class="pcard-info">
+        <p class="pcard-cat" style="color:var(--violet)">Necklace</p>
+        <h3 class="pcard-name">Rainbow Bead Necklace</h3>
+        <p class="pcard-desc">Hand-strung clay beads in a full spectrum of colours, finished with a painted & resin-dipped arrow pendant.</p>
+        <div class="pcard-swatches">
+          <div class="swatch" style="background:#e8422a"></div>
+          <div class="swatch" style="background:#f0d44a"></div>
+          <div class="swatch" style="background:#2abfa3"></div>
+          <div class="swatch" style="background:#8b5cf6"></div>
+          <div class="swatch" style="background:#f0738a"></div>
+        </div>
+        <div class="pcard-row">
+          <span class="pcard-price">₹1,100</span>
+          <button class="pcard-add" onclick="addItem('Rainbow Bead Necklace','₹1,100','#8b5cf6')">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- P6 -->
+    <div class="pcard rv" data-cat="pendants">
+      <div class="pcard-img">
+        <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="g2" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#fde8c8"/>
+              <stop offset="100%" stop-color="#f5ede0"/>
+            </radialGradient>
+          </defs>
+          <rect width="320" height="400" fill="url(#g2)"/>
+          <circle cx="160" cy="65" r="10" fill="none" stroke="#1c1510" stroke-width="2"/>
+          <line x1="160" y1="75" x2="160" y2="118" stroke="#1c1510" stroke-width="1.5"/>
+          <!-- abstract face pendant -->
+          <ellipse cx="160" cy="210" rx="55" ry="75" fill="#f2861a"/>
+          <!-- eyes -->
+          <ellipse cx="143" cy="194" rx="9" ry="11" fill="#1c1510"/>
+          <ellipse cx="177" cy="194" rx="9" ry="11" fill="#1c1510"/>
+          <circle cx="146" cy="191" r="3" fill="white" opacity="0.7"/>
+          <circle cx="180" cy="191" r="3" fill="white" opacity="0.7"/>
+          <!-- brows -->
+          <path d="M132 180 Q143 174 154 178" fill="none" stroke="#1c1510" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M166 178 Q177 174 188 180" fill="none" stroke="#1c1510" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- smile -->
+          <path d="M144 224 Q160 238 176 224" fill="none" stroke="#1c1510" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- nose dot -->
+          <circle cx="160" cy="214" r="4" fill="#1c1510"/>
+          <!-- hair squiggle -->
+          <path d="M110 165 Q90 140 105 120 Q120 100 135 118" fill="none" stroke="#f0d44a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M210 165 Q230 140 215 120 Q200 100 185 118" fill="none" stroke="#f0d44a" stroke-width="4" stroke-linecap="round"/>
+          <!-- resin shine -->
+          <ellipse cx="138" cy="168" rx="16" ry="10" fill="white" opacity="0.2" transform="rotate(-20,138,168)"/>
+          <text x="160" y="345" font-family="Georgia" font-style="italic" font-size="9" fill="rgba(60,40,20,0.4)" text-anchor="middle">smiley face · hand-sculpted</text>
+        </svg>
+        <button class="pcard-quick" onclick="addItem('Happy Face Pendant','₹890','#f2861a')">Add to Bag +</button>
+      </div>
+      <div class="pcard-info">
+        <p class="pcard-cat" style="color:var(--tangy)">Pendant</p>
+        <h3 class="pcard-name">Happy Face Pendant</h3>
+        <p class="pcard-desc">Smiley-face sculptural pendant in tangy orange with lemon hair squiggles. On a black wax cord.</p>
+        <div class="pcard-swatches">
+          <div class="swatch" style="background:#f2861a"></div>
+          <div class="swatch" style="background:#e8422a"></div>
+          <div class="swatch" style="background:#f0738a"></div>
+        </div>
+        <div class="pcard-row">
+          <span class="pcard-price">₹890</span>
+          <button class="pcard-add" onclick="addItem('Happy Face Pendant','₹890','#f2861a')">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</section>
+
+<!-- HORIZONTAL SCROLL SHOWCASE -->
+<div class="showcase" id="showcase">
+  <div class="showcase-label rv">
+    <p class="section-eyebrow"><span class="ew-dot" style="background:var(--tangy)"></span>Also Loved</p>
+  </div>
+  <div class="showcase-track">
+    <!-- 8 cards, duplicated for loop -->
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#fde8c8"/><circle cx="80" cy="80" r="40" fill="#e8422a" opacity="0.85"/><circle cx="80" cy="80" r="22" fill="#f0d44a"/><circle cx="80" cy="80" r="10" fill="#e8422a"/><ellipse cx="68" cy="66" rx="8" ry="5" fill="white" opacity="0.25" transform="rotate(-25,68,66)"/><circle cx="150" cy="80" r="40" fill="#2abfa3" opacity="0.85"/><circle cx="150" cy="80" r="22" fill="#8b5cf6"/><circle cx="150" cy="80" r="10" fill="#2abfa3"/><ellipse cx="138" cy="66" rx="8" ry="5" fill="white" opacity="0.25" transform="rotate(-25,138,66)"/></svg></div><div class="sc-name">Dot Studs</div><div class="sc-price">₹520</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#d4f0ea"/><path d="M70 30 Q110 90 70 130 Q30 90 70 30Z" fill="#2abfa3" opacity="0.8"/><path d="M70 30 Q110 90 70 130 Q30 90 70 30Z" fill="none" stroke="#f0d44a" stroke-width="2"/><ellipse cx="62" cy="58" rx="8" ry="5" fill="white" opacity="0.2" transform="rotate(-25,62,58)"/><path d="M150 30 Q190 90 150 130 Q110 90 150 30Z" fill="#f0738a" opacity="0.8"/><path d="M150 30 Q190 90 150 130 Q110 90 150 30Z" fill="none" stroke="#f0d44a" stroke-width="2"/><ellipse cx="142" cy="58" rx="8" ry="5" fill="white" opacity="0.2" transform="rotate(-25,142,58)"/></svg></div><div class="sc-name">Leaf Drops</div><div class="sc-price">₹660</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#fdf5d8"/><rect x="55" y="30" width="50" height="100" rx="25" fill="#f0d44a" opacity="0.9"/><rect x="55" y="30" width="50" height="100" rx="25" fill="none" stroke="#e8422a" stroke-width="2.5"/><circle cx="80" cy="80" r="12" fill="#e8422a" opacity="0.7"/><ellipse cx="68" cy="52" rx="7" ry="4" fill="white" opacity="0.25" transform="rotate(-20,68,52)"/><rect x="115" y="30" width="50" height="100" rx="25" fill="#8b5cf6" opacity="0.9"/><rect x="115" y="30" width="50" height="100" rx="25" fill="none" stroke="#f0d44a" stroke-width="2.5"/><circle cx="140" cy="80" r="12" fill="#f0d44a" opacity="0.7"/><ellipse cx="128" cy="52" rx="7" ry="4" fill="white" opacity="0.25" transform="rotate(-20,128,52)"/></svg></div><div class="sc-name">Lozenge Earrings</div><div class="sc-price">₹700</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#1c1510"/><circle cx="110" cy="80" r="55" fill="#f2861a" opacity="0.8"/><circle cx="110" cy="80" r="38" fill="none" stroke="#f0d44a" stroke-width="3"/><circle cx="110" cy="80" r="22" fill="#f2861a" opacity="0.6"/><circle cx="110" cy="80" r="10" fill="#f0d44a"/><circle cx="110" cy="80" r="4" fill="#1c1510"/><line x1="110" y1="25" x2="110" y2="12" stroke="#c8973e" stroke-width="1.5"/><circle cx="110" cy="10" r="5" fill="none" stroke="#c8973e" stroke-width="1.5"/><ellipse cx="95" cy="58" rx="10" ry="6" fill="white" opacity="0.2" transform="rotate(-25,95,58)"/></svg></div><div class="sc-name">Sun Ring Pendant</div><div class="sc-price">₹940</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#f0edf8"/><circle cx="75" cy="80" r="42" fill="none" stroke="#8b5cf6" stroke-width="4"/><circle cx="75" cy="80" r="28" fill="none" stroke="#f0738a" stroke-width="3"/><circle cx="75" cy="80" r="14" fill="#8b5cf6" opacity="0.6"/><line x1="75" y1="38" x2="75" y2="26" stroke="#1c1510" stroke-width="2"/><circle cx="75" cy="24" r="5" fill="#1c1510"/><circle cx="150" cy="80" r="42" fill="none" stroke="#f2861a" stroke-width="4"/><circle cx="150" cy="80" r="28" fill="none" stroke="#2abfa3" stroke-width="3"/><circle cx="150" cy="80" r="14" fill="#f2861a" opacity="0.6"/><line x1="150" y1="38" x2="150" y2="26" stroke="#1c1510" stroke-width="2"/><circle cx="150" cy="24" r="5" fill="#1c1510"/></svg></div><div class="sc-name">Halo Hoops</div><div class="sc-price">₹780</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#e8f8f5"/><path d="M50 80 Q110 30 170 80 Q110 130 50 80Z" fill="#2abfa3" opacity="0.85"/><path d="M65 80 Q110 45 155 80 Q110 115 65 80Z" fill="#f0d44a" opacity="0.8"/><circle cx="110" cy="80" r="18" fill="#e8422a" opacity="0.85"/><circle cx="110" cy="80" r="8" fill="white" opacity="0.5"/><ellipse cx="97" cy="70" rx="7" ry="4" fill="white" opacity="0.25" transform="rotate(-20,97,70)"/></svg></div><div class="sc-name">Eye Pendant</div><div class="sc-price">₹870</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#fff5e0"/><g transform="translate(110,80)"><ellipse cx="0" cy="-40" rx="10" ry="22" fill="#e8422a" opacity="0.8" transform="rotate(0)"/><ellipse cx="0" cy="-40" rx="10" ry="22" fill="#f0d44a" opacity="0.8" transform="rotate(60)"/><ellipse cx="0" cy="-40" rx="10" ry="22" fill="#2abfa3" opacity="0.8" transform="rotate(120)"/><ellipse cx="0" cy="-40" rx="10" ry="22" fill="#f2861a" opacity="0.8" transform="rotate(180)"/><ellipse cx="0" cy="-40" rx="10" ry="22" fill="#8b5cf6" opacity="0.8" transform="rotate(240)"/><ellipse cx="0" cy="-40" rx="10" ry="22" fill="#f0738a" opacity="0.8" transform="rotate(300)"/><circle cx="0" cy="0" r="18" fill="white"/><circle cx="0" cy="0" r="9" fill="#f2861a" opacity="0.6"/></g></svg></div><div class="sc-name">Petal Brooch</div><div class="sc-price">₹640</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#1c1510"/><path d="M30 70 Q60 50 80 70 Q100 90 130 70 Q160 50 190 70" fill="none" stroke="#f0738a" stroke-width="5" stroke-linecap="round"/><path d="M30 90 Q60 70 80 90 Q100 110 130 90 Q160 70 190 90" fill="none" stroke="#2abfa3" stroke-width="5" stroke-linecap="round"/><circle cx="190" cy="90" r="10" fill="#f0d44a"/><circle cx="190" cy="70" r="10" fill="#e8422a"/><circle cx="186" cy="66" r="3" fill="white" opacity="0.4"/></svg></div><div class="sc-name">Wave Necklace</div><div class="sc-price">₹1,050</div></div>
+    <!-- duplicates for seamless scroll -->
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#fde8c8"/><circle cx="80" cy="80" r="40" fill="#e8422a" opacity="0.85"/><circle cx="80" cy="80" r="22" fill="#f0d44a"/><circle cx="80" cy="80" r="10" fill="#e8422a"/><ellipse cx="68" cy="66" rx="8" ry="5" fill="white" opacity="0.25" transform="rotate(-25,68,66)"/><circle cx="150" cy="80" r="40" fill="#2abfa3" opacity="0.85"/><circle cx="150" cy="80" r="22" fill="#8b5cf6"/><circle cx="150" cy="80" r="10" fill="#2abfa3"/></svg></div><div class="sc-name">Dot Studs</div><div class="sc-price">₹520</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#d4f0ea"/><path d="M70 30 Q110 90 70 130 Q30 90 70 30Z" fill="#2abfa3" opacity="0.8"/><path d="M150 30 Q190 90 150 130 Q110 90 150 30Z" fill="#f0738a" opacity="0.8"/></svg></div><div class="sc-name">Leaf Drops</div><div class="sc-price">₹660</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#fdf5d8"/><rect x="55" y="30" width="50" height="100" rx="25" fill="#f0d44a" opacity="0.9"/><rect x="115" y="30" width="50" height="100" rx="25" fill="#8b5cf6" opacity="0.9"/></svg></div><div class="sc-name">Lozenge Earrings</div><div class="sc-price">₹700</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#1c1510"/><circle cx="110" cy="80" r="55" fill="#f2861a" opacity="0.8"/><circle cx="110" cy="80" r="22" fill="#f2861a" opacity="0.6"/><circle cx="110" cy="80" r="10" fill="#f0d44a"/></svg></div><div class="sc-name">Sun Ring Pendant</div><div class="sc-price">₹940</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#f0edf8"/><circle cx="75" cy="80" r="42" fill="none" stroke="#8b5cf6" stroke-width="4"/><circle cx="150" cy="80" r="42" fill="none" stroke="#f2861a" stroke-width="4"/></svg></div><div class="sc-name">Halo Hoops</div><div class="sc-price">₹780</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#e8f8f5"/><path d="M50 80 Q110 30 170 80 Q110 130 50 80Z" fill="#2abfa3" opacity="0.85"/><circle cx="110" cy="80" r="18" fill="#e8422a" opacity="0.85"/></svg></div><div class="sc-name">Eye Pendant</div><div class="sc-price">₹870</div></div>
+    <div class="sc-card"><div class="sc-card-img"><svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#1c1510"/><path d="M30 70 Q60 50 80 70 Q100 90 130 70 Q160 50 190 70" fill="none" stroke="#f0738a" stroke-width="5" stroke-linecap="round"/><path d="M30 90 Q60 70 80 90 Q100 110 130 90 Q160 70 190 90" fill="none" stroke="#2abfa3" stroke-width="5" stroke-linecap="round"/></svg></div><div class="sc-name">Wave Necklace</div><div class="sc-price">₹1,050</div></div>
+  </div>
+</div>
+
+<!-- STORY -->
+<div class="story" id="story">
+  <div class="story-visual">
+    <div class="story-bg-text">kwarki</div>
+    <div class="story-img-frame rv-left">
+      <svg viewBox="0 0 280 380" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="380" fill="rgba(255,255,255,0.05)"/>
+        <!-- hands working clay illustration -->
+        <!-- workbench -->
+        <rect x="0" y="280" width="280" height="100" fill="rgba(255,255,255,0.08)"/>
+        <rect x="10" y="272" width="260" height="12" rx="3" fill="rgba(255,255,255,0.12)"/>
+        <!-- clay blob being shaped -->
+        <ellipse cx="140" cy="258" rx="55" ry="28" fill="#e8422a" opacity="0.7"/>
+        <ellipse cx="140" cy="258" rx="38" ry="18" fill="#f0d44a" opacity="0.5"/>
+        <!-- tools -->
+        <rect x="60" y="230" width="6" height="45" rx="3" fill="rgba(255,255,255,0.5)"/>
+        <rect x="200" y="225" width="5" height="50" rx="2.5" fill="rgba(255,255,255,0.4)"/>
+        <!-- finished pieces on shelf -->
+        <circle cx="40" cy="220" r="14" fill="#2abfa3" opacity="0.8"/>
+        <circle cx="40" cy="220" r="7" fill="#f0d44a"/>
+        <ellipse cx="70" cy="224" rx="10" ry="14" fill="#f0738a" opacity="0.8"/>
+        <circle cx="98" cy="222" r="11" fill="#8b5cf6" opacity="0.7"/>
+        <rect x="210" y="210" width="22" height="28" rx="11" fill="#f2861a" opacity="0.7"/>
+        <!-- paint jars -->
+        <rect x="40" y="310" width="18" height="24" rx="2" fill="#e8422a" opacity="0.6"/>
+        <rect x="64" y="310" width="18" height="24" rx="2" fill="#2abfa3" opacity="0.6"/>
+        <rect x="88" y="310" width="18" height="24" rx="2" fill="#f0d44a" opacity="0.6"/>
+        <rect x="112" y="310" width="18" height="24" rx="2" fill="#8b5cf6" opacity="0.6"/>
+        <!-- brush drips -->
+        <path d="M180 295 Q183 310 180 325" stroke="#f0738a" stroke-width="3" fill="none" opacity="0.5" stroke-linecap="round"/>
+        <path d="M195 290 Q200 310 196 330" stroke="#f0d44a" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+        <!-- resin bottle -->
+        <rect x="230" y="300" width="20" height="35" rx="4" fill="rgba(255,255,255,0.2)"/>
+        <text x="140" y="370" font-family="Georgia" font-style="italic" font-size="10" fill="rgba(255,255,255,0.4)" text-anchor="middle">our little studio ✦</text>
+      </svg>
+    </div>
+  </div>
+  <div class="story-text-block rv-right">
+    <p class="section-eyebrow"><span class="ew-dot" style="background:var(--clay)"></span>Our Story</p>
+    <h2 class="section-title">Clay, colour &amp;<br/><em>zero rules</em></h2>
+    <p class="story-body">Kwarki Naari started as a lockdown sketchbook and a block of clay. What began as a way to cope became a love language — pieces so personal, so colourful, they couldn't stay in a box.</p>
+    <p class="story-body"><strong>Everything is made by hand.</strong> No moulds, no machines, no duplicates. We sculpt, paint with bright acrylics, and seal each piece with a crystal-clear resin that gives it that glossy, candy-like finish.</p>
+    <div class="story-chips">
+      <span class="chip chip-pop">Polymer Clay</span>
+      <span class="chip chip-teal">Resin Coated</span>
+      <span class="chip chip-lemon">Acrylic Painted</span>
+      <span class="chip chip-violet">Unisex</span>
+      <span class="chip chip-clay">Made in Mumbai</span>
+    </div>
+    <div class="story-stats">
+      <div class="s-stat"><div class="s-stat-n" style="color:var(--poppy)">100%</div><div class="s-stat-l">Handmade</div></div>
+      <div class="s-stat"><div class="s-stat-n" style="color:var(--teal)">∞</div><div class="s-stat-l">Colourways</div></div>
+      <div class="s-stat"><div class="s-stat-n" style="color:var(--violet)">0</div><div class="s-stat-l">Duplicates</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-header rv">
+    <div>
+      <p class="section-eyebrow">The Craft</p>
+      <h2 class="section-title">From raw clay to<br/><em>resin-glossed art</em></h2>
+    </div>
+  </div>
+  <div class="process-steps">
+    <div class="pstep rv">
+      <div class="pstep-num">01</div>
+      <div class="pstep-line" style="background:var(--poppy)"></div>
+      <div class="pstep-icon">✏️</div>
+      <div class="pstep-title">Sketch & Imagine</div>
+      <p class="pstep-text">Every piece begins as a rough sketch — no templates, pure intuition. We design shapes that feel alive and wearable.</p>
+    </div>
+    <div class="pstep rv">
+      <div class="pstep-num">02</div>
+      <div class="pstep-line" style="background:var(--lemon)"></div>
+      <div class="pstep-icon">🧱</div>
+      <div class="pstep-title">Sculpt & Bake</div>
+      <p class="pstep-text">Polymer clay is hand-conditioned and sculpted with no moulds. Each shape is unique before it even hits the oven.</p>
+    </div>
+    <div class="pstep rv">
+      <div class="pstep-num">03</div>
+      <div class="pstep-line" style="background:var(--teal)"></div>
+      <div class="pstep-icon">🎨</div>
+      <div class="pstep-title">Paint & Layer</div>
+      <p class="pstep-text">Vivid acrylics are applied in multiple layered coats — gradients, patterns, and colour combos that pop and sing.</p>
+    </div>
+    <div class="pstep rv">
+      <div class="pstep-num">04</div>
+      <div class="pstep-line" style="background:var(--violet)"></div>
+      <div class="pstep-icon">✨</div>
+      <div class="pstep-title">Resin & Sign</div>
+      <p class="pstep-text">A crystal-clear epoxy resin seals everything in a high-gloss candy coat. Then it's signed, titled, and sent out to its person.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <p class="section-eyebrow rv"><span class="ew-dot" style="background:var(--lemon)"></span>Worn & Loved</p>
+  <h2 class="section-title rv">People are <em>obsessed</em></h2>
+  <div class="tgrid">
+    <div class="tcard rv">
+      <span class="tcard-quote">"</span>
+      <p class="tcard-text">I wore my Kwarki earrings to a gallery opening and got asked about them more than anything on the walls. Literal wearable art.</p>
+      <div class="tcard-foot">
+        <div class="tavatar" style="background:var(--poppy)">RM</div>
+        <div><p class="tname">Riya Mehta</p><p class="tloc">Mumbai</p><p class="tstars">★★★★★</p></div>
+      </div>
+    </div>
+    <div class="tcard rv">
+      <span class="tcard-quote">"</span>
+      <p class="tcard-text">The resin gloss is so satisfying. They look like little sweets you want to eat but obviously cannot. The colours are insane.</p>
+      <div class="tcard-foot">
+        <div class="tavatar" style="background:var(--teal)">KS</div>
+        <div><p class="tname">Karan Shah</p><p class="tloc">Bengaluru</p><p class="tstars">★★★★★</p></div>
+      </div>
+    </div>
+    <div class="tcard rv">
+      <span class="tcard-quote">"</span>
+      <p class="tcard-text">Got a custom pendant made for my best friend's birthday. She cried. The packaging, the card, the piece itself — perfect 10/10.</p>
+      <div class="tcard-foot">
+        <div class="tavatar" style="background:var(--violet)">PK</div>
+        <div><p class="tname">Priya Kumar</p><p class="tloc">Chennai</p><p class="tstars">★★★★★</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOM ORDER CTA -->
+<div class="custom-cta rv" id="custom">
+  <div>
+    <h2 class="cta-title">Want something <em>just for you?</em></h2>
+    <p class="cta-sub">Custom orders are open — tell us your colours, vibe, occasion, and we'll craft something that has never existed before.</p>
+  </div>
+  <div class="cta-right">
+    <a href="#" class="btn-pop" onclick="showCustomToast(event)"><span>Request Custom Piece →</span></a>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="nl-bg"></div>
+  <div class="nl-content rv">
+    <p class="section-eyebrow">Stay close</p>
+    <h2 class="section-title">New drops land <em>unannounced</em></h2>
+    <p class="nl-sub">Be first to know when fresh pieces leave the studio.</p>
+    <div class="nl-form">
+      <input class="nl-input" type="email" placeholder="your@email.com" id="nl-email"/>
+      <button class="nl-btn" onclick="nlSubmit()">Notify Me</button>
+    </div>
+    <p class="nl-ok" id="nl-ok">✦ you're on the list — watch your inbox!</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Kwarki Naari<span class="logo-dot" style="background:var(--poppy);margin-left:4px;margin-bottom:10px"></span></div>
+      <p class="footer-brand-desc">Handcrafted wearable art and home accessories. Made with polymer clay, bright acrylics and resin. Every piece unique. Ships from Mumbai.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Shop</div>
+      <ul>
+        <li><a href="#">Earrings</a></li>
+        <li><a href="#">Pendants</a></li>
+        <li><a href="#">Necklaces</a></li>
+        <li><a href="#">Home Decor</a></li>
+        <li><a href="#">Gift Sets</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Info</div>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">The Craft</a></li>
+        <li><a href="#">Custom Orders</a></li>
+        <li><a href="#">Wholesale</a></li>
+        <li><a href="#">Stockists</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Help</div>
+      <ul>
+        <li><a href="#">Shipping & Returns</a></li>
+        <li><a href="#">Care Guide</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Kwarki Naari. All rights reserved. Made with clay & love in Mumbai.</span>
+    <div class="footer-social">
+      <a href="#">Instagram</a>
+      <a href="#">Pinterest</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-pip"></span>
+  <span id="toast-msg">Added to bag</span>
+</div>
+
+<script>
+/* ─── CURSOR ─── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+
+/* ─── NAV SCROLL ─── */
+const nav=document.getElementById('main-nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60)});
+
+/* ─── SCROLL REVEAL ─── */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:0.12});
+document.querySelectorAll('.rv,.rv-left,.rv-right,.pstep').forEach(el=>obs.observe(el));
+
+/* ─── CART STATE ─── */
+let cart=[];
+function toggleCart(){
+  document.getElementById('cart-drawer').classList.toggle('open');
+  document.getElementById('cart-overlay').classList.toggle('open');
+}
+function renderCart(){
+  const body=document.getElementById('cart-body');
+  const foot=document.getElementById('cart-foot');
+  const empty=document.getElementById('cart-empty');
+  const countEl=document.getElementById('bag-count');
+  countEl.textContent=cart.length;
+  countEl.classList.remove('bump');
+  void countEl.offsetWidth;
+  countEl.classList.add('bump');
+  if(!cart.length){empty.style.display='block';foot.style.display='none';return}
+  empty.style.display='none';foot.style.display='block';
+  const items=cart.map((item,i)=>`
+    <div class="cart-item">
+      <div class="cart-item-swatch" style="background:${item.color}"></div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${item.price}</div>
+        <button class="cart-item-remove" onclick="removeItem(${i})">Remove</button>
+      </div>
+    </div>`).join('');
+  body.innerHTML=items;
+  const total=cart.reduce((s,i)=>s+parseInt(i.price.replace(/[₹,]/g,'')),0);
+  document.getElementById('cart-total').textContent='₹'+total.toLocaleString('en-IN');
+}
+function addItem(name,price,color){
+  cart.push({name,price,color});
+  renderCart();
+  showToast('Added to bag ✦ '+name);
+}
+function removeItem(i){cart.splice(i,1);renderCart()}
+
+/* ─── FILTER ─── */
+function filter(cat,btn){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.pcard').forEach(c=>{
+    if(cat==='all'||c.dataset.cat===cat){c.style.display='';c.style.gridColumn=''}
+    else{c.style.display='none'}
+  });
+  // restore wide card
+  if(cat==='all'||cat==='earrings'){
+    const wide=document.querySelector('.pcard.wide');
+    if(wide&&wide.style.display!=='none')wide.style.gridColumn='span 2';
+  }
+}
+
+/* ─── TOAST ─── */
+let toTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toTimer);
+  toTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+function showCustomToast(e){e.preventDefault();showToast('✦ Custom order form coming soon — DM us on Instagram!')}
+
+/* ─── NEWSLETTER ─── */
+function nlSubmit(){
+  const v=document.getElementById('nl-email').value;
+  if(v&&v.includes('@')){
+    document.getElementById('nl-ok').style.display='block';
+    document.getElementById('nl-email').value='';
+    showToast('✦ You\'re on the list!');
+  }
+}
+
+/* ─── PARALLAX BLOBS ─── */
+window.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-0.5)*18;
+  const y=(e.clientY/window.innerHeight-0.5)*18;
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const m=(i+1)*0.8;
+    b.style.transform=`translate(${x*m}px,${y*m}px)`;
+  });
+});
+
+/* ─── FLOAT CARDS TILT ─── */
+document.querySelectorAll('.float-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-0.5)*14;
+    const y=((e.clientY-r.top)/r.height-0.5)*-14;
+    card.style.transform=`perspective(600px) rotateX(${y}deg) rotateY(${x}deg) scale(1.06)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform=''});
+});
+
+/* ─── PRODUCT CARD TILT ─── */
+document.querySelectorAll('.pcard').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-0.5)*6;
+    const y=((e.clientY-r.top)/r.height-0.5)*-6;
+    card.style.transform=`perspective(800px) rotateX(${y}deg) rotateY(${x}deg) translateY(-8px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform=''});
+});
+</script>
+</body>
+</html>
